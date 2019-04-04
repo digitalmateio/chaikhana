@@ -1,0 +1,120 @@
+<?php
+
+/* ================== Homepage ================== */
+// Route::get('/', 'HomeController@index');
+Route::get('/home', 'HomeController@index');
+Route::auth();
+
+/* ================== Access Uploaded Files ================== */
+Route::get('files/{hash}/{name}', 'LA\UploadsController@get_file');
+
+/*
+|--------------------------------------------------------------------------
+| Admin Application Routes
+|--------------------------------------------------------------------------
+*/
+
+$as = "";
+if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() >= 5.3) {
+	$as = config('laraadmin.adminRoute').'.';
+	
+	// Routes for Laravel 5.3
+	Route::get('/logout', 'Auth\LoginController@logout');
+}
+
+Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], function () {
+	
+	/* ================== Dashboard ================== */
+	
+	Route::get(config('laraadmin.adminRoute'), 'LA\DashboardController@index');
+	Route::get(config('laraadmin.adminRoute'). '/dashboard', 'LA\DashboardController@index');
+	
+	/* ================== Users ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/users', 'LA\UsersController');
+	Route::get(config('laraadmin.adminRoute') . '/user_dt_ajax', 'LA\UsersController@dtajax');
+	
+	/* ================== Uploads ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/uploads', 'LA\UploadsController');
+	Route::post(config('laraadmin.adminRoute') . '/upload_files', 'LA\UploadsController@upload_files');
+	Route::get(config('laraadmin.adminRoute') . '/uploaded_files', 'LA\UploadsController@uploaded_files');
+	Route::post(config('laraadmin.adminRoute') . '/uploads_update_caption', 'LA\UploadsController@update_caption');
+	Route::post(config('laraadmin.adminRoute') . '/uploads_update_filename', 'LA\UploadsController@update_filename');
+	Route::post(config('laraadmin.adminRoute') . '/uploads_update_public', 'LA\UploadsController@update_public');
+	Route::post(config('laraadmin.adminRoute') . '/uploads_delete_file', 'LA\UploadsController@delete_file');
+	
+	/* ================== Roles ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/roles', 'LA\RolesController');
+	Route::get(config('laraadmin.adminRoute') . '/role_dt_ajax', 'LA\RolesController@dtajax');
+	Route::post(config('laraadmin.adminRoute') . '/save_module_role_permissions/{id}', 'LA\RolesController@save_module_role_permissions');
+	
+	/* ================== Permissions ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/permissions', 'LA\PermissionsController');
+	Route::get(config('laraadmin.adminRoute') . '/permission_dt_ajax', 'LA\PermissionsController@dtajax');
+	Route::post(config('laraadmin.adminRoute') . '/save_permissions/{id}', 'LA\PermissionsController@save_permissions');
+	
+	/* ================== Departments ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/departments', 'LA\DepartmentsController');
+	Route::get(config('laraadmin.adminRoute') . '/department_dt_ajax', 'LA\DepartmentsController@dtajax');
+	
+	/* ================== Employees ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/employees', 'LA\EmployeesController');
+	Route::get(config('laraadmin.adminRoute') . '/employee_dt_ajax', 'LA\EmployeesController@dtajax');
+	Route::post(config('laraadmin.adminRoute') . '/change_password/{id}', 'LA\EmployeesController@change_password');
+	
+	/* ================== Backups ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/backups', 'LA\BackupsController');
+	Route::get(config('laraadmin.adminRoute') . '/backup_dt_ajax', 'LA\BackupsController@dtajax');
+	Route::post(config('laraadmin.adminRoute') . '/create_backup_ajax', 'LA\BackupsController@create_backup_ajax');
+	Route::get(config('laraadmin.adminRoute') . '/downloadBackup/{id}', 'LA\BackupsController@downloadBackup');
+
+
+	/* ================== Pages =================== */
+	Route::resource(config('laraadmin.adminRoute') . '/site_pages', 'LA\Site_pagesController');
+	Route::get(config('laraadmin.adminRoute') . '/site_page_dt_ajax', 'LA\Site_pagesController@dtajax');	
+
+	Route::resource(config('laraadmin.adminRoute') . '/languages', 'LA\LanguagesController');
+	Route::get(config('laraadmin.adminRoute') . '/language_dt_ajax', 'LA\LanguagesController@dtajax');
+
+	Route::resource(config('laraadmin.adminRoute') . '/page_contents', 'LA\Page_contentsController');
+	Route::get(config('laraadmin.adminRoute') . '/page_content_dt_ajax', 'LA\Page_contentsController@dtajax');
+
+	Route::resource(config('laraadmin.adminRoute') . '/photo_shops', 'LA\Photo_shopsController');
+	Route::get(config('laraadmin.adminRoute') . '/photo_shop_dt_ajax', 'LA\Photo_shopsController@dtajax');
+
+	Route::resource(config('laraadmin.adminRoute') . '/shopping_countries', 'LA\Shopping_countriesController');
+	Route::get(config('laraadmin.adminRoute') . '/shopping_country_dt_ajax', 'LA\Shopping_countriesController@dtajax');
+
+	Route::resource(config('laraadmin.adminRoute') . '/print_types', 'LA\Print_typesController');
+	Route::get(config('laraadmin.adminRoute') . '/print_type_dt_ajax', 'LA\Print_typesController@dtajax');
+
+	Route::resource(config('laraadmin.adminRoute') . '/shop_tags', 'LA\Shop_tagsController');
+	Route::get(config('laraadmin.adminRoute') . '/shop_tag_dt_ajax', 'LA\Shop_tagsController@dtajax');
+
+	/* ================== Social_Networks ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/social_networks', 'LA\Social_NetworksController');
+	Route::get(config('laraadmin.adminRoute') . '/social_network_dt_ajax', 'LA\Social_NetworksController@dtajax');
+
+	/* ================== Footer_menu_lists ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/footer_menu_lists', 'LA\Footer_menu_listsController');
+	Route::get(config('laraadmin.adminRoute') . '/footer_menu_list_dt_ajax', 'LA\Footer_menu_listsController@dtajax');
+
+	/* ================== Stories ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/stories', 'LA\StoriesController');
+	Route::get(config('laraadmin.adminRoute') . '/story_dt_ajax', 'LA\StoriesController@dtajax');
+
+	/* ================== Blocks ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/blocks', 'LA\BlocksController');
+	Route::get(config('laraadmin.adminRoute') . '/block_dt_ajax', 'LA\BlocksController@dtajax');
+
+	/* ================== Block_types ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/block_types', 'LA\Block_typesController');
+	Route::get(config('laraadmin.adminRoute') . '/block_type_dt_ajax', 'LA\Block_typesController@dtajax');
+
+	/* ================== Logos ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/logos', 'LA\LogosController');
+	Route::get(config('laraadmin.adminRoute') . '/logo_dt_ajax', 'LA\LogosController@dtajax');
+
+	/* ================== Translations ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/translations', 'LA\TranslationsController');
+	Route::get(config('laraadmin.adminRoute') . '/translation_dt_ajax', 'LA\TranslationsController@dtajax');
+});
