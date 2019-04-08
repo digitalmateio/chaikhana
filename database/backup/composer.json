@@ -1,0 +1,8 @@
+{
+    "name": "droider/medoo",
+    "require": {
+        "catfan/medoo": "^1.6",
+        "atlas/query": "~1.0",
+         "atlas/pdo": "~1.0"
+    }
+}
