@@ -117,4 +117,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Translations ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/translations', 'LA\TranslationsController');
 	Route::get(config('laraadmin.adminRoute') . '/translation_dt_ajax', 'LA\TranslationsController@dtajax');
+
+	/* ================== Section_translations ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/section_translations', 'LA\Section_translationsController');
+	Route::get(config('laraadmin.adminRoute') . '/section_translation_dt_ajax', 'LA\Section_translationsController@dtajax');
 });

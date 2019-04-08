@@ -22,6 +22,54 @@
     </div>
 @endif
 
+<style>
+.tabs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  border-bottom: 1px solid #999;
+}
+
+.tabs li {
+  float: left;
+  border: 1px solid #999;
+  border-bottom: none;
+  background: #e0e0e0;
+}
+
+.tabs li a {
+  display: block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #000;
+  text-decoration: none;
+}
+
+.tabs li a:hover {
+  background: #ccc;
+}
+
+.tabs li.active,
+.tabs li.active a:hover {
+  font-weight: bold;
+  background: #fff;
+}
+
+.tab_container {
+  border: 1px solid #999;
+  border-top: none;
+  background: #fff;
+}
+
+.tab_content {
+  padding: 20px;
+  font-size: 16px;
+}
+</style>
+
+
+
 <div class="box">
 	<div class="box-header">
 		
@@ -29,8 +77,50 @@
 	<div class="box-body">
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
+			@foreach($blocks as $block)
+			
+			  @php 
+			 
+			  
+			  $section_translations = $block->section_translation ;
+			  $translations = $block->translations ;
+			  $filtred =  $section_translations->where('locale', '==', 'en')->toArray() ;
+              $filtred = array_shift($filtred );
+              //  dd( $filtred );
+                
+              if( $block->asset_type_id == 4  )
+			  {
+			      //dd( $translations  );
+			  }
+			  
+			  @endphp
+			  
+			  <h3 class="bg-info" style="padding:10px">Section title : {{ $filtred['title'] }}</h3>
+
+			  {{--   dump( $block->section_translation )  --}}
+			  {{--     dump( $translations  )  --}}
+		
+			  <ul class="tabs" >
+			  @foreach($translations as $translate)
+                 <li data-id="{{ $translate->id  }}" data-block="{{ $block->id }}"><a href="#{{ $translate->id }}">{{ $translate->locale }}</a></li>
+              @endforeach
+              </ul>
+               
+                <div class="tab_container" >
+                   @foreach($translations as $translate)
+                      <div id="{{ $translate->id }}" class="tab_content" data-block="{{ $block->id }}" data-id="{{ $translate->id  }}">
+                         {{ $translate->title }}
+                         {{ $translate->locale }}
+                      </div>
+                   @endforeach	
+                </div>
+            
+			
+			@endforeach
+			
+		<!--
 				{!! Form::model($story, ['route' => [config('laraadmin.adminRoute') . '.stories.update', $story->id ], 'method'=>'PUT', 'id' => 'story-edit-form']) !!}
-					@la_form($module)
+				{{--  @la_form($module) --}}
 					
 					{{--
 					@la_input($module, 'user_id')
@@ -45,6 +135,7 @@
 						{!! Form::submit( 'Update', ['class'=>'btn btn-success']) !!} <button class="btn btn-default pull-right"><a href="{{ url(config('laraadmin.adminRoute') . '/stories') }}">Cancel</a></button>
 					</div>
 				{!! Form::close() !!}
+				-->
 			</div>
 		</div>
 	</div>
@@ -58,6 +149,39 @@ $(function () {
 	$("#story-edit-form").validate({
 		
 	});
+});
+    
+$(document).ready(function($) {
+    
+    $('.tabs li a').click(function(event) {
+       event.preventDefault()
+    });
+    
+    
+  $('.tab_content').hide();
+//  $('.tab_content:first').show();
+  $('.tab_content:first-of-type').show();
+   
+    
+  $('.tabs li:first').addClass('active');
+  $('.tabs li').click(function(event) {
+    $('.tabs li').removeClass('active');
+    $(this).addClass('active');
+      
+      var id = $(this).attr('data-id');
+      var blockId = $(this).attr('data-block');
+      
+//      console.log('data-id : ',$(this).attr('data-id'));
+      
+//    $('.tab_content').hide(); // hide all
+//    $('.tab_content:first-of-type').show(); // show only firsts
+    $('.tab_content[data-block='+ blockId +'] ').hide(); // show only firsts
+    $('.tab_content[data-id='+ id +'] ').show(); // show only firsts
+      
+    var selectTab = $(this).find('a').attr("href");
+
+//    $(selectTab).fadeIn();
+  });
 });
 </script>
 @endpush

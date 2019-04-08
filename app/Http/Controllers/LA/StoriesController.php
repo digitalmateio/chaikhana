@@ -19,6 +19,7 @@ use Dwij\Laraadmin\Models\ModuleFields;
 
 use App\Models\Story;
 use App\Block;
+use App\Block_type;
 
 class StoriesController extends Controller
 {
@@ -148,18 +149,21 @@ class StoriesController extends Controller
 //                $blocks = Block::where('story_id',$story->id)->first();
                 $blocks = Block::where('story_id',$story->id)->get();
                 
-                foreach($blocks as $block)
-                {
-                    dump( $block->asset_type_id );
-                }
+//                dd( Block_type::all() );
+                
+//                foreach($blocks as $block)
+//                {
+////                    dump( $block->asset_type_id );
+//                }
                 
 //                dd( $blocks->translations );
-                dd( $blocks );
-				dd(  $module->row  );
-                
+//                dd( $blocks );
+//			      dd(  $module->row  );
+//                
                 
 				return view('la.stories.update', [
-					'module' => $module,
+					'blocks'   => $blocks,
+					'module'   => $module,
 					'view_col' => $this->view_col,
 				])->with('story', $story);
                 
@@ -216,7 +220,7 @@ class StoriesController extends Controller
 			$validator = Validator::make($request->all(), $rules);
 			
 			if ($validator->fails()) {
-				return redirect()->back()->withErrors($validator)->withInput();;
+				return redirect()->back()->withErrors($validator)->withInput();
 			}
 			
 			$insert_id = Module::updateRow("Stories", $request, $id);
@@ -266,8 +270,6 @@ class StoriesController extends Controller
             { 
 				$col = $this->listing_cols[$j];
                 	
-              
-                
 				if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
 					$data->data[$i][$j] = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i][$j]);
 				}
