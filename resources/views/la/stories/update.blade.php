@@ -98,8 +98,7 @@
                   
                      foreach($block_types as $blocktype){
                      if( $blocktype->id == $block->asset_type_id  ){
-                          
-                                    
+                                                              
                             $fields = json_decode($blocktype->fields) ;
                      dd($blocktype );
                  }}
@@ -115,7 +114,7 @@
                 @endphp
 
                 <h3 class="bg-info" style="padding:10px">Section title : {{ $filtred['title'] }}
-                    <button class="btn btn-danger text-right"  style="float: right">Edit</button>
+                    <a href="{{ route('blockEditing',$block->id) }}" class="btn btn-danger text-right"  style="float: right">Edit</a>
                 </h3>
 
                 @foreach($block_types as $blocktype)

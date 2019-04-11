@@ -23,7 +23,7 @@ class Photo_shopsController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'title';
-	public $listing_cols = ['id', 'title_en', 'title_ka', 'title_az', 'title_ny', 'title_ru', 'description_en', 'description_ka', 'description_az', 'description_ny', 'description_ru', 'image', 'quantity', 'size', 'price', 'print_type', 'latitude', 'longitude', 'tag'];
+	public $listing_cols = ['id', 'title_en', 'title_ka', 'title_az', 'title_hy', 'title_ru', 'description_en', 'description_ka', 'description_az', 'description_hy', 'description_ru', 'image', 'quantity', 'size', 'price', 'print_type', 'latitude', 'longitude', 'tag'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns

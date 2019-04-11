@@ -18,6 +18,8 @@ use Dwij\Laraadmin\Models\Module;
 use Dwij\Laraadmin\Models\ModuleFields;
 
 use App\Models\Block;
+use App\Block as Section;
+use App\Block_type;
 
 class BlocksController extends Controller
 {
@@ -126,6 +128,52 @@ class BlocksController extends Controller
 		}
 	}
 
+    
+    public function editing($id)
+	{
+      
+        $block = Section::find($id);
+        $block_types = Block_type::all();
+        
+        $module = Module::get('Blocks');
+//        $module = Module::get('Translations');
+        $module->row = $block;
+        
+        switch($block->asset_type_id){
+            case 3 : return view('la.blocks.sections.text', [
+                'module' => $module,
+            ])->with('block', $block);
+                break;
+        }
+        
+        
+        
+        return;
+
+        if(Module::hasAccess("Blocks", "edit")) {			
+			$block = Block::find($id);
+			if(isset($block->id)) {	
+				$module = Module::get('Blocks');
+				
+				$module->row = $block;
+				
+				return view('la.blocks.edit', [
+					'module' => $module,
+					'view_col' => $this->view_col,
+				])->with('block', $block);
+			} else {
+				return view('errors.404', [
+					'record_id' => $id,
+					'record_name' => ucfirst("block"),
+				]);
+			}
+		} else {
+			return redirect(config('laraadmin.adminRoute')."/");
+		}
+	}
+    
+    
+        
 	/**
 	 * Show the form for editing the specified block.
 	 *
@@ -155,6 +203,8 @@ class BlocksController extends Controller
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
 	}
+    
+    
 
 	/**
 	 * Update the specified block in storage.

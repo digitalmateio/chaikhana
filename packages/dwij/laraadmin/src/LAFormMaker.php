@@ -871,7 +871,7 @@ class LAFormMaker
 	* Print form using blade directive @la_form
 	**/
 	public static function form($module, $fields = [])
-	{
+	{ 
 		if(count($fields) == 0) {
 			$fields = array_keys($module->fields);
 		}

@@ -103,6 +103,7 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	Route::get(config('laraadmin.adminRoute') . '/story_dt_ajax', 'LA\StoriesController@dtajax');
 
 	/* ================== Blocks ================== */
+	
 	Route::resource(config('laraadmin.adminRoute') . '/blocks', 'LA\BlocksController');
 	Route::get(config('laraadmin.adminRoute') . '/block_dt_ajax', 'LA\BlocksController@dtajax');
 

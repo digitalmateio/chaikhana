@@ -44,6 +44,9 @@ Route::group(array('prefix' => $locale), function()
 });
 
 
+Route::get(config('laraadmin.adminRoute') . '/section/edit/{id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockEditing');
+Route::post(config('laraadmin.adminRoute') . '/section/save/{id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockSave');
+
 Route::post('/language','LanguageController@change')->name('changeLanguage');
 
 
