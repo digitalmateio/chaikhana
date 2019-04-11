@@ -6,7 +6,7 @@
 
     return [
         'file_master_directory_name' => 'files',
-        'static_server_path' => 'http://localhost/chaikhana/files',
+        'static_server_path' => 'http://chaikhana.io/files',
         'file_thumb_sizes' => [
             [                       // DONT REMOVE THIS SHIT THIS THUMB SIZE IS USED TO DISPLAY IMAGES IN GALLERY
                 'width' =>128,

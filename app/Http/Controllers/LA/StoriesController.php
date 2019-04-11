@@ -148,6 +148,7 @@ class StoriesController extends Controller
 
 //                $blocks = Block::where('story_id',$story->id)->first();
                 $blocks = Block::where('story_id',$story->id)->get();
+                $block_types = Block_type::all();
                 
 //                dd( Block_type::all() );
                 
@@ -162,9 +163,10 @@ class StoriesController extends Controller
 //                
                 
 				return view('la.stories.update', [
-					'blocks'   => $blocks,
-					'module'   => $module,
-					'view_col' => $this->view_col,
+					'block_types' => $block_types,
+					'blocks'       => $blocks,
+					'module'       => $module,
+					'view_col'     => $this->view_col,
 				])->with('story', $story);
                 
                 
