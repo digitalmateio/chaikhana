@@ -56,6 +56,130 @@
                 'height' => 300,
             ]
         ],
+        
+        'chaikhana_production_thumb_size' =>  [
+
+                [
+                'width' => 1920,
+                'height' => 1140,
+                ],
+
+                [
+                'width' => 398,
+                'height' => 369,
+                ],
+
+                [
+                'width' => 790,
+                'height' => 369,
+                ],
+
+                [
+                'width' => 536,
+                'height' => 360,
+                ],
+                [
+                'width' => 1920,
+                'height' => 892,
+                ],
+                [
+                'width' => 398,
+                'height' => 269,
+                ],
+                [
+                'width' => 789,
+                'height' => 785,
+                ],
+                [
+                'width' => 220,
+                'height' => 228,
+                ],
+                [
+                'width' => 300,
+                'height' => 202,
+                ],
+                [
+                'width' => 274,
+                'height' => 189,
+                ],
+                [
+                'width' => 536,
+                'height' => 360,
+                ],
+                [
+                'width' => 1640,
+                'height' => 612,
+                ],
+                [
+                'width' => 400,
+                'height' => 269,
+                ],
+                [
+                'width' => 1920,
+                'height' => 848,
+                ],
+                [
+                'width' => 1920,
+                'height' => 1125,
+                ],
+                [
+                'width' => 1362,
+                'height' => 744,
+                ],
+                [
+                'width' => 674,
+                'height' => 371,
+                ],
+                [
+                'width' => 950,
+                'height' => 1000,
+                ],
+                [
+                'width' => 1640,
+                'height' => 441,
+                ],
+                [
+                'width' => 551,
+                'height' => 682,
+                ],
+                [
+                'width' => 278,
+                'height' => 344,
+                ],
+                [
+                'width' => 950,
+                'height' => 858,
+                ],
+                [
+                'width' => 488,
+                'height' => 354,
+                ],
+                [
+                'width' => 100,
+                'height' => 100,
+                ],
+                [
+                'width' => 413,
+                'height' => 320,
+                ],
+                [
+                'width' => 769,
+                'height' => 867,
+                ],
+                [
+                'width' => 515,
+                'height' => 373,
+                ],
+                [
+                'width' => 1640,
+                'height' => 662,
+                ],
+                [
+                'width' => 263,
+                'height' => 166,
+                ]
+        ],
+        
         'file_types' => [
             'audio' => 1,
             'video' => 2,
@@ -73,3 +197,5 @@
             'png'
         ]
     ];
+
+

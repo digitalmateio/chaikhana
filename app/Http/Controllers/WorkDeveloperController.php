@@ -6,13 +6,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Assets;
 use File;
-
-use App\Http\Controllers\LA\UploadsController;
+use Image;
+use App\Http\Controllers;
 
 class WorkDeveloperController extends Controller
 {
     public function work()
     {
+        /*
+        // open an image file
+        $img = Image::make(public_path('1399__img-4653.jpg') );
+         
+        // resize image instance
+        $img->resize(320, 240);
+
+        // insert a watermark
+//        $img->insert('public/watermark.png');
+
+        // save image in desired format
+        $img->save(public_path('img-4653.jpg'));
+        
+         dd( $img );
+        */
+        $upload = new UploadsController();
         
          $dir = 'chaikhanafiles';
          $story_ids = [];
@@ -20,7 +36,7 @@ class WorkDeveloperController extends Controller
 //        $onefile = File::files(public_path(  'chaikhanafiles/audio/102/'  ));
 //        dd(   $onefile->getFileName()  );
         
-         $files = Storage::disk('public')->directories($dir);
+        $files = Storage::disk('public')->directories($dir);
         
         $folders['audio'] = $this->scanDir('chaikhanafiles/audio');
         $folders['authors'] = $this->scanDir('chaikhanafiles/authors');
@@ -31,14 +47,45 @@ class WorkDeveloperController extends Controller
         $folders['thumbnail'] = $this->scanDir('chaikhanafiles/thumbnail');
         $folders['users'] = $this->scanDir('chaikhanafiles/users');
         $folders['video'] = $this->scanDir('chaikhanafiles/video');
+  
+        
+        foreach($folders['images']  as  $folder)
+        { 
+            $story_ids[] = $folder;
+            $story_id = $folder;
+            
+            $path = 'chaikhanafiles/images'.'/'.$folder.'/original';
+//            dd('chaikhanafiles/audio'.'/'.$folder.'/original' );
+            $fileB = $this->scanDir('chaikhanafiles/images'.'/'.$folder.'/original' );
+            
+            if(count($fileB) > 1 )
+            {
+                 array_pop($fileB);
+            }
+            
+//            $fileB[0]  ეს ფაილის სახელი იქნება და ასატვირთად გამოგვადგება
+            dump( $fileB[0] );
+//            dump( strpos($fileB[0],"__") );
+//            dump( substr($fileB[0], 0,strpos($fileB[0],"__") ) );
+            $asset_ids[] = substr($fileB[0], 0,strpos($fileB[0],"__") );
+            $asset_id = substr($fileB[0], 0,strpos($fileB[0],"__") );
+
+            
+            $upload->upload_files($fileB[0],$story_id,$asset_id,$path);
+            
+            dd('sssss');
+
+            dump( $fileB[0] );
+        }
+        
+        dump($story_ids);
+        dd($asset_ids);
         
         
-//        dd( $folders );
-        
+    /* AUDIO 
+    
         foreach($folders['audio']  as  $folder)
         {
-//            dump('audio'.'/'.$folder );
-//            dump($this->scanDir('chaikhanafiles/audio'.'/'.$folder ) );
             $story_ids[] = $folder;
             $story_id = $folder;
             
@@ -49,16 +96,19 @@ class WorkDeveloperController extends Controller
             }
             
 //            $fileB[0]  ეს ფაილის სახელი იქნება და ასატვირთად გამოგვადგება
-//            dump( $fileB[0] );
+            dump( $fileB[0] );
 //            dump( strpos($fileB[0],"__") );
 //            dump( substr($fileB[0], 0,strpos($fileB[0],"__") ) );
             $asset_ids[] = substr($fileB[0], 0,strpos($fileB[0],"__") );
             $asset_id = substr($fileB[0], 0,strpos($fileB[0],"__") );
-//            dump( $fileB[0] );
+            
+            dump( $fileB[0] );
         }
         
         dump($story_ids);
         dd($asset_ids);
+        
+    */    
         return;
         /*
           0 => "chaikhanafiles/audio"
