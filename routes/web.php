@@ -31,6 +31,8 @@ if (in_array( $locale,  ['en','ru','ka','ny','az']  ))
       Route::get('/test', 'HomeController@test');
 
 
+     Route::get('/work', 'WorkDeveloperController@work');
+
 // dump( 'router = '.$locale );
 // statr group by locale ******************************************************************************
 Route::get("/", function () use ($locale){
