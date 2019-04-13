@@ -38,120 +38,171 @@ class WorkDeveloperController extends Controller
         
         $files = Storage::disk('public')->directories($dir);
         
-        $folders['audio'] = $this->scanDir('chaikhanafiles/audio');
-        $folders['authors'] = $this->scanDir('chaikhanafiles/authors');
-        $folders['images'] = $this->scanDir('chaikhanafiles/images');
+        $folders['audio']       = $this->scanDir('chaikhanafiles/audio');
+        $folders['authors']     = $this->scanDir('chaikhanafiles/authors/original');
+        $folders['images']      = $this->scanDir('chaikhanafiles/images');
         $folders['infographic'] = $this->scanDir('chaikhanafiles/infographic');
-        $folders['logos'] = $this->scanDir('chaikhanafiles/logos');
-        $folders['slideshow'] = $this->scanDir('chaikhanafiles/slideshow');
-        $folders['thumbnail'] = $this->scanDir('chaikhanafiles/thumbnail');
-        $folders['users'] = $this->scanDir('chaikhanafiles/users');
-        $folders['video'] = $this->scanDir('chaikhanafiles/video');
+        $folders['logos']       = $this->scanDir('chaikhanafiles/logos');
+        $folders['slideshow']   = $this->scanDir('chaikhanafiles/slideshow');
+        $folders['thumbnail']   = $this->scanDir('chaikhanafiles/thumbnail');
+        $folders['users']       = $this->scanDir('chaikhanafiles/users/original');
+        $folders['video']       = $this->scanDir('chaikhanafiles/video');
   
+       
+        /* LOGOS
+        foreach($folders['logos']  as  $folder)
+        {
+            $story_id = $folder;
+            
+            $path = 'chaikhanafiles/logos'.'/'.$folder.'/original';
+            $fileB = $this->scanDir('chaikhanafiles/logos'.'/'.$folder.'/original' );
+            
+            foreach($fileB as $image)
+            {
+                $asset_id = substr($image, 0,strpos($image,"__") );
+                $upload->upload_logos($image,$story_id,$asset_id,$path);
+            }          
         
+        }
+        */
+        
+         /*  USERS
+        
+        foreach($folders['users']  as  $image)
+        { 
+            
+            $image_title = substr($image, 0,strpos($image,"."));
+                                  
+            $path = 'chaikhanafiles/users/original'.'/'.$image;
+                                  
+            $upload->upload_by_Avatar($image,$image_title,$path);
+        
+        }
+        
+        */
+        
+        
+        /*  VIDEO
+        foreach($folders['video']  as  $folder)
+        {
+            $story_id = $folder;
+            
+            $path = 'chaikhanafiles/video'.'/'.$folder.'/original';
+            $fileB = $this->scanDir('chaikhanafiles/video'.'/'.$folder.'/original' );
+            
+            foreach($fileB as $video)
+            {
+                $asset_id = substr($video, 0,strpos($video,"__") );
+                $upload->upload_files($video,$story_id,$asset_id,$path);
+            }          
+        
+        }
+        */
+        
+        /*  AUDIO
+        foreach($folders['audio']  as  $folder)
+        {
+            $story_id = $folder;
+            $path = 'chaikhanafiles'. DIRECTORY_SEPARATOR .'audio'. DIRECTORY_SEPARATOR .$folder;
+            $fileB = $this->scanDir( $path );
+                   
+            foreach($fileB as $audio)
+            {
+                $asset_id = substr($audio, 0,strpos($audio,"__") );
+                $upload->upload_files($audio,$story_id,$asset_id,$path);
+            }
+            
+        }
+        */
+        
+        /* AUTHORS 
+        foreach($folders['authors']  as  $image)
+        { 
+            $image_title = substr($image, 0,strpos($image,"."));
+                                  
+            $path = 'chaikhanafiles/authors/original'.'/'.$image;
+                                  
+            $upload->upload_by_Avatar($image,$image_title,$path);
+        
+        }
+        */
+        
+        
+        /*
+        // THUMBNAILS
+        foreach($folders['thumbnail']  as  $folder)
+        { 
+            $story_id = $folder;
+            
+            $path = 'chaikhanafiles/thumbnail'.'/'.$folder.'/original';
+            $fileB = $this->scanDir('chaikhanafiles/thumbnail'.'/'.$folder.'/original' );
+            
+            foreach($fileB as $image)
+            {
+                $asset_id = substr($image, 0,strpos($image,"__") );
+                $upload->upload_files($image,$story_id,$asset_id,$path);
+            }
+        
+        }
+   */
+  /*      
+        // SLIDESHOW
+        foreach($folders['slideshow']  as  $folder)
+        { 
+            $story_id = $folder;
+            
+            $path = 'chaikhanafiles/slideshow'.'/'.$folder.'/original';
+            $fileB = $this->scanDir('chaikhanafiles/slideshow'.'/'.$folder.'/original' );
+            
+            foreach($fileB as $image)
+            {
+                $asset_id = substr($image, 0,strpos($image,"__") );
+                $upload->upload_files($image,$story_id,$asset_id,$path);
+            }
+        }
+  */
+  
+  /*
+   // INFOGRAPHICS         
+        foreach($folders['infographic']  as  $folder)
+        { 
+            $story_ids[] = $folder;
+            $story_id = $folder;
+            
+            $path = 'chaikhanafiles/infographic'.'/'.$folder.'/original';
+            $fileB = $this->scanDir('chaikhanafiles/infographic'.'/'.$folder.'/original' );
+            
+            foreach($fileB as $image)
+            {
+                if($image == '3360__.jpeg.' || $image = '1503__.jpeg.'){ continue; }
+                $asset_id = substr($image, 0,strpos($image,"__") );
+                $upload->upload_files($image,$story_id,$asset_id,$path);
+            }
+        
+        }
+*/
+/* 
+        
+        // IMAGES
         foreach($folders['images']  as  $folder)
         { 
             $story_ids[] = $folder;
             $story_id = $folder;
             
             $path = 'chaikhanafiles/images'.'/'.$folder.'/original';
-//            dd('chaikhanafiles/audio'.'/'.$folder.'/original' );
             $fileB = $this->scanDir('chaikhanafiles/images'.'/'.$folder.'/original' );
             
-            if(count($fileB) > 1 )
+              
+            foreach($fileB as $image)
             {
-                 array_pop($fileB);
+                $asset_id = substr($image, 0,strpos($image,"__") );
+                $upload->upload_files($image,$story_id,$asset_id,$path);
             }
-            
-//            $fileB[0]  ეს ფაილის სახელი იქნება და ასატვირთად გამოგვადგება
-            dump( $fileB[0] );
-//            dump( strpos($fileB[0],"__") );
-//            dump( substr($fileB[0], 0,strpos($fileB[0],"__") ) );
-            $asset_ids[] = substr($fileB[0], 0,strpos($fileB[0],"__") );
-            $asset_id = substr($fileB[0], 0,strpos($fileB[0],"__") );
-
-            
-            $upload->upload_files($fileB[0],$story_id,$asset_id,$path);
-            
-            dd('sssss');
-
-            dump( $fileB[0] );
+        
         }
-        
-        dump($story_ids);
-        dd($asset_ids);
-        
-        
-    /* AUDIO 
-    
-        foreach($folders['audio']  as  $folder)
-        {
-            $story_ids[] = $folder;
-            $story_id = $folder;
-            
-            $fileB = $this->scanDir('chaikhanafiles/audio'.'/'.$folder );
-            if(count($fileB) > 1 )
-            {
-                 array_pop($fileB);
-            }
-            
-//            $fileB[0]  ეს ფაილის სახელი იქნება და ასატვირთად გამოგვადგება
-            dump( $fileB[0] );
-//            dump( strpos($fileB[0],"__") );
-//            dump( substr($fileB[0], 0,strpos($fileB[0],"__") ) );
-            $asset_ids[] = substr($fileB[0], 0,strpos($fileB[0],"__") );
-            $asset_id = substr($fileB[0], 0,strpos($fileB[0],"__") );
-            
-            dump( $fileB[0] );
-        }
-        
-        dump($story_ids);
-        dd($asset_ids);
-        
-    */    
+*/
         return;
-        /*
-          0 => "chaikhanafiles/audio"
-          1 => "chaikhanafiles/authors"
-          2 => "chaikhanafiles/images"
-          3 => "chaikhanafiles/infographic"
-          4 => "chaikhanafiles/logos"
-          5 => "chaikhanafiles/slideshow"
-          6 => "chaikhanafiles/thumbnail"
-          7 => "chaikhanafiles/users"
-          8 => "chaikhanafiles/video"
-        */
-//        dd( $files );
-//        $files = Storage::disk('public')->files($dir);
-//        $files = Storage::disk('public')->allFiles($dir);
-        /*
-        // დაასკანერებს ამ დირექტორიას ამოიღებს ფოლდერების სახელებს და დაასორტირებს ბოლო 2 მოჩრის 
-        // რომ კორექტულად დაალაგოს
-        $files = scandir(public_path($dir),SCANDIR_SORT_DESCENDING );
-        array_pop ($files);
-        array_pop ($files);
-    
-        foreach($files as $file)
-        {
-            dump( $dir.'/'.$file );
-        }
-        */
-         foreach($files as $file)
-        {
-            dump( $file );
-            dump( $this->scanDir($file) );
-//            dump(  scandir(public_path($dir),SCANDIR_SORT_DESCENDING ) );
-//            dump( Storage::allFiles($dir.'/'.$file) );
-//            dump( Storage::disk('public')->directories($dir.'/'.$file) );
-//            dump( Storage::disk('public')->allDirectories($dir.'/'.$file) );
-//            dump(  File::files(public_path( 'chaikhanafiles/audio' ))  );
-             
-        }
-//        $assets = Assets::first();
-//        dd($assets);
-       
-        dd( $files  );
-//        dd( $storage );
+     
     }
     
     public function scanDir($dir)
