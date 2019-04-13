@@ -23,7 +23,7 @@ class Shop_tagsController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'title_en';
-	public $listing_cols = ['id', 'title_en', 'title_ka', 'title_ny', 'title_az', 'title_ru'];
+	public $listing_cols = ['id', 'title_en', 'title_ka', 'title_hy', 'title_az', 'title_ru'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns

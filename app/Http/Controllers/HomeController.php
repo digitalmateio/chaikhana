@@ -9,8 +9,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
-use Dwij\Laraadmin\Controllers\FieldController;
-
 
 /**
  * Class HomeController
@@ -36,10 +34,5 @@ class HomeController extends Controller
     public function index()
     {
 		return view('home');
-    }
-	
-	public function test()
-    {
-    
     }
 }

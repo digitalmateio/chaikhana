@@ -14,7 +14,7 @@
 $locale = Request::segment(1);
 // url ში არსებული უკვე ვალიდური ენი სკოდი გამოვიყნოთ ენის პარამეტრების
 // დაყენებისთვის
-if (in_array( $locale,  ['en','ru','ka','ny','az']  )) 
+if (in_array( $locale,  ['en','ru','ka','hy','az']  )) 
 {
 	if(\App::getLocale() != $locale)
 	{
@@ -43,6 +43,21 @@ Route::group(array('prefix' => $locale), function()
 {
       Route::get('/', 'HomeController@index')->name('homepage');
       Route::post('/subscribe', 'SubscribeController@request')->name('subscribe');
+
+      Route::get('/about', 'AboutController@index');
+      Route::get('/vacancie/{id}', 'VacancieController@index');
+
+      Route::get('/shop', 'ShopController@index');
+      Route::get('/shop/{id}', 'ShopController@show');
+
+      Route::get('/authors', 'AuthorsController@index');
+      Route::get('/author/{id}', 'AuthorsController@show');
+      Route::post('/authors', 'AuthorsController@loadDataAjax');
+
+      Route::get('/agency', 'AgencyController@index');
+
+      Route::get('/tags', 'TagsController@index');
+      Route::get('/tag/{id}', 'TagsController@tag');
 });
 
 

@@ -66,6 +66,14 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	Route::get(config('laraadmin.adminRoute') . '/backup_dt_ajax', 'LA\BackupsController@dtajax');
 	Route::post(config('laraadmin.adminRoute') . '/create_backup_ajax', 'LA\BackupsController@create_backup_ajax');
 	Route::get(config('laraadmin.adminRoute') . '/downloadBackup/{id}', 'LA\BackupsController@downloadBackup');
+    
+    /* ================== Autors ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/autors', 'LA\AutorsController');
+	Route::get(config('laraadmin.adminRoute') . '/autor_dt_ajax', 'LA\AutorsController@dtajax');
+    
+    /* ================== Tags_pages ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/tags_pages', 'LA\Tags_pagesController');
+	Route::get(config('laraadmin.adminRoute') . '/tags_page_dt_ajax', 'LA\Tags_pagesController@dtajax');
 
 
 	/* ================== Pages =================== */
@@ -122,4 +130,54 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Section_translations ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/section_translations', 'LA\Section_translationsController');
 	Route::get(config('laraadmin.adminRoute') . '/section_translation_dt_ajax', 'LA\Section_translationsController@dtajax');
+    
+    /* ================== Freelancer_types ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/freelancer_types', 'LA\Freelancer_typesController');
+	Route::get(config('laraadmin.adminRoute') . '/freelancer_type_dt_ajax', 'LA\Freelancer_typesController@dtajax');
+
+	/* ================== Freelancer_cities ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/freelancer_cities', 'LA\Freelancer_citiesController');
+	Route::get(config('laraadmin.adminRoute') . '/freelancer_city_dt_ajax', 'LA\Freelancer_citiesController@dtajax');
+
+	/* ================== Freelancer_type_cities ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/freelancer_type_cities', 'LA\Freelancer_type_citiesController');
+	Route::get(config('laraadmin.adminRoute') . '/freelancer_type_city_dt_ajax', 'LA\Freelancer_type_citiesController@dtajax');
+
+	/* ================== Freelancer_skills ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/freelancer_skills', 'LA\Freelancer_skillsController');
+	Route::get(config('laraadmin.adminRoute') . '/freelancer_skill_dt_ajax', 'LA\Freelancer_skillsController@dtajax');
+
+	/* ================== Freelancer_languages ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/freelancer_languages', 'LA\Freelancer_languagesController');
+	Route::get(config('laraadmin.adminRoute') . '/freelancer_language_dt_ajax', 'LA\Freelancer_languagesController@dtajax');
+
+	/* ================== Freelancer_equipments ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/freelancer_equipments', 'LA\Freelancer_equipmentsController');
+	Route::get(config('laraadmin.adminRoute') . '/freelancer_equipment_dt_ajax', 'LA\Freelancer_equipmentsController@dtajax');
+
+	/* ================== Freelancer_resources ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/freelancer_resources', 'LA\Freelancer_resourcesController');
+	Route::get(config('laraadmin.adminRoute') . '/freelancer_resource_dt_ajax', 'LA\Freelancer_resourcesController@dtajax');
+
+	/* ================== Agency_main_pages ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/agency_main_pages', 'LA\Agency_main_pagesController');
+	Route::get(config('laraadmin.adminRoute') . '/agency_main_page_dt_ajax', 'LA\Agency_main_pagesController@dtajax');
+    
+    /* ================== Contacts ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/contacts', 'LA\ContactsController');
+	Route::get(config('laraadmin.adminRoute') . '/contact_dt_ajax', 'LA\ContactsController@dtajax');
+
+	/* ================== Logos ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/logos', 'LA\LogosController');
+	Route::get(config('laraadmin.adminRoute') . '/logo_dt_ajax', 'LA\LogosController@dtajax');
+	
+
+
+	/* ================== Vacancies ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/vacancies', 'LA\VacanciesController');
+	Route::get(config('laraadmin.adminRoute') . '/vacancy_dt_ajax', 'LA\VacanciesController@dtajax');
+    
+    /* ================== Editions ================== */
+    Route::resource(config('laraadmin.adminRoute') . '/editions', 'LA\EditionsController');
+    Route::get(config('laraadmin.adminRoute') . '/edition_dt_ajax', 'LA\EditionsController@dtajax');
 });

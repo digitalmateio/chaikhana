@@ -35,7 +35,7 @@
   <!-- <link rel="stylesheet" href="assets/css/animate.css"> -->
   <script src="{{ asset('assets/js/chanjeLanguage.js') }}"></script>
 
-
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
   
@@ -270,7 +270,7 @@
           @foreach(getFoooterMenu() as $footerMenu)
           <li>
             <span class="hand">
-              <a href="{{ $footerMenu->link }}">
+              <a href="{{ URL::to('/').'/'.App::getLocale('locale').'/'.$footerMenu->link }}">
                 {{ $footerMenu->TextTrans('title') }}
               </a>
             </span>
