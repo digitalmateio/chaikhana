@@ -86,16 +86,16 @@ class UploadsController extends Controller
         $path_to_save = $savePath. DIRECTORY_SEPARATOR .$particulat_file;
 //            $path_to_save = $savePath. DIRECTORY_SEPARATOR .$particulat_file;
 
-        
 //         dump( File::mimeType($soursFile) );  
 //         dd( $asset_id );  
        
         $asset = null; 
-     
+//      dd( assets::where('avatar_id', '-2ybsnJJxOF6GjuoLjiS5g')->first());
+//      \Log::info( $asset_id .'**********************8');
         
-        if(is_null($asset_id)  )
+        if(is_null($asset_id) || empty($asset_id) )
         {
-            \Log::info( ' $asset_id is null :',json_encode([
+            \Log::info( ' $asset_id is null :  '.json_encode([
                 'DIR : '    => __DIR__,
                 'DIR : '    => __DIR__,
                 'FILE : '   => __FILE__,
@@ -114,34 +114,18 @@ class UploadsController extends Controller
         
             if($is_avatar)
             {
-                 $asset = assets::where('avatar_id', $asset_id)->first();
+                 $asset = assets::where('avatar_id', $asset_id)->first() ?? new assets();
             }else{
-                 $asset = assets::find( $asset_id);
+                 $asset = assets::find( $asset_id ) ?? new assets();
             }              
         }
-        $user = (isset(Auth::user()->id)) ? Auth::user()->id :0;
-        dump([
-					"user_id" => $user,
-					"type" => 0,
-					"size" => 0,
-					"name" => '',
-					"extension" => '',
-					"public" => 0,
-					"path" => '',
-					"url" =>'',
-					"story_id" => $story_id,
-					"asset_id" => $asset->id,
-					"asset_type_id" => $asset->asset_type,
-					"item_id" => $asset->item_id,
-					"avatar_id" => $asset->avatar_id,
-				]);
-        return;
-
+    
 			DB::beginTransaction();
 
 			try {
 
 				$user = (isset(Auth::user()->id)) ? Auth::user()->id :0;
+                
 				$upload = Upload::create([
 					"user_id" => $user,
 					"type" => 0,
@@ -152,10 +136,10 @@ class UploadsController extends Controller
 					"path" => '',
 					"url" =>'',
 					"story_id" => $story_id,
-					"asset_id" => $asset->id,
-					"asset_type_id" => $asset->asset_type,
-					"item_id" => $asset->item_id,
-					"avatar_id" => $asset->avatar_id,
+					"asset_id" => optional($asset)->id,
+					"asset_type_id" => optional($asset)->asset_type,
+					"item_id" => optional($asset)->item_id,
+					"avatar_id" => optional($asset)->avatar_id,
 				]);
 
 				$upload->save();

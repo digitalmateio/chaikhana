@@ -40,15 +40,6 @@
             'height' => 202,
             ],
 
-            [           
-            'width' => 1640,
-            'height' => 662,
-            ],
-
-            [            
-            'width' => 413,
-            'height' => 320,
-            ],
 
             [           
             'width' => 263,
@@ -56,47 +47,11 @@
             ],
 
             [            
-            'width' => 536,
-            'height' => 360,
-            ],
-
-            [            
             'width' => 220,
             'height' => 228,
             ],
 
-            [            
-            'width' => 515,
-            'height' => 373,
-            ],
-
-            [           
-            'width' => 950,
-            'height' => 858,
-            ],
-
-            [           
-            'width' => 488,
-            'height' => 354,
-            ],
-
-            [           
-            'width' => 769,
-            'height' => 867,
-            ],
-
-            [          
-            'width' => 398,
-            'height' => 269,
-            ],        
-            [
-            'width' => 1920,
-            'height' => 1125,
-            ],
-            [
-            'width' => 1920,
-            'height' => 848,
-            ]          
+                   
 
         ],
         
@@ -174,6 +129,78 @@
             'png'
         ]
     ];
+
+/*
+//nikas mier gamorcheuli
+ [
+            'width' => 274,
+            'height' => 189,
+            ],
+
+            [            
+            'width' => 300,
+            'height' => 202,
+            ],
+
+            [           
+            'width' => 1640,
+            'height' => 662,
+            ],
+
+            [            
+            'width' => 413,
+            'height' => 320,
+            ],
+
+            [           
+            'width' => 263,
+            'height' => 166,
+            ],
+
+            [            
+            'width' => 536,
+            'height' => 360,
+            ],
+
+            [            
+            'width' => 220,
+            'height' => 228,
+            ],
+
+            [            
+            'width' => 515,
+            'height' => 373,
+            ],
+
+            [           
+            'width' => 950,
+            'height' => 858,
+            ],
+
+            [           
+            'width' => 488,
+            'height' => 354,
+            ],
+
+            [           
+            'width' => 769,
+            'height' => 867,
+            ],
+
+            [          
+            'width' => 398,
+            'height' => 269,
+            ],        
+            [
+            'width' => 1920,
+            'height' => 1125,
+            ],
+            [
+            'width' => 1920,
+            'height' => 848,
+            ]          
+
+*/
 
 /*
    [

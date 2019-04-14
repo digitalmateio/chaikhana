@@ -56,6 +56,10 @@ class WorkDeveloperController extends Controller
 //        $folders['authors']     = $this->scanDir(public_path('chaikhanafiles/authors/original'));
 //        $folders['logos']       = $this->scanDir(public_path('chaikhanafiles/logos'));
         
+        
+        
+        
+        
 //        $folders['images']      = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'images');
 //        $folders['infographic'] = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'infographic');
 //        $folders['slideshow']   = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'slideshow');
@@ -63,48 +67,39 @@ class WorkDeveloperController extends Controller
 //        $folders['video']       = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'video');
 //        $folders['audio']       = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'audio');
 //        $folders['logos']       = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'logos');
-        $folders['users']       = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'users'.DIRECTORY_SEPARATOR.'original');
+//        $folders['users']       = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'users'.DIRECTORY_SEPARATOR.'original');
 //        $folders['authors']       = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'authors'.DIRECTORY_SEPARATOR.'original');
          
-      
-//        foreach($folders as $key => $url)
-//        {
-////            $folders[$key][] = $this->scanDir($url);
-////            dump($key);
-//            dump($url);
-//        }
-//        
-//        dd($folders['thumbnail']);
-        
-//          $folders = Storage::disk('public')->directories('chaikhanafiles/thumbnail');
-//dd( $folders );
-//        foreach($folders['thumbnail']  as  $folder)
+
         foreach($folders as $key => $folder)
         { 
             $story_id = '';
             $asset_id = '';
 
             $firectory = $this->scanDir( $folder );
-          
+
+            
              switch($key){
                     case 'authors' :
-                     foreach($firectory as $StoryFolder)
-                     {
-//                         dump($StoryFolder);
-                     }
                      
-                     dd('authors');
+foreach($firectory as $StoryFolder)
+{
+   $path = $folders[$key].DIRECTORY_SEPARATOR.$StoryFolder;
+   $asset_id = substr($StoryFolder, 0,strpos($StoryFolder,".") );
+   $upload->upload_files($StoryFolder,$story_id = null,$asset_id,$folders[$key],true);
+}
+                     
                         break;
                     case 'users' : 
-//                    dd($firectory);
-                     foreach($firectory as $StoryFolder)
-                     {
-                         $path = $folders[$key].DIRECTORY_SEPARATOR.$StoryFolder;
-                         $asset_id = substr($StoryFolder, 0,strpos($StoryFolder,".") );
-                         $upload->upload_files($StoryFolder,$story_id = null,$asset_id,$folders[$key],true);
 
-                     }
-                     dd('users'); 
+foreach($firectory as $StoryFolder)
+{
+
+     $path = $folders[$key].DIRECTORY_SEPARATOR.$StoryFolder;
+     $asset_id = substr($StoryFolder, 0,strpos($StoryFolder,".") );
+     $upload->upload_files($StoryFolder,$story_id = null,$asset_id,$folders[$key],true);
+
+}
                     case 'audio' : 
 
 foreach($firectory as $StoryFolder)
@@ -115,7 +110,7 @@ foreach($firectory as $StoryFolder)
      foreach($files as $file)
      {
         $asset_id = substr($file, 0,strpos($file,"__") ); 
-//        $upload->upload_files($file,$story_id,$asset_id,$path);
+        $upload->upload_files($file,$story_id,$asset_id,$path);
      }
 
 }
@@ -124,36 +119,29 @@ foreach($firectory as $StoryFolder)
                         break;
                 }
          
-//               dd('aq morcha'); 
             foreach($firectory as $StoryFolder)
             {
-//                 dump($firectory);
-//                 dump($StoryFolder);
+
+                  $story_id = $StoryFolder;
+                  $path = $folders[$key].DIRECTORY_SEPARATOR.$StoryFolder.DIRECTORY_SEPARATOR.'original';
+                  $subDirs = $this->scanDir($path );
                  
-                
-               
-//                  $story_id = $StoryFolder;
-//                  $path = $folders['thumbnail'].DIRECTORY_SEPARATOR.$StoryFolder.DIRECTORY_SEPARATOR.'original';
-//                  $fileB = $this->scanDir($path );
-//                dd($fileB);
+                 foreach($subDirs as $onefile)
+                 {
+                     $asset_id = substr($onefile, 0,strpos($onefile,"__") ); 
+                     $upload->upload_files($onefile,$story_id,$asset_id,$path);
+                 }
                 
             }
 
-          
-
-//            foreach($fileB as $image)
-//            {
-//                $asset_id = substr($image, 0,strpos($image,"__") ); dump($image);
-////                $upload->upload_files($image,$story_id,$asset_id,$path);
-//            }
-
         }
-        return 'done';
+        
+        dd($folders);
         
         try{
 
 //            $this->AssetSaves($folders);
-              $this->scanAndSaveAssets($folders);
+//            $this->scanAndSaveAssets($folders);
 
         }catch(Exception $e){
 
@@ -327,10 +315,13 @@ foreach($firectory as $StoryFolder)
         //        $folders = Storage::disk('public')->directories('chaikhanafiles');
         //         dd(   $dir  );
 
-        $files = scandir($dir,SCANDIR_SORT_DESCENDING );
+        $files = scandir( $dir );
+//        $files = scandir($dir,SCANDIR_SORT_DESCENDING );
 //        $files = scandir(public_path($dir),SCANDIR_SORT_DESCENDING );
-        array_pop ($files);
-        array_pop ($files);
+//        array_pop ($files);
+//        array_pop ($files);
+         unset($files[array_search('.', $files)]);
+         unset($files[array_search('..', $files)]);
         return $files;
     }
 
