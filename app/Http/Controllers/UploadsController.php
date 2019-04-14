@@ -76,58 +76,67 @@ class UploadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function upload_files($particulat_file,$story_id,$asset_id,$path) {
+    public function upload_files($particulat_file,$story_id,$asset_id = null,$path,$is_avatar = false) {
 
         $savePath = public_path(Config::get('file_config.file_master_directory_name'));
-//            dd($path);    
-//         dump($particulat_file);    
-//        return;
-           
-//            dump($story_id);    
-//            dd($asset_id);    
-//            dd($savePath);    
-//            dd(public_path( $path.'/'.$particulat_file) );  
-            $soursFile = public_path( $path. DIRECTORY_SEPARATOR .$particulat_file );
-            $path_to_save = $savePath. DIRECTORY_SEPARATOR .$particulat_file;
         
-//         dd( Storage::disk('public')->copy( $path.DIRECTORY_SEPARATOR.$particulat_file, 'files/audio/'.$particulat_file) );
+        $soursFile = $path. DIRECTORY_SEPARATOR .$particulat_file ;
+//            $soursFile = public_path( $path. DIRECTORY_SEPARATOR .$particulat_file );
+        $folder_to_save = $savePath. DIRECTORY_SEPARATOR ;
+        $path_to_save = $savePath. DIRECTORY_SEPARATOR .$particulat_file;
+//            $path_to_save = $savePath. DIRECTORY_SEPARATOR .$particulat_file;
+
         
-//         dd( Storage::disk('public')->directories() );
-//         dd( Storage::disk('public')->Files('files/audio') );
-//         dd( Storage::disk('public')->Files($path) );
-//         dd( Storage::disk('public')->exists( $path.DIRECTORY_SEPARATOR.$particulat_file ) );
-//         dd( Storage::disk('public')->exists( $soursFile ) );
-    
 //         dump( File::mimeType($soursFile) );  
-//        return;
-//            File::move($soursFile, $path_to_save);
-//            Storage::copy( $soursFile, $savePath.'/audio/'.$particulat_file);
+//         dd( $asset_id );  
+       
+        $asset = null; 
+     
         
-//             Storage::move('old/file1.jpg', 'new/file1.jpg');
-//            dump( public_path(  $path ) );    
-//            dd( $soursFile );    
-//		if(Module::hasAccess("Uploads", "create")) {
-
-//			$input = Input::all();
-
-//			if(!Input::hasFile('file')) {
-//				return response()->json('error: upload file not found.', 400);
-//			}
-        $asset = assets::find( (int) $asset_id);
-
-         if(!$asset || $asset == null || !isset($asset))
-         {
-             
-             \Log::info( 'upload_files line 120 assets not found :  ' . json_encode(func_get_args() ) );
+        if(is_null($asset_id)  )
+        {
+            \Log::info( ' $asset_id is null :',json_encode([
+                'DIR : '    => __DIR__,
+                'DIR : '    => __DIR__,
+                'FILE : '   => __FILE__,
+                'METHOD : ' => __METHOD__,
+                'LINE : '   => __LINE__,
+            ]) );
+            
              $asset = new assets();
              $asset->asset_type = 14;
              $asset->item_id = null;
              $asset->avatar_id = null;
              $asset_id = null;
              $story_id = null;
-//             return;
-         }
-     
+            
+        }else{
+        
+            if($is_avatar)
+            {
+                 $asset = assets::where('avatar_id', $asset_id)->first();
+            }else{
+                 $asset = assets::find( $asset_id);
+            }              
+        }
+        $user = (isset(Auth::user()->id)) ? Auth::user()->id :0;
+        dump([
+					"user_id" => $user,
+					"type" => 0,
+					"size" => 0,
+					"name" => '',
+					"extension" => '',
+					"public" => 0,
+					"path" => '',
+					"url" =>'',
+					"story_id" => $story_id,
+					"asset_id" => $asset->id,
+					"asset_type_id" => $asset->asset_type,
+					"item_id" => $asset->item_id,
+					"avatar_id" => $asset->avatar_id,
+				]);
+        return;
+
 			DB::beginTransaction();
 
 			try {
@@ -143,7 +152,7 @@ class UploadsController extends Controller
 					"path" => '',
 					"url" =>'',
 					"story_id" => $story_id,
-					"asset_id" => $asset_id,
+					"asset_id" => $asset->id,
 					"asset_type_id" => $asset->asset_type,
 					"item_id" => $asset->item_id,
 					"avatar_id" => $asset->avatar_id,
@@ -154,8 +163,6 @@ class UploadsController extends Controller
 //				$file = Input::file('file');
 
 				$folder = public_path(Config::get('file_config.file_master_directory_name'));
-
-
 
 				if (!File::exists($folder)) {
 					File::makeDirectory($folder, 0777);
@@ -181,17 +188,12 @@ class UploadsController extends Controller
 //				$file_mime = $file->getMimeType();
 				$file_type = substr($file_mime,0,strpos( $file_mime,'/'));
 
-   
 				$file_type_id = (isset($valid_types[$file_type])) ? $valid_types[$file_type] : end($valid_types);
 				
 				$file_thumb_sizes= Config::get('file_config.file_thumb_sizes');
 				
 				$file_production_thumb_sizes = Config::get('file_config.chaikhana_production_thumb_size');
-				
-				//\Log::info("Config::get('file_config.file_production_thumb_sizes') : ", Config::get('file_config.file_production_thumb_sizes') );
-				//\Log::info('file_production_thumb_sizes : ', $file_production_thumb_sizes );
-				//\Log::info( '$file_production_thumb_sizes :  ' . json_encode( $file_production_thumb_sizes ) );
-				
+								
 				$upload_date = date("Y-m-d", time());
 				$file_size = File::size( $soursFile );
 //				$file_size = File::size( $file );
@@ -207,13 +209,8 @@ class UploadsController extends Controller
 
 				$file_type_folder = $folder . DIRECTORY_SEPARATOR . $file_type;
 				$file_date_folder = $file_type_folder . DIRECTORY_SEPARATOR . $upload_date;
-				
-				$thumbnail_folder = $file_type_folder . DIRECTORY_SEPARATOR . $upload_date. DIRECTORY_SEPARATOR .'thumbnails';
+				               
                 
-               
-                
-				//\Log::info( '$thumbnail_folder :  ' . $thumbnail_folder );
-
 				// CREATE APPROPRIATE DIRECTORIS TO STORE FILE IN
 				if (!File::exists($file_type_folder)) {
 					File::makeDirectory($file_type_folder, 0777);
@@ -221,8 +218,6 @@ class UploadsController extends Controller
 
 				if (!File::isWritable($file_type_folder)) {
 					DB::rollback();
-					
-				//	\Log::info( 'is not writabl :  ' . $file_type_folder );
 					
 					return response()->json([
 						"status" => "error",
@@ -238,46 +233,19 @@ class UploadsController extends Controller
 				if (!File::isWritable($file_date_folder)) {
 					DB::rollback();
 					
-					//\Log::info( 'is not writabl :  ' . $file_date_folder );
-					
 					return response()->json([
 						"status" => "error",
 						"upload" => 'file in not writable [ ' . $file_date_folder . ' ] '
 					], 403);
 				}
-				
-				
-/*********************  for production code **********************************************/
-				// CREATE APPROPRIATE DIRECTORIS TO STORE FILE FOR MOBILE
-//                
-//				if (!File::exists($thumbnail_folder)) {
-//					File::makeDirectory($thumbnail_folder, 0777);
-//					//\Log::info( 'File::makeDirectory :  ' . $thumbnail_folder );
-//				}
-//
-//				if (!File::isWritable($thumbnail_folder)) {
-//					DB::rollback();
-//					
-//					//\Log::info( 'is not writabl :  ' . $thumbnail_folder );
-//					
-//					return response()->json([
-//						"status" => "error",
-//						"upload" => 'file in not writable [ ' . $file_type_folder . ' ] '
-//					], 403);
-//				}
-//               
-/********************* end for production code **********************************************/
 
 //                $file_type_folder = $folder . DIRECTORY_SEPARATOR . $file_type;
 //				$file_date_folder = $file_type_folder . DIRECTORY_SEPARATOR . $upload_date;
-//                dump(  $file_type );
-//                dump(  $folder );
-//                dump(  $file_type_folder );
-//                dd($file_date_folder  );
 
-                $upload_success = File::move($soursFile,$file_date_folder.DIRECTORY_SEPARATOR.$filename);
+                $upload_success = File::copy($soursFile,$file_date_folder.DIRECTORY_SEPARATOR.$filename);
+//                $upload_success = File::move($soursFile,$file_date_folder.DIRECTORY_SEPARATOR.$filename);
 //                $upload_success = Storage::disk('public')->copy( $path.DIRECTORY_SEPARATOR.$particulat_file, 'files/'.$file_type.DIRECTORY_SEPARATOR.$upload_date.DIRECTORY_SEPARATOR.$particulat_file); 
-              
+//             dd(  $upload_success);  
 
 				if($file_type == 'image') {
 
@@ -756,7 +724,8 @@ class UploadsController extends Controller
          
          if(!$asset || $asset == null || !isset($asset))
          {
-             \Log::info( 'upload_by_Avatar line 412 assets not found :  ' . json_decode(func_get_args() ) );
+             \Log::info( 'upload_by_Avatar line 758 assets not found :  ' . $image_title );
+//             \Log::info( 'upload_by_Avatar line 758 assets not found :  ' . json_decode(func_get_args() ) );
              return;
          }
          
@@ -868,18 +837,18 @@ class UploadsController extends Controller
 /*********************  for production code **********************************************/
 				// CREATE APPROPRIATE DIRECTORIS TO STORE FILE FOR MOBILE
                 
-				if (!File::exists($thumbnail_folder)) {
-					File::makeDirectory($thumbnail_folder, 0777);
-				}
-
-				if (!File::isWritable($thumbnail_folder)) {
-					DB::rollback();
-					
-					return response()->json([
-						"status" => "error",
-						"upload" => 'file in not writable [ ' . $file_type_folder . ' ] '
-					], 403);
-				}
+//				if (!File::exists($thumbnail_folder)) {
+//					File::makeDirectory($thumbnail_folder, 0777);
+//				}
+//
+//				if (!File::isWritable($thumbnail_folder)) {
+//					DB::rollback();
+//					
+//					return response()->json([
+//						"status" => "error",
+//						"upload" => 'file in not writable [ ' . $file_type_folder . ' ] '
+//					], 403);
+//				}
                
 /********************* end for production code **********************************************/
 

@@ -23,7 +23,7 @@ class LogosController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'image';
-	public $listing_cols = ['id', 'image'];
+	public $listing_cols = ['id','url','image'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns

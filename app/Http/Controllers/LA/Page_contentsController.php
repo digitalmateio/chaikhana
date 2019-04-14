@@ -23,7 +23,7 @@ class Page_contentsController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'title';
-	public $listing_cols = ['id', 'title_en', 'title_ka', 'title_hy', 'title_az', 'title_ru', 'description_en', 'description_ka', 'description_hy', 'description_az', 'description_ru', 'image', 'position', 'page'];
+	public $listing_cols = ['id', 'title_en', 'image', 'position', 'page'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns
@@ -209,7 +209,7 @@ class Page_contentsController extends Controller
 	 */
 	public function dtajax()
 	{
-		$values = DB::table('page_contents')->select($this->listing_cols)->whereNull('deleted_at');
+		$values = DB::table('page_contents')->select($this->listing_cols)->orderBy('created_at', 'DESC')->whereNull('deleted_at');
 		$out = Datatables::of($values)->make();
 		$data = $out->getData();
 

@@ -28,10 +28,8 @@ if (in_array( $locale,  ['en','ru','ka','hy','az']  ))
     $locale = \App::getLocale();
 }
 
-      Route::get('/test', 'HomeController@test');
-
-
-     Route::get('/work', 'WorkDeveloperController@work');
+ Route::get('/test', 'HomeController@test');
+ Route::get('/work', 'WorkDeveloperController@work');
 
 // dump( 'router = '.$locale );
 // statr group by locale ******************************************************************************
@@ -61,8 +59,9 @@ Route::group(array('prefix' => $locale), function()
 });
 
 
-Route::get(config('laraadmin.adminRoute') . '/section/edit/{id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockEditing');
-Route::post(config('laraadmin.adminRoute') . '/section/save/{id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockSave');
+Route::get(config('laraadmin.adminRoute') . '/blocks/{id}', '\App\Http\Controllers\LA\BlocksController@showStoryblocks')->name('blockShow');
+Route::get(config('laraadmin.adminRoute') . '/block/edit/{id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockEditing');
+Route::post(config('laraadmin.adminRoute') . '/block/save/{id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockSave');
 
 Route::post('/language','LanguageController@change')->name('changeLanguage');
 

@@ -23,7 +23,7 @@ class AutorsController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'name_en';
-	public $listing_cols = ['id', 'name_en', 'name_ka', 'name_hy', 'name_az', 'name_ru', 'about_en', 'about_ka', 'about_hy', 'about_az', 'about_ru', 'permalink'];
+	public $listing_cols = ['id', 'name_en', 'name_ka','permalink'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns

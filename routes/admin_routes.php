@@ -180,4 +180,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
     /* ================== Editions ================== */
     Route::resource(config('laraadmin.adminRoute') . '/editions', 'LA\EditionsController');
     Route::get(config('laraadmin.adminRoute') . '/edition_dt_ajax', 'LA\EditionsController@dtajax');
+
+	/* ================== Story_authors ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/story_authors', 'LA\Story_authorsController');
+	Route::get(config('laraadmin.adminRoute') . '/story_author_dt_ajax', 'LA\Story_authorsController@dtajax');
 });

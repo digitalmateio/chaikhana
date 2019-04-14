@@ -17,37 +17,37 @@ use Collective\Html\FormFacade as Form;
 use Dwij\Laraadmin\Models\Module;
 use Dwij\Laraadmin\Models\ModuleFields;
 
-use App\Models\Tags_page;
+use App\Models\Story_author;
 
-class Tags_pagesController extends Controller
+class Story_authorsController extends Controller
 {
 	public $show_action = true;
-	public $view_col = 'title_en';
-	public $listing_cols = ['id', 'title_en', 'title_ka', 'title_hy', 'title_az', 'title_ru', 'image'];
+	public $view_col = 'story_id';
+	public $listing_cols = ['id', 'story_id', 'author_id'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns
 		if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() >= 5.3) {
 			$this->middleware(function ($request, $next) {
-				$this->listing_cols = ModuleFields::listingColumnAccessScan('Tags_pages', $this->listing_cols);
+				$this->listing_cols = ModuleFields::listingColumnAccessScan('Story_authors', $this->listing_cols);
 				return $next($request);
 			});
 		} else {
-			$this->listing_cols = ModuleFields::listingColumnAccessScan('Tags_pages', $this->listing_cols);
+			$this->listing_cols = ModuleFields::listingColumnAccessScan('Story_authors', $this->listing_cols);
 		}
 	}
 	
 	/**
-	 * Display a listing of the Tags_pages.
+	 * Display a listing of the Story_authors.
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index()
 	{
-		$module = Module::get('Tags_pages');
+		$module = Module::get('Story_authors');
 		
 		if(Module::hasAccess($module->id)) {
-			return View('la.tags_pages.index', [
+			return View('la.story_authors.index', [
 				'show_actions' => $this->show_action,
 				'listing_cols' => $this->listing_cols,
 				'module' => $module
@@ -58,7 +58,7 @@ class Tags_pagesController extends Controller
 	}
 
 	/**
-	 * Show the form for creating a new tags_page.
+	 * Show the form for creating a new story_author.
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
@@ -68,16 +68,16 @@ class Tags_pagesController extends Controller
 	}
 
 	/**
-	 * Store a newly created tags_page in database.
+	 * Store a newly created story_author in database.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request)
 	{
-		if(Module::hasAccess("Tags_pages", "create")) {
+		if(Module::hasAccess("Story_authors", "create")) {
 		
-			$rules = Module::validateRules("Tags_pages", $request);
+			$rules = Module::validateRules("Story_authors", $request);
 			
 			$validator = Validator::make($request->all(), $rules);
 			
@@ -85,9 +85,9 @@ class Tags_pagesController extends Controller
 				return redirect()->back()->withErrors($validator)->withInput();
 			}
 			
-			$insert_id = Module::insert("Tags_pages", $request);
+			$insert_id = Module::insert("Story_authors", $request);
 			
-			return redirect()->route(config('laraadmin.adminRoute') . '.tags_pages.index');
+			return redirect()->route(config('laraadmin.adminRoute') . '.story_authors.index');
 			
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
@@ -95,30 +95,30 @@ class Tags_pagesController extends Controller
 	}
 
 	/**
-	 * Display the specified tags_page.
+	 * Display the specified story_author.
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show($id)
 	{
-		if(Module::hasAccess("Tags_pages", "view")) {
+		if(Module::hasAccess("Story_authors", "view")) {
 			
-			$tags_page = Tags_page::find($id);
-			if(isset($tags_page->id)) {
-				$module = Module::get('Tags_pages');
-				$module->row = $tags_page;
+			$story_author = Story_author::find($id);
+			if(isset($story_author->id)) {
+				$module = Module::get('Story_authors');
+				$module->row = $story_author;
 				
-				return view('la.tags_pages.show', [
+				return view('la.story_authors.show', [
 					'module' => $module,
 					'view_col' => $this->view_col,
 					'no_header' => true,
 					'no_padding' => "no-padding"
-				])->with('tags_page', $tags_page);
+				])->with('story_author', $story_author);
 			} else {
 				return view('errors.404', [
 					'record_id' => $id,
-					'record_name' => ucfirst("tags_page"),
+					'record_name' => ucfirst("story_author"),
 				]);
 			}
 		} else {
@@ -127,28 +127,28 @@ class Tags_pagesController extends Controller
 	}
 
 	/**
-	 * Show the form for editing the specified tags_page.
+	 * Show the form for editing the specified story_author.
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit($id)
 	{
-		if(Module::hasAccess("Tags_pages", "edit")) {			
-			$tags_page = Tags_page::find($id);
-			if(isset($tags_page->id)) {	
-				$module = Module::get('Tags_pages');
+		if(Module::hasAccess("Story_authors", "edit")) {			
+			$story_author = Story_author::find($id);
+			if(isset($story_author->id)) {	
+				$module = Module::get('Story_authors');
 				
-				$module->row = $tags_page;
+				$module->row = $story_author;
 				
-				return view('la.tags_pages.edit', [
+				return view('la.story_authors.edit', [
 					'module' => $module,
 					'view_col' => $this->view_col,
-				])->with('tags_page', $tags_page);
+				])->with('story_author', $story_author);
 			} else {
 				return view('errors.404', [
 					'record_id' => $id,
-					'record_name' => ucfirst("tags_page"),
+					'record_name' => ucfirst("story_author"),
 				]);
 			}
 		} else {
@@ -157,7 +157,7 @@ class Tags_pagesController extends Controller
 	}
 
 	/**
-	 * Update the specified tags_page in storage.
+	 * Update the specified story_author in storage.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
 	 * @param  int  $id
@@ -165,9 +165,9 @@ class Tags_pagesController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		if(Module::hasAccess("Tags_pages", "edit")) {
+		if(Module::hasAccess("Story_authors", "edit")) {
 			
-			$rules = Module::validateRules("Tags_pages", $request, true);
+			$rules = Module::validateRules("Story_authors", $request, true);
 			
 			$validator = Validator::make($request->all(), $rules);
 			
@@ -175,9 +175,9 @@ class Tags_pagesController extends Controller
 				return redirect()->back()->withErrors($validator)->withInput();;
 			}
 			
-			$insert_id = Module::updateRow("Tags_pages", $request, $id);
+			$insert_id = Module::updateRow("Story_authors", $request, $id);
 			
-			return redirect()->route(config('laraadmin.adminRoute') . '.tags_pages.index');
+			return redirect()->route(config('laraadmin.adminRoute') . '.story_authors.index');
 			
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
@@ -185,18 +185,18 @@ class Tags_pagesController extends Controller
 	}
 
 	/**
-	 * Remove the specified tags_page from storage.
+	 * Remove the specified story_author from storage.
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
 	public function destroy($id)
 	{
-		if(Module::hasAccess("Tags_pages", "delete")) {
-			Tags_page::find($id)->delete();
+		if(Module::hasAccess("Story_authors", "delete")) {
+			Story_author::find($id)->delete();
 			
 			// Redirecting to index() method
-			return redirect()->route(config('laraadmin.adminRoute') . '.tags_pages.index');
+			return redirect()->route(config('laraadmin.adminRoute') . '.story_authors.index');
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
@@ -209,11 +209,11 @@ class Tags_pagesController extends Controller
 	 */
 	public function dtajax()
 	{
-		$values = DB::table('tags_pages')->select($this->listing_cols)->orderBy('created_at', 'DESC')->whereNull('deleted_at');
+		$values = DB::table('story_authors')->select($this->listing_cols)->whereNull('deleted_at');
 		$out = Datatables::of($values)->make();
 		$data = $out->getData();
 
-		$fields_popup = ModuleFields::getModuleFields('Tags_pages');
+		$fields_popup = ModuleFields::getModuleFields('Story_authors');
 		
 		for($i=0; $i < count($data->data); $i++) {
 			for ($j=0; $j < count($this->listing_cols); $j++) { 
@@ -222,7 +222,7 @@ class Tags_pagesController extends Controller
 					$data->data[$i][$j] = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i][$j]);
 				}
 				if($col == $this->view_col) {
-					$data->data[$i][$j] = '<a href="'.url(config('laraadmin.adminRoute') . '/tags_pages/'.$data->data[$i][0]).'">'.$data->data[$i][$j].'</a>';
+					$data->data[$i][$j] = '<a href="'.url(config('laraadmin.adminRoute') . '/story_authors/'.$data->data[$i][0]).'">'.$data->data[$i][$j].'</a>';
 				}
 				// else if($col == "author") {
 				//    $data->data[$i][$j];
@@ -231,12 +231,12 @@ class Tags_pagesController extends Controller
 			
 			if($this->show_action) {
 				$output = '';
-				if(Module::hasAccess("Tags_pages", "edit")) {
-					$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/tags_pages/'.$data->data[$i][0].'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+				if(Module::hasAccess("Story_authors", "edit")) {
+					$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/story_authors/'.$data->data[$i][0].'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
 				}
 				
-				if(Module::hasAccess("Tags_pages", "delete")) {
-					$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.tags_pages.destroy', $data->data[$i][0]], 'method' => 'delete', 'style'=>'display:inline']);
+				if(Module::hasAccess("Story_authors", "delete")) {
+					$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.story_authors.destroy', $data->data[$i][0]], 'method' => 'delete', 'style'=>'display:inline']);
 					$output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
 					$output .= Form::close();
 				}

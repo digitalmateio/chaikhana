@@ -23,7 +23,7 @@ class EditionsController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'name_en';
-	public $listing_cols = ['id', 'name_en', 'name_ka', 'name_hy', 'name_az', 'name_ru', 'edition_en', 'edition_ka', 'edition_hy', 'edition_az', 'edition_ru', 'description_en', 'description_ka', 'description_hy', 'description_az', 'description_ru', 'permalink_en', 'permalink_ka', 'permalink_hy', 'permalink_az', 'permalink_ru', 'stories_count'];
+	public $listing_cols = ['id', 'name_en', 'edition_en','stories_count','permalink_en'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns
@@ -209,7 +209,7 @@ class EditionsController extends Controller
 	 */
 	public function dtajax()
 	{
-		$values = DB::table('editions')->select($this->listing_cols)->whereNull('deleted_at');
+		$values = DB::table('editions')->select($this->listing_cols)->orderBy('created_at', 'DESC')->whereNull('deleted_at');
 		$out = Datatables::of($values)->make();
 		$data = $out->getData();
 

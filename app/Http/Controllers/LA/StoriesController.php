@@ -24,8 +24,8 @@ use App\Block_type;
 class StoriesController extends Controller
 {
 	public $show_action = true;
-	public $view_col = 'staff_pick';
-	public $listing_cols = ['id', 'user_id','impressions_count', 'staff_pick', 'publish_home_page'];
+	public $view_col = 'title_en';
+	public $listing_cols = ['id','title_en','edition_id'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns
@@ -136,6 +136,7 @@ class StoriesController extends Controller
 	 */
 	public function edit($id)
 	{
+        /*
         if(Module::hasAccess("Stories", "edit")) {	
             
 			$story = Story::find($id);
@@ -182,7 +183,8 @@ class StoriesController extends Controller
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
-        /*
+        */
+        
 		if(Module::hasAccess("Stories", "edit")) {			
 			$story = Story::find($id);
 			if(isset($story->id)) {	
@@ -203,7 +205,7 @@ class StoriesController extends Controller
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
-        */
+        
 	}
 
 	/**
@@ -259,7 +261,7 @@ class StoriesController extends Controller
 	 */
 	public function dtajax()
 	{
-		$values = DB::table('stories')->select($this->listing_cols)->whereNull('deleted_at');
+		$values = DB::table('stories')->select($this->listing_cols)->orderBy('created_at', 'DESC')->whereNull('deleted_at');
 
 		$out = Datatables::of($values)->make();
 
@@ -287,9 +289,13 @@ class StoriesController extends Controller
 
 			
             if($this->show_action) {
-				$output = '';
+				
+                $output = '';
+                
+                $output .= '<a href="'.url(config('laraadmin.adminRoute').'/blocks/'.$data->data[$i][0]).'" class="btn btn-info btn-xs" style="margin-right:10px;display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-th-large"></i></a>';
+                
 				if(Module::hasAccess("Stories", "edit")) {
-					$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/stories/'.$data->data[$i][0].'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+					$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/stories/'.$data->data[$i][0].'/edit').'" class="btn btn-warning btn-xs" style="margin-right:5px;display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
 				}
 				
 				if(Module::hasAccess("Stories", "delete")) {

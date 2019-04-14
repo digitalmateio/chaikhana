@@ -1,14 +1,14 @@
 @extends("la.layouts.app")
 
-@section("contentheader_title", "Stories")
-@section("contentheader_description", "Stories listing")
-@section("section", "Stories")
+@section("contentheader_title", "Story authors")
+@section("contentheader_description", "Story authors listing")
+@section("section", "Story authors")
 @section("sub_section", "Listing")
-@section("htmlheader_title", "Stories Listing")
+@section("htmlheader_title", "Story authors Listing")
 
 @section("headerElems")
-@la_access("Stories", "create")
-	<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#AddModal">Add Story</button>
+@la_access("Story_authors", "create")
+	<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#AddModal">Add Story author</button>
 @endla_access
 @endsection
 
@@ -33,7 +33,6 @@
 			@foreach( $listing_cols as $col )
 			<th>{{ $module->fields[$col]['label'] or ucfirst($col) }}</th>
 			@endforeach
-		
 			@if($show_actions)
 			<th>Actions</th>
 			@endif
@@ -46,26 +45,22 @@
 	</div>
 </div>
 
-@la_access("Stories", "create")
+@la_access("Story_authors", "create")
 <div class="modal fade" id="AddModal" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Add Story</h4>
+				<h4 class="modal-title" id="myModalLabel">Add Story author</h4>
 			</div>
-			{!! Form::open(['action' => 'LA\StoriesController@store', 'id' => 'story-add-form']) !!}
+			{!! Form::open(['action' => 'LA\Story_authorsController@store', 'id' => 'story_author-add-form']) !!}
 			<div class="modal-body">
 				<div class="box-body">
                     @la_form($module)
 					
 					{{--
-					@la_input($module, 'user_id')
-					@la_input($module, 'latitude')
-					@la_input($module, 'longitude')
-					@la_input($module, 'impressions_count')
-					@la_input($module, 'staff_pick')
-					@la_input($module, 'publish_home_page')
+					@la_input($module, 'story_id')
+					@la_input($module, 'author_id')
 					--}}
 				</div>
 			</div>
@@ -92,7 +87,7 @@ $(function () {
 	$("#example1").DataTable({
 		processing: true,
         serverSide: true,
-        ajax: "{{ url(config('laraadmin.adminRoute') . '/story_dt_ajax') }}",
+        ajax: "{{ url(config('laraadmin.adminRoute') . '/story_author_dt_ajax') }}",
 		language: {
 			lengthMenu: "_MENU_",
 			search: "_INPUT_",
@@ -102,10 +97,9 @@ $(function () {
 		columnDefs: [ { orderable: false, targets: [-1] }],
 		@endif
 	});
-	$("#story-add-form").validate({
+	$("#story_author-add-form").validate({
 		
 	});
 });
-    
 </script>
 @endpush

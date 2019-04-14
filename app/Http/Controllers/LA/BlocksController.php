@@ -20,6 +20,7 @@ use Dwij\Laraadmin\Models\ModuleFields;
 use App\Models\Block;
 use App\Block as Section;
 use App\Block_type;
+use App\Models\Story;
 
 class BlocksController extends Controller
 {
@@ -129,6 +130,45 @@ class BlocksController extends Controller
 	}
 
     
+    public function showStoryblocks($id)
+    {
+      
+        	$story = Story::find($id);
+        
+            $block = Section::where('story_id',$story->id)->first();
+	        $module = Module::get('Blocks');
+			$module->row = $block;
+        
+            
+			if(!isset($story->id)) 
+            {
+                return redirect()->back();
+            }
+		
+//                $blocks = Section::where('story_id',$story->id)->first();
+                $blocks = Section::where('story_id',$story->id)->get();
+                $block_types = Block_type::all();
+                
+//                dd(  $blocks );
+//                dd( Block_type::all() );
+                
+//                foreach($blocks as $block)
+//                {
+//                    dump( $block->asset_type_id );
+//                }
+//                dd('die');
+//                dd( $blocks->translations );
+//                dd( $blocks );
+//			      dd(  $module->row  );
+                
+				return view('la.blocks.update', [
+					'block_types' => $block_types,
+					'blocks'       => $blocks,
+//					'module'       => $module,
+//					'view_col'     => $this->view_col,
+				])->with('story', $story);
+    }
+    
     public function editing($id)
 	{
       
@@ -145,8 +185,6 @@ class BlocksController extends Controller
             ])->with('block', $block);
                 break;
         }
-        
-        
         
         return;
 

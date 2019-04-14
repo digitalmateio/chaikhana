@@ -343,13 +343,15 @@ class UploadsController extends Controller
 	
 			// print_r(Auth::user()->roles);
 			if(Entrust::hasRole('SUPER_ADMIN')) {
-				$uploads = Upload::all();
+				$uploads = Upload::orderBy('created_at', 'DESC')->get();
+//				$uploads = Upload::all();
 			} else {
 				if(config('laraadmin.uploads.private_uploads')) {
 					// Upload::where('user_id', 0)->first();
 					$uploads = Auth::user()->uploads;
 				} else {
-					$uploads = Upload::all();
+//					$uploads = Upload::all();
+					$uploads = Upload::orderBy('created_at', 'DESC')->get();
 				}
 			}
 			$uploads2 = array();

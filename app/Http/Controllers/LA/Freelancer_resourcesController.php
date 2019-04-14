@@ -209,7 +209,7 @@ class Freelancer_resourcesController extends Controller
 	 */
 	public function dtajax()
 	{
-		$values = DB::table('freelancer_resources')->select($this->listing_cols)->whereNull('deleted_at');
+		$values = DB::table('freelancer_resources')->select($this->listing_cols)->orderBy('created_at', 'DESC')->whereNull('deleted_at');
 		$out = Datatables::of($values)->make();
 		$data = $out->getData();
 

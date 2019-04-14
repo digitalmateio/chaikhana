@@ -1,7 +1,7 @@
 @extends('la.layouts.app')
 
 @section('htmlheader_title')
-	Story View
+	Story author View
 @endsection
 
 
@@ -10,7 +10,7 @@
 	
 
 	<ul data-toggle="ajax-tab" class="nav nav-tabs profile" role="tablist">
-		<li class=""><a href="{{ url(config('laraadmin.adminRoute') . '/stories') }}" data-toggle="tooltip" data-placement="right" title="Back to Stories"><i class="fa fa-chevron-left"></i></a></li>
+		<li class=""><a href="{{ url(config('laraadmin.adminRoute') . '/story_authors') }}" data-toggle="tooltip" data-placement="right" title="Back to Story authors"><i class="fa fa-chevron-left"></i></a></li>
 		<li class="active"><a role="tab" data-toggle="tab" class="active" href="#tab-general-info" data-target="#tab-info"><i class="fa fa-bars"></i> General Info</a></li>
 		
 	</ul>
@@ -23,11 +23,8 @@
 						<h4>General Info</h4>
 					</div>
 					<div class="panel-body">
-					  @la_form($module)
-                        
-						@la_display($module, 'impressions_count')
-						@la_display($module, 'staff_pick')
-						@la_display($module, 'publish_home_page')
+						@la_display($module, 'story_id')
+						@la_display($module, 'author_id')
 					</div>
 				</div>
 			</div>
