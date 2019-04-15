@@ -17,9 +17,10 @@ class CreateBlocksTable extends Migration
      */
     public function up()
     {
-        Module::generate("Blocks", 'blocks', 'id', 'fa-cube', [
+        Module::generate("Blocks", 'blocks', 'media_type', 'fa-cube', [
+            ["audio", "audio", "File", false, "", 0, 0, false],
             ["section_id", "section_id", "Integer", false, "", 0, 0, false],
-            ["story_id	", "story_id	", "Integer", false, "", 0, 0, false],
+            ["story_id", "story_id", "Integer", false, "", 0, 0, false],
             ["asset_type_id", "asset_type_id", "Integer", false, "", 0, 0, false],
             ["position", "position", "Integer", false, "", 0, 0, false],
             ["dimension", "dimension", "Integer", false, "", 0, 0, false],
@@ -29,13 +30,18 @@ class CreateBlocksTable extends Migration
             ["dynamic_render", "dynamic_render", "Integer", false, "", 0, 0, false],
             ["media_type", "media_type", "Integer", false, "", 0, 0, false],
             ["infobox_type", "infobox_type", "Integer", false, "", 0, 0, false],
-            ["caption_align	", "caption_align	", "Integer", false, "", 0, 0, false],
+            ["caption_align", "caption_align", "Integer", false, "", 0, 0, false],
             ["video_loop", "video_loop", "Integer", false, "", 0, 0, false],
             ["url", "url", "String", false, "", 0, 0, false],
             ["code", "code", "Textarea", false, "", 0, 0, false],
             ["fullscreen", "fullscreen", "Checkbox", false, "", 0, 0, false],
             ["loop", "loop", "Checkbox", false, "", 0, 0, false],
             ["info", "info", "Checkbox", false, "", 0, 0, false],
+            ["title_en", "title en", "String", false, "", 0, 256, false],
+            ["title_az", "title az", "String", false, "", 0, 256, false],
+            ["title_hy", "title hy", "String", false, "", 0, 256, false],
+            ["title_ka", "title ka", "String", false, "", 0, 256, false],
+            ["title_ru", "title ru", "String", false, "", 0, 256, false],
         ]);
 		
 		/*

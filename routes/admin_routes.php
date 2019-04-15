@@ -184,4 +184,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Story_authors ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/story_authors', 'LA\Story_authorsController');
 	Route::get(config('laraadmin.adminRoute') . '/story_author_dt_ajax', 'LA\Story_authorsController@dtajax');
+
+	/* ================== Story_types ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/story_types', 'LA\Story_typesController');
+	Route::get(config('laraadmin.adminRoute') . '/story_type_dt_ajax', 'LA\Story_typesController@dtajax');
 });
