@@ -109,7 +109,7 @@
                         continue;
                 break;
                 }
-                */
+        */
    
                 @endphp
 
@@ -144,6 +144,9 @@
                         @break
                             @case(3)
                               {!! \App\Sections_types::showTextSection($translate,$fields) !!}
+                        @break 
+                             @case(4)
+                              {!! \App\Sections_types::showImage($translate,$fields) !!}
                         @break 
                              @case(9)
                               {!! \App\Sections_types::showInfographicsSection($translate,$fields) !!}

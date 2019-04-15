@@ -20,38 +20,57 @@
                 'width' => 300,
                 'height' => 300,
             ],
+            // chaikhana site image sizes   
             [
-                'width' => 500,
-                'height' => 500,
+               
+               'width' => 280,
+               'height' => 345,
             ],
             [
-                'width' => 840,
-                'height' => 560,
-            ],
-            // chaikhana site image sizes
-            
-            [
-            'width' => 274,
-            'height' => 189,
+            'width' => 400,
+            'height' => 270,
             ],
 
             [            
-            'width' => 300,
-            'height' => 202,
+            'width' => 275,
+            'height' => 190,
             ],
 
 
             [           
-            'width' => 263,
-            'height' => 166,
+            'width' => 395,
+            'height' => 270,
             ],
 
             [            
-            'width' => 220,
-            'height' => 228,
+            'width' => 535,
+            'height' => 360,
             ],
-
-                   
+            
+             [            
+            'width' => 490,
+            'height' => 355,
+            ],
+            
+            [            
+            'width' => 815,
+            'height' => 515,
+            ],
+            
+             [            
+            'width' => 790,
+            'height' => 790,
+            ],
+            
+              
+             [            
+            'width' => 265,
+            'height' => 165,
+            ],
+            [            
+            'width' => 770,
+            'height' => 865,
+            ],
 
         ],
         

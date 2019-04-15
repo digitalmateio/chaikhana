@@ -8,7 +8,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use App\Models\Upload;
+    
 class Translation extends Model
 {
     use SoftDeletes;
@@ -22,4 +23,9 @@ class Translation extends Model
 	protected $guarded = [];
 
 	protected $dates = ['deleted_at'];
+    
+    public function getImageAttribute($value)
+    {
+        return Upload::find($value);
+    }
 }

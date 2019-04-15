@@ -76,7 +76,7 @@ class UploadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function upload_files($particulat_file,$story_id,$asset_id = null,$path,$is_avatar = false) {
+    public function upload_files($particulat_file,$story_id,$asset_id = null,$path,$is_avatar = false,$is_thumbnail = false) {
 
         $savePath = public_path(Config::get('file_config.file_master_directory_name'));
         
@@ -86,13 +86,16 @@ class UploadsController extends Controller
         $path_to_save = $savePath. DIRECTORY_SEPARATOR .$particulat_file;
 //            $path_to_save = $savePath. DIRECTORY_SEPARATOR .$particulat_file;
 
-//         dump( File::mimeType($soursFile) );  
-//         dd( $asset_id );  
-       
         $asset = null; 
-//      dd( assets::where('avatar_id', '-2ybsnJJxOF6GjuoLjiS5g')->first());
-//      \Log::info( $asset_id .'**********************8');
         
+       
+        
+   if($is_thumbnail)
+   {
+       $asset = assets::where('story_id', $story_id)->where('asset_type',1)->first() ?? new assets();
+   }else{
+           
+       
         if(is_null($asset_id) || empty($asset_id) )
         {
             \Log::info( ' $asset_id is null :  '.json_encode([
@@ -119,7 +122,11 @@ class UploadsController extends Controller
                  $asset = assets::find( $asset_id ) ?? new assets();
             }              
         }
-    
+    }
+        
+//        dump($asset);
+//        return;
+        
 			DB::beginTransaction();
 
 			try {

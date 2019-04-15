@@ -26,6 +26,43 @@ class Sections_types extends Model
 
     protected $dates = ['deleted_at'];
     
+    public static function showImage($translate,$fields)
+    {
+         
+//        dump($translate);
+//        dump($translate->image->thumbnails[0]);
+//                dd($translate->image->thumbnails[0]);
+        $image = $translate->image->thumbnails[0] ?? '';
+//                dd($fields);
+
+//        foreach($translate as $item)
+//        {
+//            dump($item);
+//        }
+//        dd($fields);
+        
+             $content = '<div class="table-responsive">
+                <table class="table table-bordered"><tr>';
+
+            foreach($fields as $field)
+            {
+                 $content .=  "<th>$field</th>";
+                
+            }
+         $content .=  "<th>image</th>";
+             $content .= '</tr><tr>';
+
+              foreach($fields as $field)
+            {
+                 $content .=  "<td>".$translate->{$field}."</td>";
+                 
+            }
+        $content .=  "<td><img src='".$image."' width=200></td>";
+        
+            $content .= '</tr></table></div>';
+            return $content;
+      
+    }
     
     public static function showEmbedMediaSection($translate,$fields)
     {
