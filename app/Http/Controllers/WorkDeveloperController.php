@@ -19,9 +19,11 @@ class WorkDeveloperController extends Controller
 {
     public function work()
     {
-        $filename = 'ss.png';
+//        $this->AsssetIdies();
+        dd('DONE');
+//        $filename = 'ss.png';
 //        $file_date_folder = public_path($filename);
-         $file_date_folder = str_replace('\\', '/', public_path($filename));
+//         $file_date_folder = str_replace('\\', '/', public_path($filename));
         
 //        dd($file_date_folder);
         
@@ -62,8 +64,8 @@ class WorkDeveloperController extends Controller
          dd( $img->basename );
          dd( $img->dirname );
         */
-        dd('croped');
-        return;
+//        dd('croped');
+//        return;
         
         
         $upload = new UploadsController();
@@ -618,6 +620,7 @@ dump($fileB );
 //        $this->usersAvatarsAssets();
 //        $this->authorsAssets();
 //        $this->logoAssets();
+        // VIDEO ASSET aris dasmatebeli
     }
     
     
@@ -653,6 +656,7 @@ dump($fileB );
     public function storyThumbnailsIDes()
     {
         $uploads = Upload::where('asset_type_id',1)->get();
+        dd($uploads);
         foreach($uploads as $upload)
         {
             Story::where('id',$upload->story_id)->update([ "thumbnail" => $upload->id ]);

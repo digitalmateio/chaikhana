@@ -85,13 +85,8 @@
 
                 @php 
 
-                $section_translations = $block->section_translation ;
                 $translations = $block->translations ;
-
-                //for section title
-                $filtred =  $section_translations->where('locale', '==', 'en')->toArray() ;
-                $filtred = array_shift( $filtred );
-
+          
         /*
                 switch($block->asset_type_id){
                     case 9: 
@@ -113,57 +108,24 @@
    
                 @endphp
 
-                <h3 class="bg-info" style="padding:10px">Section title : {{ $filtred['title'] }}
+                <h3 class="bg-info" style="padding:10px">Section title : {{ $block->title_en }}
                     <a href="{{ route('blockEditing',$block->id) }}" class="btn btn-danger text-right"  style="float: right">Edit</a>
                 </h3>
 
                 @foreach($block_types as $blocktype)
                      @if( $blocktype->id == $block->asset_type_id  )
                             <p>   {{ $blocktype->type }}   </p>
-                        @php
-                                               
+                        @php                 
                             $fields = json_decode($blocktype->fields) 
                         @endphp
                     @endif
                 @endforeach
-
-                <ul class="tabs" >
-                    @foreach($translations as $translate)
-                    <li data-id="{{ $translate->id  }}" data-block="{{ $block->id }}"><a href="#{{ $translate->id }}">{{ $translate->locale }}</a></li>
-                    @endforeach
-                </ul>
-
-
-                <div class="tab_container" >
-                    @foreach($translations as $translate)
-                    <div id="{{ $translate->id }}" class="tab_content" data-block="{{ $block->id }}" data-id="{{ $translate->id  }}">
-                       
-                        @switch($block->asset_type_id )
-                            @case(13)
-                              {!! \App\Sections_types::showYoutubeEmbed($translate->code,$translate) !!}
-                        @break
-                            @case(3)
-                              {!! \App\Sections_types::showTextSection($translate,$fields) !!}
-                        @break 
-                             @case(4)
-                              {!! \App\Sections_types::showImage($translate,$fields) !!}
-                        @break 
-                             @case(9)
-                              {!! \App\Sections_types::showInfographicsSection($translate,$fields) !!}
-                        @break
-                             @case(12)
-                              {!! \App\Sections_types::showEmbedMediaSection($translate,$fields) !!}
-                        @break
-                            @default
-                     
-                        @endswitch
-
-                    </div>
-
-                    @endforeach	
-                </div>
+<!--აქ ტრანსლეითებიც უნდა გავიტანო ცალკე ფელპერში რო იმიჯებიში არ გამოიტანოს ყველაზე სათითაონ ენის კოდი და არ დუბლირდეს-->
+              
+                {!! \App\Sections_types::ShowBlocks($translations,$block,$fields) !!}
+              
                 @endforeach
-
+           
                 <!--
 {!! Form::model($story, ['route' => [config('laraadmin.adminRoute') . '.stories.update', $story->id ], 'method'=>'PUT', 'id' => 'story-edit-form']) !!}
 {{--  @la_form($module) --}}

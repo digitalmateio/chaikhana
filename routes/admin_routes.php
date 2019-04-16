@@ -188,4 +188,9 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Story_types ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/story_types', 'LA\Story_typesController');
 	Route::get(config('laraadmin.adminRoute') . '/story_type_dt_ajax', 'LA\Story_typesController@dtajax');
+
+	/* ================== Sections ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/sections', 'LA\SectionsController');
+	Route::post(config('laraadmin.adminRoute') . '/section_dt_ajax', 'LA\SectionsController@postdtajax');
+	Route::get(config('laraadmin.adminRoute') . '/section_dt_ajax', 'LA\SectionsController@dtajax');
 });

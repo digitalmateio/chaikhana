@@ -270,7 +270,11 @@ class UploadsController extends Controller
                     // open an image file
                     $img = Image::make($file_date_folder.DIRECTORY_SEPARATOR.$filename);
                     // resize image instance
-                    $img->resize($value['width'], $value['height']);
+//                    $img->resize($value['width'], $value['height']);
+                    $img->resize($value['width'], null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
                     // save image in desired format
                     $img->save($file_date_folder . DIRECTORY_SEPARATOR .$_dir_name .DIRECTORY_SEPARATOR .  $filename);
 					}
