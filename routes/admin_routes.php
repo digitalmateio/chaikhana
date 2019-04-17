@@ -114,6 +114,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	
 	Route::resource(config('laraadmin.adminRoute') . '/blocks', 'LA\BlocksController');
 	Route::get(config('laraadmin.adminRoute') . '/block_dt_ajax', 'LA\BlocksController@dtajax');
+	Route::post(config('laraadmin.adminRoute') . '/block/addblock', 'LA\BlocksController@addblock')->name('addblock');
+	Route::get(config('laraadmin.adminRoute') . '/block/forms', 'LA\BlocksController@forms')->name('getblockforms');
 
 	/* ================== Block_types ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/block_types', 'LA\Block_typesController');
@@ -128,8 +130,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	Route::get(config('laraadmin.adminRoute') . '/translation_dt_ajax', 'LA\TranslationsController@dtajax');
 
 	/* ================== Section_translations ================== */
-	Route::resource(config('laraadmin.adminRoute') . '/section_translations', 'LA\Section_translationsController');
-	Route::get(config('laraadmin.adminRoute') . '/section_translation_dt_ajax', 'LA\Section_translationsController@dtajax');
+//	Route::resource(config('laraadmin.adminRoute') . '/section_translations', 'LA\Section_translationsController');
+//	Route::get(config('laraadmin.adminRoute') . '/section_translation_dt_ajax', 'LA\Section_translationsController@dtajax');
     
     /* ================== Freelancer_types ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/freelancer_types', 'LA\Freelancer_typesController');

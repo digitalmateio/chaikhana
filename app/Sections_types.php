@@ -12,6 +12,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use DataTables;
 use App\Models\Upload;
 //use Yajra\DataTables\Html\Builder;
+use App\Http\Controllers\LAFormMaker;
+
+use Dwij\Laraadmin\Models\Module;
+use Collective\Html\FormFacade as Form;
+
 
 class Sections_types extends Model
 {
@@ -29,7 +34,18 @@ class Sections_types extends Model
 
     public static function ShowBlocks($translations,$block,$fields)
     {
-
+        
+        $module = Module::get('Blocks');
+        $moduleTranslate = Module::get('Translations');
+        
+        $LAFormMaker = new LAFormMaker();
+        
+        return $LAFormMaker->showInput($moduleTranslate,'text');
+        return $LAFormMaker->showInput($module,'title_en');
+        
+        dd($LAFormMaker->showInput($module,'title_en'));
+        
+        
         switch( $block->asset_type_id ){
             
             case 13 : 
@@ -44,6 +60,9 @@ class Sections_types extends Model
             case 5 : 
                 return \App\Sections_types::showVideo($translations,$fields);
                 break;
+            case 6 : 
+                return \App\Sections_types::showSlideShow($translations,$fields);
+                break;
             case 9:
                 return \App\Sections_types::showInfographicsSection($translations,$fields) ;
                 break;
@@ -57,25 +76,73 @@ class Sections_types extends Model
 
     }
     
+    public static function showSlideShow($translations,$fields)
+    {
+         $content = '';
+
+        foreach($translations as $translate)
+        {
+            $image = $translate->image;
+
+            $content .= '<div class="table-responsive">
+                <table class="table table-bordered"><tr>';
+
+            $content .=  "<th>lang</th>";
+            foreach($fields as $field)
+            {
+                $content .=  "<th>$field</th>";
+
+            }
+            $content .= "<th>image</th>";
+            $content .= '</tr><tr>';
+
+            $content .=  "<td>".$translate->locale."</td>";
+
+            foreach($fields as $field)
+            {
+                $content .=  "<td>".$translate->{$field}."</td>";                 
+            }
+
+
+            $content .=  "<td><img src='".optional($image)->url."' width=200></td>";
+
+            $content .= '</tr></table></div>';
+            
+        }
+       
+        return $content;
+    }
+    
     public static function showVideo($translations,$fields)
     {
          $content = '';
 
         foreach($translations as $translate)
         {
-
+//             dump($translate->video);
             $content .= '<div class="table-responsive">
                 <table class="table table-bordered"><tr>';
-
+            $content .=  "<th>lang</th>";
+            
             foreach($fields as $field)
             {
                 $content .=  "<th>$field</th>";
             }
             $content .= '</tr><tr>';
-
+            
+            $content .=  "<td>".$translate->locale."</td>";
+            
             foreach($fields as $field)
             {
-                $content .=  "<td>".$translate->{$field}."</td>";
+
+                if($field == 'video')
+                { 
+                    $content .=  "<video controls src='".$translate->video."' width='500px' height='300px'/>";
+                }else{
+                    $content .=  "<td>".$translate->{$field}."</td>";
+                }
+                
+                
             }
             //<video src=”url” width=”640px” height=”380px” autoplay/>
 

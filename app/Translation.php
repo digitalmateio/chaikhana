@@ -28,4 +28,9 @@ class Translation extends Model
     {
         return Upload::find($value);
     }
+    
+    function getVideoAttribute($value)
+    {
+        return optional(Upload::find($value))->url;
+    }
 }

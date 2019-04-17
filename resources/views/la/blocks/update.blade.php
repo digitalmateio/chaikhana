@@ -69,6 +69,36 @@
 </style>
 
 
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-success " data-toggle="modal" data-target="#myModal">
+          Add Section
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+              </div>
+
+              {!! Form::open(['route' => 'admin.addblock']) !!}
+
+              <div class="modal-body">
+               			
+                {{ Form::label('block_types') }}
+                {{ Form::select('block_types', $block_types_array, null, array('class'=>'form-control block_types_fields', 'placeholder'=>'Please select ...')) }}
+   
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				{!! Form::submit( 'Submit', ['class'=>'btn btn-success']) !!}
+              </div>
+              {!! Form::close() !!}
+            </div>
+          </div>
+        </div>
 
 <div class="box">
     <div class="box-header">
@@ -160,6 +190,27 @@
     });
 
     $(document).ready(function($) {
+        
+        $('.block_types_fields').change(function(event) {
+            
+            console.log(event);
+            console.log(event.target.value);
+            
+                $.ajax({
+                    method: "GET",
+                    url: "{{ route('admin.getblockforms') }}",
+                    data: { blocktype: event.target.value },
+                })
+                .done(function( msg ) {
+                alert( "Data Saved: " + msg );
+                    
+                });
+        });
+
+        
+        
+      
+       
 
         $('.tabs li a').click(function(event) {
             event.preventDefault();

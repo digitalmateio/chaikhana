@@ -63,7 +63,7 @@ Route::get(config('laraadmin.adminRoute') . '/blocks/{id}', '\App\Http\Controlle
 Route::get(config('laraadmin.adminRoute') . '/block/edit/{id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockEditing');
 Route::post(config('laraadmin.adminRoute') . '/block/save/{id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockSave');
 
-Route::post('/language','LanguageController@change')->name('changeLanguage');
+//Route::post('/language','LanguageController@change')->name('changeLanguage');
 
 
 /* ================== Homepage + Admin Routes ================== */

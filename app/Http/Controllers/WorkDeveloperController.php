@@ -19,7 +19,7 @@ class WorkDeveloperController extends Controller
 {
     public function work()
     {
-//        $this->AsssetIdies();
+        $this->AsssetIdies();
         dd('DONE');
 //        $filename = 'ss.png';
 //        $file_date_folder = public_path($filename);
@@ -620,10 +620,41 @@ dump($fileB );
 //        $this->usersAvatarsAssets();
 //        $this->authorsAssets();
 //        $this->logoAssets();
-        // VIDEO ASSET aris dasmatebeli
+//        $this->videoAssets();
+//        $this->slideshowAssets();
     }
     
+    public function slideshowAssets()
+    {
+        $uploads = Upload::where('asset_type_id', 6)->get();
+        foreach($uploads as $upload)
+        {
+            Translation::where('asset_id', $upload->asset_id)->update([ "image" => $upload->id ]);
+        }
+       
+    }
     
+    public function videoAssets()
+    {
+//         $uploads = Upload::where('asset_type_id', 5)->get();
+//        foreach($uploads as $upload)
+//        {
+////            dump(Translation::where('asset_id', $upload->asset_id)->first());
+//            Translation::where('asset_id', $upload->asset_id)->update([ "video" => $upload->id ]);
+//        }
+        
+//        $assets = assets::where('asset_type',5)->get();              
+//        foreach($assets  as $item)
+//        {
+//            $upload = Upload::where('asset_id', $item->id)->first();
+//            if(!empty($upload))
+//            {
+//               Translation::where('asset_id', $upload->asset_id)->update([ "video" => $upload->id ]);
+//            }
+//           
+//        }
+        
+    }
     
     public function logoAssets()
     {
@@ -656,7 +687,7 @@ dump($fileB );
     public function storyThumbnailsIDes()
     {
         $uploads = Upload::where('asset_type_id',1)->get();
-        dd($uploads);
+//        dd($uploads);
         foreach($uploads as $upload)
         {
             Story::where('id',$upload->story_id)->update([ "thumbnail" => $upload->id ]);

@@ -21,6 +21,8 @@ use App\Models\Block;
 use App\Block as Section;
 use App\Block_type;
 use App\Models\Story;
+use Dwij\Laraadmin\Models\ModuleFieldTypes;
+
 
 class BlocksController extends Controller
 {
@@ -68,8 +70,27 @@ class BlocksController extends Controller
 	public function create()
 	{
 		//
+	}	
+    
+    
+    public function forms(Request $request)
+	{
+        $block_type = Block_type::find( $request->blocktype );
+        $block_module = Module::get('Blocks');
+        $Translate_module = Module::get('Translations');
+        
+		return view('la.blocks.formsdisplay',[
+            'block_type' => $block_type,
+            'Translate_module' => $Translate_module,
+            
+        ]);
 	}
-
+    
+    
+    public function addblock(Request $request)
+	{
+		//
+	}
 	/**
 	 * Store a newly created block in database.
 	 *
@@ -133,12 +154,49 @@ class BlocksController extends Controller
     public function showStoryblocks($id)
     {
       
+        
         	$story = Story::find($id);
+               
+            $block_type = Block_type::find( 9 );
+            $translate_fields = json_decode( $block_type->translate_fields );
+            $transFiekdArray = [];
+//            dd($translate_fields);
+           $locales = ['_en','_az','_hy','_ka','_ru'];
+        
+            foreach($translate_fields as $transfield)
+            {
+                foreach($locales as $locale)
+                {
+                    $transFiekdArray[] = $transfield.$locale;
+                }
+                
+            }
+            
+//            dd($transFiekdArray);
+//            dd(json_decode( $block_type->translate_fields ));
         
             $block = Section::where('story_id',$story->id)->first();
 	        $module = Module::get('Blocks');
 			$module->row = $block;
         
+//          ModuleFieldTypes::find($field_type);
+        
+            $Translate_module = Module::get('Translations');
+        
+        return view('la.blocks.formsdisplay',[
+            'block_type' => $block_type,
+            'block_module' => $module,
+            'Translate_module' => $Translate_module,
+            'transFiekdArray' => $transFiekdArray,
+            
+        ]);
+        
+            dump( ModuleFieldTypes::find($Translate_module->fields['video']['field_type']) );
+            dump($Translate_module->fields['video']['field_type']);
+            dump($Translate_module->fields);
+//            dump($Translate_module->row);
+            dd($module->fields);
+       
             
 			if(!isset($story->id)) 
             {
@@ -148,7 +206,7 @@ class BlocksController extends Controller
 //                $blocks = Section::where('story_id',$story->id)->first();
                 $blocks = Section::where('story_id',$story->id)->get();
                 $block_types = Block_type::all();
-                
+                $block_types_array = [];
 //                dd(  $blocks );
 //                dd( Block_type::all() );
                 
@@ -160,11 +218,16 @@ class BlocksController extends Controller
 //                dd( $blocks->translations );
 //                dd( $blocks );
 //			      dd(  $module->row  );
+        foreach($block_types as $block_type)
+        {
+            $block_types_array[$block_type->id] = $block_type->type;
+        }
                 
 				return view('la.blocks.update', [
 					'block_types' => $block_types,
+					'block_types_array' => $block_types_array,
 					'blocks'       => $blocks,
-//					'module'       => $module,
+					'module'       => $module,
 //					'view_col'     => $this->view_col,
 				])->with('story', $story);
     }
