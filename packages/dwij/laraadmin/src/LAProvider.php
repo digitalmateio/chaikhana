@@ -140,6 +140,16 @@ class LAProvider extends ServiceProvider
         |--------------------------------------------------------------------------
         */
         
+        
+        
+        // LAForm Input Maker
+        Blade::directive('la_showInput', function($expression) {
+			if(LAHelper::laravel_ver() >= 5.3) {
+				$expression = "(".$expression.")";
+			}
+            return "<?php echo LAFormMaker::la_showInput$expression; ?>";
+        });
+        
         // LAForm Input Maker
         Blade::directive('la_input', function($expression) {
 			if(LAHelper::laravel_ver() >= 5.3) {

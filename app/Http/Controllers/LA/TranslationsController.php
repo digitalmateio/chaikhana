@@ -23,7 +23,7 @@ class TranslationsController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'title';
-	public $listing_cols = ['id', 'block_id', 'story_id', 'theme_id', 'locale', 'media_type', 'audio_path', 'video_path', 'position', 'video_loop', 'name', 'title', 'source', 'permalink_staging', 'media_author', 'edition', 'caption', 'sub_caption', 'content', 'description', 'about', 'text', 'dataset_url', 'dynamic_url', 'dynamic_code', 'url', 'code', 'shortened_url', 'permalink'];
+	public $listing_cols = ['id', 'block_id', 'story_id', 'theme_id', 'locale', 'media_type', 'position', 'video_loop', 'name', 'title', 'source', 'permalink_staging', 'media_author', 'edition', 'caption', 'sub_caption', 'content', 'description', 'about', 'text', 'dataset_url', 'dynamic_url', 'dynamic_code', 'url', 'code', 'shortened_url', 'permalink'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns

@@ -1,17 +1,5 @@
-
-
-@foreach($transFiekdArray as $filed)
-
-  @la_input($Translate_module, 'section_id')
-
+@foreach($translate_fields as $filed)
+ <div class="form-group">
+    @la_showInput($Translate_module, $filed)
+ </div>
 @endforeach
-
-{{-- 
-@foreach($transFiekdArray as $filed)
-
-   @la_input($block_module, $filed)
-  
-
-@endforeach
---}}
-

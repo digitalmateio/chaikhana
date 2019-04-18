@@ -35,15 +35,15 @@ class Sections_types extends Model
     public static function ShowBlocks($translations,$block,$fields)
     {
         
-        $module = Module::get('Blocks');
-        $moduleTranslate = Module::get('Translations');
+//        $module = Module::get('Blocks');
+//        $moduleTranslate = Module::get('Translations');
         
-        $LAFormMaker = new LAFormMaker();
-        
-        return $LAFormMaker->showInput($moduleTranslate,'text');
-        return $LAFormMaker->showInput($module,'title_en');
-        
-        dd($LAFormMaker->showInput($module,'title_en'));
+//        $LAFormMaker = new LAFormMaker();
+//        
+//        return $LAFormMaker->showInput($moduleTranslate,'text');
+//        return $LAFormMaker->showInput($module,'title_en');
+//        
+//        dd($LAFormMaker->showInput($module,'title_en'));
         
         
         switch( $block->asset_type_id ){

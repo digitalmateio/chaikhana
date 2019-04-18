@@ -116,6 +116,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	Route::get(config('laraadmin.adminRoute') . '/block_dt_ajax', 'LA\BlocksController@dtajax');
 	Route::post(config('laraadmin.adminRoute') . '/block/addblock', 'LA\BlocksController@addblock')->name('addblock');
 	Route::get(config('laraadmin.adminRoute') . '/block/forms', 'LA\BlocksController@forms')->name('getblockforms');
+	Route::get(config('laraadmin.adminRoute') . '/block/createBlock/{storyid}/{blockid}', 'LA\BlocksController@createBlock')->name('createblock');
+	Route::get(config('laraadmin.adminRoute') . '/block/createBlock', 'LA\BlocksController@createBlock')->name('createbyid');
 
 	/* ================== Block_types ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/block_types', 'LA\Block_typesController');

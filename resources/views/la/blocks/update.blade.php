@@ -1,7 +1,7 @@
 @extends("la.layouts.app")
 
 @section("contentheader_title")
-	<a href="{{ url(config('laraadmin.adminRoute') . '/blocks') }}">Block</a> :
+<a href="{{ url(config('laraadmin.adminRoute') . '/blocks') }}">Block</a> :
 @endsection
 {{-- @section("contentheader_description", $block->$view_col) --}}
 @section("section", "Blocks")
@@ -68,46 +68,37 @@
     }
 </style>
 
-
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-success " data-toggle="modal" data-target="#myModal">
-          Add Section
-        </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-              </div>
-
-              {!! Form::open(['route' => 'admin.addblock']) !!}
-
-              <div class="modal-body">
-               			
-                {{ Form::label('block_types') }}
-                {{ Form::select('block_types', $block_types_array, null, array('class'=>'form-control block_types_fields', 'placeholder'=>'Please select ...')) }}
-   
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				{!! Form::submit( 'Submit', ['class'=>'btn btn-success']) !!}
-              </div>
-              {!! Form::close() !!}
-            </div>
-          </div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-group">
+            {{ Form::label('create block') }}
+            {{ Form::select('block_types', $block_types_array, null, array('class'=>'form-control block_types_fields', 'placeholder'=>'Please select ...')) }}
+        </div>
+        <div class="form-group">
+            {{-- Form::label('Language') --}}
+            {{-- Form::select('Language', $sitelangs, 'en', array('class'=>'form-control block_types_fields', 'placeholder'=>'Please select ...')) --}}
         </div>
 
-<div class="box">
-    <div class="box-header">
-
     </div>
-    <div class="box-body">
-        <div class="row">
-            <div class="col-md-12">
-<!--            <div class="col-md-8 col-md-offset-2">-->
+</div>
+
+
+<div class="dd">
+    <ol class="dd-list">
+        <li class="dd-item" data-id="1">
+            <div class="dd-handle">Item 1</div>
+        </li>
+        <li class="dd-item" data-id="2">
+            <div class="dd-handle">Item 2</div>
+        </li>
+        <li class="dd-item" data-id="3">
+            <div class="dd-handle">Item 3</div>
+           
+        </li>
+    </ol>
+</div>
+            
+                <!--            <div class="col-md-8 col-md-offset-2">-->
 
                 {{-- dd($block_types) --}}
 
@@ -116,26 +107,26 @@
                 @php 
 
                 $translations = $block->translations ;
-          
-        /*
+
+                /*
                 switch($block->asset_type_id){
-                    case 9: 
-                  
-                     foreach($block_types as $blocktype){
-                     if( $blocktype->id == $block->asset_type_id  ){
-                                                              
-                            $fields = json_decode($blocktype->fields) ;
-                     dd($blocktype );
-                 }}
-                    
-                      dd($blocktype->fields);
-                  
-                    default:
-                        continue;
+                case 9: 
+
+                foreach($block_types as $blocktype){
+                if( $blocktype->id == $block->asset_type_id  ){
+
+                $fields = json_decode($blocktype->fields) ;
+                dd($blocktype );
+                }}
+
+                dd($blocktype->fields);
+
+                default:
+                continue;
                 break;
                 }
-        */
-   
+                */
+
                 @endphp
 
                 <h3 class="bg-info" style="padding:10px">Section title : {{ $block->title_en }}
@@ -143,19 +134,20 @@
                 </h3>
 
                 @foreach($block_types as $blocktype)
-                     @if( $blocktype->id == $block->asset_type_id  )
-                            <p>   {{ $blocktype->type }}   </p>
-                        @php                 
-                            $fields = json_decode($blocktype->fields) 
-                        @endphp
-                    @endif
+                @if( $blocktype->id == $block->asset_type_id  )
+                <p>   {{ $blocktype->type }}   </p>
+                @php                 
+                $fields = json_decode($blocktype->fields) 
+                @endphp
+                @endif
                 @endforeach
-<!--აქ ტრანსლეითებიც უნდა გავიტანო ცალკე ფელპერში რო იმიჯებიში არ გამოიტანოს ყველაზე სათითაონ ენის კოდი და არ დუბლირდეს-->
-              
+                <!--აქ ტრანსლეითებიც უნდა გავიტანო ცალკე ფელპერში რო იმიჯებიში არ გამოიტანოს ყველაზე სათითაონ ენის კოდი და არ დუბლირდეს-->
+                
+
                 {!! \App\Sections_types::ShowBlocks($translations,$block,$fields) !!}
-              
+          
                 @endforeach
-           
+
                 <!--
 {!! Form::model($story, ['route' => [config('laraadmin.adminRoute') . '.stories.update', $story->id ], 'method'=>'PUT', 'id' => 'story-edit-form']) !!}
 {{--  @la_form($module) --}}
@@ -182,7 +174,15 @@
 @endsection
 
 @push('scripts')
+<script src="http://chaikhana.io/la-assets/plugins/nestable/jquery.nestable.js"></script>
+
 <script>
+
+    $('.dd').nestable({ 
+      maxDepth :0,
+         group : 0
+    });
+//    $('.dd').nestable('serialize');
     $(function () {
         $("#story-edit-form").validate({
 
@@ -190,27 +190,21 @@
     });
 
     $(document).ready(function($) {
-        
+
+
         $('.block_types_fields').change(function(event) {
-            
-            console.log(event);
-            console.log(event.target.value);
-            
-                $.ajax({
-                    method: "GET",
-                    url: "{{ route('admin.getblockforms') }}",
-                    data: { blocktype: event.target.value },
-                })
-                .done(function( msg ) {
-                alert( "Data Saved: " + msg );
-                    
-                });
+
+//            console.log(event.target.value);
+            var storyid = '{{ $story->id }}';
+            var url = '{{ route('admin.createbyid') }}';
+            window.location.href = url+'/'+storyid+'/'+event.target.value;
+          
         });
 
-        
-        
-      
-       
+
+
+
+
 
         $('.tabs li a').click(function(event) {
             event.preventDefault();
