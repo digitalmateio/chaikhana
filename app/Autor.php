@@ -8,7 +8,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use App\Upload;
 class Autor extends Model
 {
     use SoftDeletes;
@@ -23,8 +23,6 @@ class Autor extends Model
 
 	protected $dates = ['deleted_at'];
 
-
-	
 
     public function getImageAttribute($value)
     {

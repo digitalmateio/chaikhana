@@ -129,27 +129,25 @@ class BlocksController extends Controller
 
     public function addblock(Request $request)
     {
-        
+
         $Block = Block::create([
             'story_id' => $request->story_id,
             'asset_type_id' => $request->block_type
         ]);
-        dump($Block);
-      
+    
         $block_type = Block_type::find((int)$request->block_type);
-//          dd(json_decode( $block_type->translate_fields ));
+      
         $translate_fields  = json_decode( $block_type->translate_fields );
         $fields = [];
         foreach($translate_fields as $trans_field)
         {
-           $fields[$trans_field] = $request->{$trans_field};
+            $fields[$trans_field] = $request->{$trans_field};
         }
-        
+
         $fields['block_id'] = $Block->id;
         $trans = Translation::create($fields);
-        dump($trans);
-        dd( $request->all() );
-        
+        return back();
+
     }
     /**
 	 * Store a newly created block in database.
@@ -214,11 +212,8 @@ class BlocksController extends Controller
     public function showStoryblocks($id)
     {
 
-
-        $story = Story::find($id);
-
-        $block_type = Block_type::find( 9 );
-        $translate_fields = json_decode( $block_type->translate_fields );
+        $story = Story::findOrFail($id);
+     
         $language = \App\Language::all();
         $sitelangs = [];
 
@@ -226,7 +221,6 @@ class BlocksController extends Controller
         {
             $sitelangs[$langs->locale] = $langs->name;
         }
-
 
         $block = Section::where('story_id',$story->id)->first();
         $module = Module::get('Blocks');
@@ -236,21 +230,11 @@ class BlocksController extends Controller
 
         $Translate_module = Module::get('Translations');
 
-        //        return view('la.blocks.formsdisplay',[
-        //            'block_type' => $block_type,
-        //            'block_module' => $module,
-        //            'Translate_module' => $Translate_module,
-        //            'translate_fields' => $translate_fields,
-        //            
-        //        ]);
-
-
         if(!isset($story->id)) 
         {
             return redirect()->back();
         }
 
-        //                $blocks = Section::where('story_id',$story->id)->first();
         $blocks = Section::where('story_id',$story->id)->get();
         $block_types = Block_type::all();
         $block_types_array = [];
@@ -262,61 +246,94 @@ class BlocksController extends Controller
 
 
         return view('la.blocks.update', [
-            'block_types' => $block_types,
+            'block_types'       => $block_types,
             'block_types_array' => $block_types_array,
-            'blocks'       => $blocks,
-            'module'       => $module,
-            'block_module' => $module,
-            'sitelangs'    => $sitelangs,
-            'Translate_module' => $Translate_module,
-            'translate_fields' => $translate_fields,
+            'blocks'            => $blocks,
+            'module'            => $module,
+            'block_module'      => $module,
+            'sitelangs'         => $sitelangs,
+            'Translate_module'  => $Translate_module,
             //					'view_col'     => $this->view_col,
         ])->with('story', $story);
     }
 
-    public function editing($id)
+    public function editing($story_id = null,$block_id = null)
     {
 
-        $block = Section::find($id);
+
+        $story = Story::find($story_id);
+        $block = Section::find($block_id);
         $block_types = Block_type::all();
+        $block_type = Block_type::find( $block->asset_type_id );
+        $translations = $block->translations;
 
-        $module = Module::get('Blocks');
-        //        $module = Module::get('Translations');
-        $module->row = $block;
+        $block_module = Module::get('Blocks');
+        $Translate_module = Module::get('Translations');
+        $translate_fields = [];
+        $language = \App\Language::all();
+        $sitelangs = [];
 
-        switch($block->asset_type_id){
-            case 3 : return view('la.blocks.sections.text', [
-                'module' => $module,
-            ])->with('block', $block);
-                break;
+        foreach($language as $langs)
+        {
+            $sitelangs[$langs->locale] = $langs->name;
         }
 
-        return;
+        $translate_fields  = json_decode( $block_type->translate_fields );
 
-        if(Module::hasAccess("Blocks", "edit")) {			
-            $block = Block::find($id);
-            if(isset($block->id)) {	
-                $module = Module::get('Blocks');
-
-                $module->row = $block;
-
-                return view('la.blocks.edit', [
-                    'module' => $module,
-                    'view_col' => $this->view_col,
-                ])->with('block', $block);
-            } else {
-                return view('errors.404', [
-                    'record_id' => $id,
-                    'record_name' => ucfirst("block"),
-                ]);
-            }
-        } else {
-            return redirect(config('laraadmin.adminRoute')."/");
+        foreach($block_types as $blocktype)
+        {
+            $block_types_array[$blocktype->id] = $blocktype->type;
         }
+       
+        return view('la.blocks.editing', [
+            'sitelangs'         => $sitelangs,
+            'block_type'        => $block_type,
+            'block_types'       => $block_types,
+            'block_types_array' => $block_types_array,
+            'block_module'      => $block_module,
+            'Translate_module'  => $Translate_module,
+            'translate_fields'  => $translate_fields,
+            'translations'      => $translations,
+            'story'             => $story,
+        ])->with('block', $block);
+
     }
 
+    
+    public function editblock(Request $request)
+    {
+      
+        $story = Story::find($request->story_id);
+        $block = Section::find($request->block_id);
+        $block_type = Block_type::find( $block->asset_type_id );
+        $translate_fields  = json_decode( $block_type->translate_fields );
 
+        $fields = [];
+        foreach($translate_fields as $trans_field)
+        {
+            $fields[$trans_field] = $request->{$trans_field};
+        }
+        
+        $Block = Translation::where('block_id',$request->block_id)
+          ->where('story_id', $request->story_id)
+          ->where('locale', $request->Language)
+          ->update($fields);
+        return back();
 
+    }
+
+    
+    
+    public function blocksort(Request $request)
+    {
+        
+        $story = Story::find($request->story_id);
+        $story->block_sort_oder = json_encode($request->sort);
+        $story->save();
+        return json_encode($request->all());
+        
+    }
+    
     /**
 	 * Show the form for editing the specified block.
 	 *

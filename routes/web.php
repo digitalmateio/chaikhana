@@ -56,11 +56,15 @@ Route::group(array('prefix' => $locale), function()
 
       Route::get('/tags', 'TagsController@index');
       Route::get('/tag/{id}', 'TagsController@tag');
+    
+      Route::get('/story/{id}', 'StoryController@story')->name('story');
 });
 
 
 Route::get(config('laraadmin.adminRoute') . '/blocks/{id}', '\App\Http\Controllers\LA\BlocksController@showStoryblocks')->name('blockShow');
-Route::get(config('laraadmin.adminRoute') . '/block/edit/{id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockEditing');
+
+Route::get(config('laraadmin.adminRoute') . '/block/edit/{story_id}/{block_id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockEditing');
+
 Route::post(config('laraadmin.adminRoute') . '/block/save/{id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockSave');
 
 //Route::post('/language','LanguageController@change')->name('changeLanguage');

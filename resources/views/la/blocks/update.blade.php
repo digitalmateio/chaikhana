@@ -1,7 +1,7 @@
 @extends("la.layouts.app")
 
 @section("contentheader_title")
-<a href="{{ url(config('laraadmin.adminRoute') . '/blocks') }}">Block</a> :
+<a href="{{ url(config('laraadmin.adminRoute') . '/stories') }}">Block</a> :
 @endsection
 {{-- @section("contentheader_description", $block->$view_col) --}}
 @section("section", "Blocks")
@@ -66,12 +66,34 @@
         padding: 20px;
         font-size: 16px;
     }
+    #sections-list {
+        padding-left: 0px;
+    }
+    #sections-list li {
+        cursor:pointer;
+        list-style:none;
+    }
 </style>
+
+<!--
+<ul id="image-list1" class="sortable-list">
+<li id="a">A</li>
+<li id="b">B</li>
+<li id="c">C</li>
+</ul>
+
+<ul id="image-list2" class="sortable-list">
+<li id="1">1</li>
+<li id="2">2</li>
+<li id="3">3</li>
+</ul>
+-->
 
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="form-group">
             {{ Form::label('create block') }}
+            
             {{ Form::select('block_types', $block_types_array, null, array('class'=>'form-control block_types_fields', 'placeholder'=>'Please select ...')) }}
         </div>
         <div class="form-group">
@@ -83,72 +105,60 @@
 </div>
 
 
-<div class="dd">
-    <ol class="dd-list">
-        <li class="dd-item" data-id="1">
-            <div class="dd-handle">Item 1</div>
-        </li>
-        <li class="dd-item" data-id="2">
-            <div class="dd-handle">Item 2</div>
-        </li>
-        <li class="dd-item" data-id="3">
-            <div class="dd-handle">Item 3</div>
-           
-        </li>
-    </ol>
-</div>
-            
-                <!--            <div class="col-md-8 col-md-offset-2">-->
+<!--            <div class="col-md-8 col-md-offset-2">-->
 
-                {{-- dd($block_types) --}}
+{{-- dd($block_types) --}}
+<ul id="sections-list" class="sortable-list">
+    @php 
+    $i = 0;  
+   
+    if(!empty($story->block_sort_oder))
+    {
+        $order = json_decode($story->block_sort_oder);
+        $blocksSorted = $blocks->sortBy(function($model) use ($order){
+            return array_search($model->getKey(), $order);
+        });
+        
+    }else{
+    
+      $blocksSorted = $blocks;
+    
+    }
+    
+    @endphp 
+    @foreach($blocksSorted as $block)
+    <li id="{{ $block->id }}" data-sort="{{ $i }}">
+        @php $i++;
+        
+        $translations = $block->translations ;
+        @endphp
 
-                @foreach($blocks as $block)
-
-                @php 
-
-                $translations = $block->translations ;
-
-                /*
-                switch($block->asset_type_id){
-                case 9: 
-
-                foreach($block_types as $blocktype){
-                if( $blocktype->id == $block->asset_type_id  ){
-
-                $fields = json_decode($blocktype->fields) ;
-                dd($blocktype );
-                }}
-
-                dd($blocktype->fields);
-
-                default:
-                continue;
-                break;
-                }
-                */
-
-                @endphp
-
-                <h3 class="bg-info" style="padding:10px">Section title : {{ $block->title_en }}
-                    <a href="{{ route('blockEditing',$block->id) }}" class="btn btn-danger text-right"  style="float: right">Edit</a>
-                </h3>
-
-                @foreach($block_types as $blocktype)
+        <h3 class="bg-info" style="padding:10px">
+            <i class="fa fa-arrows-v"></i>
+            Block title : {{ $block->title_en }}
+            <span style="display:inline-block;float:right;">
+            @foreach($block_types as $blocktype)
                 @if( $blocktype->id == $block->asset_type_id  )
-                <p>   {{ $blocktype->type }}   </p>
-                @php                 
-                $fields = json_decode($blocktype->fields) 
-                @endphp
+                  Block type : {{ $blocktype->type }} 
+                    @php                 
+                        $fields = json_decode($blocktype->fields) 
+                    @endphp
                 @endif
-                @endforeach
-                <!--აქ ტრანსლეითებიც უნდა გავიტანო ცალკე ფელპერში რო იმიჯებიში არ გამოიტანოს ყველაზე სათითაონ ენის კოდი და არ დუბლირდეს-->
-                
-
-                {!! \App\Sections_types::ShowBlocks($translations,$block,$fields) !!}
+            @endforeach
+              <a href="{{ route('blockEditing',[$story->id,$block->id]) }}" class="btn btn-danger text-right"  style="float: right">Edit</a>
+           </span>
           
-                @endforeach
+        </h3>
 
-                <!--
+      
+        <!--აქ ტრანსლეითებიც უნდა გავიტანო ცალკე ფელპერში რო იმიჯებიში არ გამოიტანოს ყველაზე სათითაონ ენის კოდი და არ დუბლირდეს-->
+
+
+        {!! \App\Sections_types::ShowBlocks($translations,$block,$fields) !!}
+    </li>
+    @endforeach
+</ul>
+<!--
 {!! Form::model($story, ['route' => [config('laraadmin.adminRoute') . '.stories.update', $story->id ], 'method'=>'PUT', 'id' => 'story-edit-form']) !!}
 {{--  @la_form($module) --}}
 
@@ -166,23 +176,56 @@
 </div>
 {!! Form::close() !!}
 -->
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </div>
 
 @endsection
 
 @push('scripts')
-<script src="http://chaikhana.io/la-assets/plugins/nestable/jquery.nestable.js"></script>
+<!--<script src="http://chaikhana.io/la-assets/plugins/nestable/jquery.nestable.js"></script>-->
+<!-- <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>-->
 
+<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
 <script>
+    $('.sortable-list').sortable({
+        connectWith: '.sortable-list',
+        update: function(event, ui) {
+        var changedList = this.id;
+        var order = $(this).sortable('toArray');
+        var id = ui.item.attr("id");
+        var sortid = ui.item.attr("data-sort");
 
-    $('.dd').nestable({ 
-      maxDepth :0,
-         group : 0
+        $.ajaxSetup({
+            url: "{{ route('admin.blocksort') }}",
+            global: false,
+            type: "POST",
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        });
+
+        $.ajax({
+            data : {
+                sort : order, 
+                _token: '{{ csrf_token() }}',
+                story_id : {{ $story->id }}
+        },
+            success :  function(data){
+                console.log(data);
+            },
+            error :  function(data){},
+            beforeSend :  function(data){},
+            complete :  function(data){
+            }
+        });
+
+        }
     });
-//    $('.dd').nestable('serialize');
+
+
+
     $(function () {
         $("#story-edit-form").validate({
 
@@ -194,11 +237,11 @@
 
         $('.block_types_fields').change(function(event) {
 
-//            console.log(event.target.value);
+            //            console.log(event.target.value);
             var storyid = '{{ $story->id }}';
             var url = '{{ route('admin.createbyid') }}';
             window.location.href = url+'/'+storyid+'/'+event.target.value;
-          
+
         });
 
 

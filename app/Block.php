@@ -27,11 +27,6 @@ class Block extends Model
     {
         return $this->hasMany('App\Translation','block_id','id');
     }
-    
-//    public function section_translation()
-//    {
-//        return $this->hasMany('App\Section_translation','section_id','id');
-//    }
-    
+
     
 }

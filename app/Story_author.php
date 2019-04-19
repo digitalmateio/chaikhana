@@ -9,11 +9,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Section_translation extends Model
+class Story_author extends Model
 {
     use SoftDeletes;
 	
-	protected $table = 'section_translations';
+	protected $table = 'story_authors';
 	
 	protected $hidden = [
         
