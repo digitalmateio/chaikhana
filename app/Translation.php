@@ -33,4 +33,10 @@ class Translation extends Model
     {
         return optional(Upload::find($value))->url;
     }
+    
+    function getAudioAttribute($value)
+    {
+//         return optional(Upload::find($value))->url;
+        return Upload::find($value);
+    }
 }

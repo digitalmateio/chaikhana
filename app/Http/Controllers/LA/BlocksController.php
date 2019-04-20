@@ -70,13 +70,14 @@ class BlocksController extends Controller
     public function create()
     {}
 
-    public function createBlock($storyid=null,$blockid=null)
+    public function createBlock($storyid=null,$block_type_id=null)
     {  
 
 
         $story = Story::find($storyid);
         $block_types = Block_type::all();
-        $block_type = Block_type::find($blockid);
+        $block_type = Block_type::find($block_type_id);
+       
 
         $block_module = Module::get('Blocks');
         $Translate_module = Module::get('Translations');
@@ -109,24 +110,6 @@ class BlocksController extends Controller
         ]);
     }	
 
-
-    public function forms(Request $request)
-    {
-        $block_type = Block_type::find( $request->blocktype );
-        $block_module = Module::get('Blocks');
-        $Translate_module = Module::get('Translations');
-        $translate_fields = json_decode( $block_type->translate_fields );
-
-        return view('la.blocks.formsdisplay',[
-            'block_type' => $block_type,
-            'block_module' => $block_module,
-            'Translate_module' => $Translate_module,
-            'translate_fields' => $translate_fields,
-        ]);
-    }
-
-
-
     public function addblock(Request $request)
     {
 
@@ -147,7 +130,34 @@ class BlocksController extends Controller
         $fields['block_id'] = $Block->id;
         $trans = Translation::create($fields);
         return back();
+    } 
+    
+    
+    public function AddblockAudio(Request $request)
+    {
 
+        $Block = Block::create([
+            'story_id' => $request->story_id,
+            'asset_type_id' => $request->block_type,
+            'audio' => $request->audio
+        ]);
+        
+//        \Log::info($message);
+        
+        return redirect()->route('blockEditing', [$request->story_id,$Block->id]);
+//    
+//        $block_type = Block_type::find((int)$request->block_type);
+//      
+//        $translate_fields  = json_decode( $block_type->translate_fields );
+//        $fields = [];
+//        foreach($translate_fields as $trans_field)
+//        {
+//            $fields[$trans_field] = $request->{$trans_field};
+//        }
+//
+//        $fields['block_id'] = $Block->id;
+//        $trans = Translation::create($fields);
+//        return back();
     }
     /**
 	 * Store a newly created block in database.
@@ -257,6 +267,7 @@ class BlocksController extends Controller
         ])->with('story', $story);
     }
 
+   
     public function editing($story_id = null,$block_id = null)
     {
 
@@ -298,7 +309,17 @@ class BlocksController extends Controller
         ])->with('block', $block);
 
     }
-
+    
+    public function editblockAudio(Request $request)
+    {
+        $story = Story::find($request->story_id);
+        $block = Section::find($request->block_id);
+        $block->audio = $request->audio;
+        $block->save();
+        
+        return back();
+    }
+    
     
     public function editblock(Request $request)
     {
@@ -456,4 +477,25 @@ class BlocksController extends Controller
         $out->setData($data);
         return $out;
     }
+    
+    
+    /*
+    
+    public function forms(Request $request)
+    {
+        $block_type = Block_type::find( $request->blocktype );
+        $block_module = Module::get('Blocks');
+        $Translate_module = Module::get('Translations');
+        $translate_fields = json_decode( $block_type->translate_fields );
+
+        return view('la.blocks.formsdisplay',[
+            'block_type' => $block_type,
+            'block_module' => $block_module,
+            'Translate_module' => $Translate_module,
+            'translate_fields' => $translate_fields,
+        ]);
+    }
+
+
+    */
 }

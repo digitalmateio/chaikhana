@@ -1,7 +1,7 @@
 @extends("la.layouts.app")
 
 @section("contentheader_title")
-<a href="{{ url(config('laraadmin.adminRoute') . '/blocks') }}">Block</a> :
+<a href="{{ url(config('laraadmin.adminRoute') . '/blocks/'.$story->id) }}">Back to story blocks</a> :
 @endsection
 {{-- @section("contentheader_description", $block->$view_col) --}}
 @section("section", "Blocks")
@@ -110,6 +110,35 @@
         </div>
     </div>
 </div>
+
+
+@if($block_type->id == 6)                         
+     <div class="box">
+        <div class="box-header">
+        Upload Slider block audio file
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">   
+                    {!! Form::open(['route' => 'admin.AddblockAudio']) !!}
+                    <div class="form-group">
+                        {{ Form::hidden('block_type', 6 ) }}
+                        {{-- Form::hidden('block_id', $block->id ) --}}
+
+                        {{ csrf_field() }}
+                        {{ Form::hidden('story_id', $story->id) }}
+
+                        @la_showInput($block_module, 'audio',0,null,null,['class' => 'form-control'])    
+
+                    <br>
+                    {!! Form::submit( 'Add audio', ['class'=>'btn btn-success']) !!}
+                    {!! Form::close() !!}
+              </div>
+           </div>
+        </div>
+    </div>
+  </div>
+@endif
 
 <div class="box">
     <div class="box-header">

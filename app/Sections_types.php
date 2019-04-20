@@ -109,7 +109,22 @@ class Sections_types extends Model
 
             foreach($fields as $field)
             {
-                $content .=  "<td>".$translate->{$field}."</td>";                 
+                if($field == 'audio')
+                {  
+                    $audio = $translate->{$field};
+                    if(!is_null( $audio ))
+                    {
+                        $content .=  "<td>";
+                        $content .= '<audio controls>
+                          <source src="'.$audio->url.'" type="audio/'.$audio->extension.'">
+                        </audio>';
+                        $content .= "</td>";  
+                    }
+                   
+                }else{
+                    $content .=  "<td>".$translate->{$field}."</td>"; 
+                }
+                                
             }
 
 

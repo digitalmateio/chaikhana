@@ -69,51 +69,96 @@
     }
 </style>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
+@if($block->asset_type_id == 6)                         
+     <div class="box">
+        <div class="box-header">
+        Upload Slider block audio file
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">   
+                    {!! Form::open(['route' => 'admin.editblockAudio']) !!}
+                    <div class="form-group">
+                        {{ Form::hidden('story_id', $story->id ) }}
+                        {{ Form::hidden('block_id', $block->id ) }}
 
-            {!! Form::open(['route' => 'admin.addblock']) !!}
+                        {{ csrf_field() }}
+                        {{ Form::hidden('story_id', $story->id) }}
 
-            <div class="modal-body">
+                        @la_showInput($block_module, 'audio',optional($block)->audio,null,null,['class' => 'form-control'])    
 
-                <div class="form-group">
-
-                    {{ Form::label('block_types') }}
-
-                    {{ Form::select('block_types', $block_types_array, null, array('class'=>'form-control block_types_fields', 'placeholder'=>'Please select ...')) }}
-                </div>
-                <div class="form-group">
-                    {{ Form::label('Language') }}
-                    {{ Form::select('Language', $sitelangs, 'en', array('class'=>'form-control block_types_fields', 'placeholder'=>'Please select ...')) }}
-                </div>
-
-                <div class="input-container">
-                    {{--  @foreach($translate_fields as $key => $translate_field)
-                    @foreach($translate_field as $field)
-                    @la_showInput($Translate_module, $filed,null,null,null,['fieldtype' => $key])                    
-                    @endforeach
-                    @endforeach
-                    --}}
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                {!! Form::submit( 'Submit', ['class'=>'btn btn-success']) !!}
-            </div>
-            {!! Form::close() !!}
+                    <br>
+                    {!! Form::submit( 'Update', ['class'=>'btn btn-success']) !!}
+                    {!! Form::close() !!}
+              </div>
+           </div>
         </div>
     </div>
+  </div>
+@endif
+       <br>
+                    <br>
+                   
+@if(count($translations) == 0)
+
+    <div class="box">
+    <div class="box-header">
+
+    </div>
+    <div class="box-body">
+                     <div class="row">
+            <div class="col-md-12">
+                  
+                    {!! Form::open(['route' => 'admin.editblock']) !!}
+                    <div class="form-group">
+                        {{ Form::hidden('story_id', $story->id ) }}
+                        {{ Form::hidden('block_id', $block->id ) }}
+
+                        {{ csrf_field() }}
+                        {{ Form::hidden('story_id', $story->id) }}
+
+                        {{ Form::label('block_types') }}
+
+                        {{ Form::select('block_type', $block_types_array, $block_type->id, array('class'=>'form-control block_types_fields','disabled' => 'disabled', 'placeholder'=>'Please select ...')) }}
+                    </div>
+                    <div class="form-group">
+                        {{ Form::label('Language') }}
+                        {{ Form::select('Language', $sitelangs, 'en', array('class'=>'form-control', 'placeholder'=>'Please select ...')) }}
+                    </div>
+                    @foreach($translate_fields as $key => $field)
+
+                        @php
+                       
+                            $value = '';
+
+                            if($field == 'image' || $field == 'file' || $field == 'audio')
+                            { 
+                                $value = 0;                          
+                            }
+                        
+                        @endphp
+                        
+                        @la_showInput($Translate_module, $field,$value,null,null,['class' => 'form-control'])    
+                         
+                    @endforeach
+                    <br>
+                    <br>
+                    {!! Form::submit( 'Update', ['class'=>'btn btn-success']) !!}
+                    {!! Form::close() !!}
+                    <hr>
+                      </div>
+        </div>
+                 </div>
 </div>
-      
+               <br>
+            
+@endif
+                    
+                    
+                    
                 @foreach($translations as $translation)
-                    <div class="box">
+                  
+ <div class="box">
     <div class="box-header">
 
     </div>
@@ -139,18 +184,20 @@
                     </div>
                     @foreach($translate_fields as $key => $field)
 
-                    @php 
-                    if($field == 'image' || $field == 'images' || $field == 'file' || $field == 'files')
-                    { 
-                    $upload = $translation->{$field};
-                    $value = optional($upload)->id; 
+                        @php
+                        if($field == 'image' || $field == 'file' || $field == 'audio')
+                        { 
+                           
+                            $upload = $translation->{$field};
+                            $value = optional($upload)->id; 
+                                                     
+                        }else{
+                             $value = $translation->{$field};
+                        }
+                        @endphp
 
-                    }else{
-                    $value = $translation->{$field};
-                    }
-                    @endphp
-
-                    @la_showInput($Translate_module, $field,$value,null,null,['class' => 'form-control'])     
+                        @la_showInput($Translate_module, $field,$value,null,null,['class' => 'form-control'])    
+                         
                     @endforeach
                     <br>
                     <br>

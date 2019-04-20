@@ -574,7 +574,9 @@ class LAFormMaker
 	public static function la_showInput($module, $field_name, $default_val = null, $required2 = null, $class = 'form-control', $params = [])
 	{
       
-//		dump($params); return;
+
+		
+        
 			$row = null;
 			if(isset($module->row)) 
             {
