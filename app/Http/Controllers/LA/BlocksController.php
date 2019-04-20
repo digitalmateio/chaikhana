@@ -126,10 +126,12 @@ class BlocksController extends Controller
         {
             $fields[$trans_field] = $request->{$trans_field};
         }
-
+       
         $fields['block_id'] = $Block->id;
+        $fields['locale'] = $request->Language;
         $trans = Translation::create($fields);
-        return back();
+        
+        return redirect()->route('blockShow',$request->story_id);
     } 
     
     
@@ -330,20 +332,48 @@ class BlocksController extends Controller
         $translate_fields  = json_decode( $block_type->translate_fields );
 
         $fields = [];
+       
         foreach($translate_fields as $trans_field)
         {
             $fields[$trans_field] = $request->{$trans_field};
         }
         
-        $Block = Translation::where('block_id',$request->block_id)
+        $trans = Translation::where('block_id',$request->block_id)->first(); 
+        
+        if(count($trans) == 0)
+        {    
+             $fields['story_id'] = $request->story_id;
+             $fields['block_id'] = $request->block_id;
+             $fields['locale']   = $request->Language;
+            
+            Translation::create( $fields );
+            
+        }else{
+        $translat = Translation::where('block_id',$request->block_id)
           ->where('story_id', $request->story_id)
           ->where('locale', $request->Language)
           ->update($fields);
+        }
+      \Log::info(  json_encode($fields) ) ;
         return back();
 
     }
 
-    
+    public function deleteBlock(Request $request)
+    {
+            $request->story_id;
+            $request->block_id;
+        
+          Translation::where('block_id',$request->block_id)
+          ->where('story_id', $request->story_id)
+          ->where('locale', $request->Language)
+          ->delete();
+              
+          Block::where('id',$request->block_id)
+          ->where('story_id', $request->story_id)
+          ->delete();
+         return redirect()->route('blockShow',$request->story_id);
+    }
     
     public function blocksort(Request $request)
     {

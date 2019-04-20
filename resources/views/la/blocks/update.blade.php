@@ -145,7 +145,9 @@
                     @endphp
                 @endif
             @endforeach
-              <a href="{{ route('blockEditing',[$story->id,$block->id]) }}" class="btn btn-danger text-right"  style="float: right">Edit</a>
+             
+              <a href="{{ route('blockEditing',[$story->id,$block->id]) }}" class="btn btn-warning text-right"  >Edit</a>
+              <a href="{{ route('admin.deleteBlock',[$story->id,$block->id]) }}" onclick="return confirm('Are you sure t delete this block ?')" class="btn btn-danger text-right"  >Delete</a>
            </span>
           
         </h3>

@@ -127,6 +127,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
         
     Route::post(config('laraadmin.adminRoute') . '/block/editblockAudio', 'LA\BlocksController@editblockAudio')->name('editblockAudio');
     
+    Route::get(config('laraadmin.adminRoute') . '/block/deleteBlock/{story_id}/{block_id}', 'LA\BlocksController@deleteBlock')->name('deleteBlock');
+    
 
 	/* ================== Block_types ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/block_types', 'LA\Block_typesController');

@@ -165,7 +165,7 @@
     <div class="box-body">
                      <div class="row">
             <div class="col-md-12">
-                  
+                 
                     {!! Form::open(['route' => 'admin.editblock']) !!}
                     <div class="form-group">
                         {{ Form::hidden('story_id', $story->id ) }}
@@ -203,10 +203,13 @@
                     <br>
                     {!! Form::submit( 'Update', ['class'=>'btn btn-success']) !!}
                     {!! Form::close() !!}
-                    <hr>
-                      </div>
-        </div>
-                 </div>
+                    <br>
+                    <br>
+                    <a href="{{ route('admin.deleteBlock',[$story->id,$block->id]) }}" onclick="return confirm('Are you sure t delete this block ?')" class="btn btn-danger text-right"  >Delete</a>
+                     <hr>
+             </div>
+         </div>
+     </div>
 </div>
                <br>
                 @endforeach
