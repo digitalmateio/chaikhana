@@ -143,7 +143,7 @@
                     @endforeach
                     <br>
                     <br>
-                    {!! Form::submit( 'Update', ['class'=>'btn btn-success']) !!}
+                    {!! Form::submit( 'Add', ['class'=>'btn btn-success']) !!}
                     {!! Form::close() !!}
                     <hr>
                       </div>

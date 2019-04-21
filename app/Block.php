@@ -27,6 +27,12 @@ class Block extends Model
     {
         return $this->hasMany('App\Translation','block_id','id');
     }
+    
+    public function translation()
+    {
+//        return $this->hasMany('App\Translation','block_id','id');
+        return $this->belongsToMany('App\Translation','block_id','id');
+    }
 
     
 }

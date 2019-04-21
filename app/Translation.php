@@ -19,6 +19,31 @@ class Translation extends Model
 	protected $hidden = [
         
     ];
+    
+    protected $fillable = [
+        "block_id",
+        "story_id",
+        "audio",
+        "image",
+        "description",
+        "title",
+        "text",
+        "caption",
+        "caption_align",
+        "source",
+        "infobox_type",
+        "media_type",
+        "video",
+        "code",
+        "url",
+        "dataset_url",
+        "dynamic_url",
+        "dynamic_code",
+        "dataset_url",
+        "dynamic_url",
+        "dynamic_code",
+        "locale",
+    ];
 
 	protected $guarded = [];
 
@@ -38,5 +63,10 @@ class Translation extends Model
     {
 //         return optional(Upload::find($value))->url;
         return Upload::find($value);
+    }
+    
+    public function block()
+    {
+         return $this->belongsTo('App\Block','block_id');
     }
 }

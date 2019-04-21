@@ -112,55 +112,34 @@ class BlocksController extends Controller
 
     public function addblock(Request $request)
     {
-
         $Block = Block::create([
             'story_id' => $request->story_id,
             'asset_type_id' => $request->block_type
         ]);
-    
+
         $block_type = Block_type::find((int)$request->block_type);
       
         $translate_fields  = json_decode( $block_type->translate_fields );
         $fields = [];
+        
         foreach($translate_fields as $trans_field)
         {
             $fields[$trans_field] = $request->{$trans_field};
         }
        
         $fields['block_id'] = $Block->id;
+        $fields['story_id'] = $Block->story_id;
         $fields['locale'] = $request->Language;
+        
+//        \Log::info( json_encode($fields) ) ;
+
         $trans = Translation::create($fields);
         
+//        \Log::info( json_encode($trans) ) ;
         return redirect()->route('blockShow',$request->story_id);
     } 
     
-    
-    public function AddblockAudio(Request $request)
-    {
 
-        $Block = Block::create([
-            'story_id' => $request->story_id,
-            'asset_type_id' => $request->block_type,
-            'audio' => $request->audio
-        ]);
-        
-//        \Log::info($message);
-        
-        return redirect()->route('blockEditing', [$request->story_id,$Block->id]);
-//    
-//        $block_type = Block_type::find((int)$request->block_type);
-//      
-//        $translate_fields  = json_decode( $block_type->translate_fields );
-//        $fields = [];
-//        foreach($translate_fields as $trans_field)
-//        {
-//            $fields[$trans_field] = $request->{$trans_field};
-//        }
-//
-//        $fields['block_id'] = $Block->id;
-//        $trans = Translation::create($fields);
-//        return back();
-    }
     /**
 	 * Store a newly created block in database.
 	 *
@@ -312,6 +291,22 @@ class BlocksController extends Controller
 
     }
     
+        
+    public function AddblockAudio(Request $request)
+    {
+
+        $Block = Block::create([
+            'story_id' => $request->story_id,
+            'asset_type_id' => $request->block_type,
+            'audio' => $request->audio
+        ]);
+        
+        \Log::info(json_encode( $Block ) );
+        
+        return redirect()->route('blockEditing', [$request->story_id,$Block->id]);
+
+    }
+    
     public function editblockAudio(Request $request)
     {
         $story = Story::find($request->story_id);
@@ -332,31 +327,33 @@ class BlocksController extends Controller
         $translate_fields  = json_decode( $block_type->translate_fields );
 
         $fields = [];
-       
+        $fields['locale']   = $request->Language;
+        
         foreach($translate_fields as $trans_field)
         {
             $fields[$trans_field] = $request->{$trans_field};
         }
         
-        $trans = Translation::where('block_id',$request->block_id)->first(); 
+        $trans = Translation::where('block_id',$request->block_id)->where('locale',$request->Language)->first();
         
-        if(count($trans) == 0)
-        {    
              $fields['story_id'] = $request->story_id;
              $fields['block_id'] = $request->block_id;
              $fields['locale']   = $request->Language;
-            
-            Translation::create( $fields );
+        
+        if(count($trans) == 0)
+        {    
+                     
+             $transsave = Translation::create( $fields );
             
         }else{
-        $translat = Translation::where('block_id',$request->block_id)
-          ->where('story_id', $request->story_id)
-          ->where('locale', $request->Language)
-          ->update($fields);
+            
+            $translat = Translation::where('block_id',$request->block_id)
+              ->where('story_id', $request->story_id)
+              ->where('locale', $request->Language)
+              ->update($fields);
         }
-      \Log::info(  json_encode($fields) ) ;
-        return back();
-
+    
+        return redirect()->route('blockEditing', [$request->story_id,$request->block_id]);
     }
 
     public function deleteBlock(Request $request)

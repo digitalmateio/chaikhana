@@ -115,8 +115,9 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
     
 	Route::resource(config('laraadmin.adminRoute') . '/blocks', 'LA\BlocksController');
 	Route::get(config('laraadmin.adminRoute') . '/block_dt_ajax', 'LA\BlocksController@dtajax');
+    
 	Route::post(config('laraadmin.adminRoute') . '/block/addblock', 'LA\BlocksController@addblock')->name('addblock');
-//	Route::get(config('laraadmin.adminRoute') . '/block/forms', 'LA\BlocksController@forms')->name('getblockforms');
+    
 	Route::get(config('laraadmin.adminRoute') . '/block/createBlock/{storyid}/{blockid}', 'LA\BlocksController@createBlock')->name('createblock');
 	Route::get(config('laraadmin.adminRoute') . '/block/createBlock', 'LA\BlocksController@createBlock')->name('createbyid');
 	Route::post(config('laraadmin.adminRoute') . '/block/editblock', 'LA\BlocksController@editblock')->name('editblock');
@@ -208,4 +209,12 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	Route::resource(config('laraadmin.adminRoute') . '/sections', 'LA\SectionsController');
 	Route::post(config('laraadmin.adminRoute') . '/section_dt_ajax', 'LA\SectionsController@postdtajax');
 	Route::get(config('laraadmin.adminRoute') . '/section_dt_ajax', 'LA\SectionsController@dtajax');
+
+	/* ================== Events ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/events', 'LA\EventsController');
+	Route::get(config('laraadmin.adminRoute') . '/event_dt_ajax', 'LA\EventsController@dtajax');
+    
+    Route::get(config('laraadmin.adminRoute') . '/events/blocks/{event_id}', 'LA\EventsController@showEventBlocks')->name('showEventBlocks');
+    
+    Route::get(config('laraadmin.adminRoute') . 'events/block/createBlock/{event_id}/{blok_type}', 'LA\BlocksController@createBlock')->name('eventblockcreate');
 });

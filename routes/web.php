@@ -67,6 +67,11 @@ Route::get(config('laraadmin.adminRoute') . '/block/edit/{story_id}/{block_id}',
 
 Route::post(config('laraadmin.adminRoute') . '/block/save/{id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockSave');
 
+
+
+
+
+
 //Route::post('/language','LanguageController@change')->name('changeLanguage');
 
 
