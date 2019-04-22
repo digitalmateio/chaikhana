@@ -23,6 +23,7 @@ class Translation extends Model
     protected $fillable = [
         "block_id",
         "story_id",
+        "event_id",
         "audio",
         "image",
         "description",

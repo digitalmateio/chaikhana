@@ -98,9 +98,9 @@
     @php 
     $i = 0;  
    
-    if(!empty($story->block_sort_oder))
+    if(!empty($event->block_sort_oder))
     {
-        $order = json_decode($story->block_sort_oder);
+        $order = json_decode($event->block_sort_oder);
         $blocksSorted = $blocks->sortBy(function($model) use ($order){
             return array_search($model->getKey(), $order);
         });
@@ -132,8 +132,8 @@
                 @endif
             @endforeach
              
-              <a href="{{ route('blockEditing',[$story->id,$block->id]) }}" class="btn btn-warning text-right"  >Edit</a>
-              <a href="{{ route('admin.deleteBlock',[$story->id,$block->id]) }}" onclick="return confirm('Are you sure t delete this block ?')" class="btn btn-danger text-right"  >Delete</a>
+              <a href="{{ route('eventeditblock',[$event->id,$block->id]) }}" class="btn btn-warning text-right"  >Edit</a>
+              <a href="{{ route('admin.eventdeleteBlock',[$event->id,$block->id]) }}" onclick="return confirm('Are you sure t delete this block ?')" class="btn btn-danger text-right"  >Delete</a>
            </span>
           
         </h3>
@@ -169,7 +169,7 @@
         var sortid = ui.item.attr("data-sort");
 
         $.ajaxSetup({
-            url: "{{ route('admin.blocksort') }}",
+            url: "{{ route('admin.eventblocksort') }}",
             global: false,
             type: "POST",
             headers: {
@@ -181,7 +181,7 @@
             data : {
                 sort : order, 
                 _token: '{{ csrf_token() }}',
-                story_id : {{ $event->id }}
+                event_id : {{ $event->id }}
         },
             success :  function(data){
                 console.log(data);
@@ -196,13 +196,6 @@
     });
 
 
-
-    $(function () {
-        $("#story-edit-form").validate({
-
-        });
-    });
-
     $(document).ready(function($) {
 
 
@@ -210,7 +203,7 @@
 
             //            console.log(event.target.value);
             var eventid = '{{ $event->id }}';
-            var url = '{{ route('admin.eventblockcreate') }}';
+            var url = '{{ route('admin.eventblockcreatebyid') }}';
             window.location.href = url+'/'+eventid+'/'+event.target.value;
 
         });

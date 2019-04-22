@@ -116,10 +116,14 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	Route::resource(config('laraadmin.adminRoute') . '/blocks', 'LA\BlocksController');
 	Route::get(config('laraadmin.adminRoute') . '/block_dt_ajax', 'LA\BlocksController@dtajax');
     
-	Route::post(config('laraadmin.adminRoute') . '/block/addblock', 'LA\BlocksController@addblock')->name('addblock');
+
     
 	Route::get(config('laraadmin.adminRoute') . '/block/createBlock/{storyid}/{blockid}', 'LA\BlocksController@createBlock')->name('createblock');
+    
 	Route::get(config('laraadmin.adminRoute') . '/block/createBlock', 'LA\BlocksController@createBlock')->name('createbyid');
+    
+    Route::post(config('laraadmin.adminRoute') . '/block/addblock', 'LA\BlocksController@addblock')->name('addblock');
+    
 	Route::post(config('laraadmin.adminRoute') . '/block/editblock', 'LA\BlocksController@editblock')->name('editblock');
 	Route::post(config('laraadmin.adminRoute') . '/block/sort', 'LA\BlocksController@blocksort')->name('blocksort');
     
@@ -211,10 +215,27 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	Route::get(config('laraadmin.adminRoute') . '/section_dt_ajax', 'LA\SectionsController@dtajax');
 
 	/* ================== Events ================== */
+    
 	Route::resource(config('laraadmin.adminRoute') . '/events', 'LA\EventsController');
 	Route::get(config('laraadmin.adminRoute') . '/event_dt_ajax', 'LA\EventsController@dtajax');
     
-    Route::get(config('laraadmin.adminRoute') . '/events/blocks/{event_id}', 'LA\EventsController@showEventBlocks')->name('showEventBlocks');
+  
     
-    Route::get(config('laraadmin.adminRoute') . 'events/block/createBlock/{event_id}/{blok_type}', 'LA\BlocksController@createBlock')->name('eventblockcreate');
+    Route::get(config('laraadmin.adminRoute') . '/events/block/createBlock/{event_id}/{blok_type}', 'LA\EventsController@createBlock')->name('eventblockcreate');
+    
+    Route::get(config('laraadmin.adminRoute') . '/events/block/createBlock', 'LA\EventsController@createBlock')->name('eventblockcreatebyid');
+    
+    Route::post(config('laraadmin.adminRoute') . '/events/block/addblock', 'LA\EventsController@addblock')->name('eventaddblock');
+    
+        
+	Route::post(config('laraadmin.adminRoute') . '/event/block/editblock', 'LA\EventsController@editblock')->name('eventeditblock');
+    
+    Route::get(config('laraadmin.adminRoute') . '/event/block/deleteBlock/{event_id}/{block_id}', 'LA\EventsController@deleteBlock')->name('eventdeleteBlock');
+    
+      
+	Route::post(config('laraadmin.adminRoute') . '/event/block/AddblockAudio', 'LA\EventsController@AddblockAudio')->name('eventAddblockAudio');        
+        
+    Route::post(config('laraadmin.adminRoute') . '/event/block/editblockAudio', 'LA\EventsController@editblockAudio')->name('eventeditblockAudio');
+    
+    Route::post(config('laraadmin.adminRoute') . '/event/block/sort', 'LA\EventsController@blocksort')->name('eventblocksort');
 });

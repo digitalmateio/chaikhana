@@ -61,13 +61,17 @@ Route::group(array('prefix' => $locale), function()
 });
 
 
+//BLOCKS
 Route::get(config('laraadmin.adminRoute') . '/blocks/{id}', '\App\Http\Controllers\LA\BlocksController@showStoryblocks')->name('blockShow');
 
 Route::get(config('laraadmin.adminRoute') . '/block/edit/{story_id}/{block_id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockEditing');
 
 Route::post(config('laraadmin.adminRoute') . '/block/save/{id}', '\App\Http\Controllers\LA\BlocksController@editing')->name('blockSave');
 
+// EVENTS
+Route::get(config('laraadmin.adminRoute') . '/events/block/edit/{event_id}/{block_id}', '\App\Http\Controllers\LA\EventsController@editing')->name('eventeditblock');
 
+Route::get(config('laraadmin.adminRoute') . '/events/blocks/{event_id}', 'LA\EventsController@showEventBlocks')->name('showEventBlocks');
 
 
 

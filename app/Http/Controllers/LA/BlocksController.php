@@ -301,8 +301,6 @@ class BlocksController extends Controller
             'audio' => $request->audio
         ]);
         
-        \Log::info(json_encode( $Block ) );
-        
         return redirect()->route('blockEditing', [$request->story_id,$Block->id]);
 
     }
@@ -358,9 +356,7 @@ class BlocksController extends Controller
 
     public function deleteBlock(Request $request)
     {
-            $request->story_id;
-            $request->block_id;
-        
+                   
           Translation::where('block_id',$request->block_id)
           ->where('story_id', $request->story_id)
           ->where('locale', $request->Language)

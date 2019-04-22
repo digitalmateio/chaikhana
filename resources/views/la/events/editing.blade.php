@@ -1,26 +1,27 @@
 @extends("la.layouts.app")
 
 @section("contentheader_title")
-<a href="{{ url(config('laraadmin.adminRoute') . '/blocks/'.$story->id) }}">Back</a> :
+<a href="{{ url(config('laraadmin.adminRoute') . '/events/blocks/'.$event->id) }}">Back</a> :
  <h3>Block Items</h3>
 @endsection
-{{-- @section("contentheader_description", $block->$view_col) --}}
-@section("section", "Blocks")
-@section("section_url", url(config('laraadmin.adminRoute') . '/blocks'))
+{{-- @section("contentheader_description", $block->$view_col)
+@section("contentheader_description", $event->$view_col)  --}}
+@section("section", "Events")
+@section("section_url", url(config('laraadmin.adminRoute') . '/events'))
 @section("sub_section", "Edit")
-
-{{-- @section("htmlheader_title", "Blocks Edit : ".$block->$view_col) --}}
-
+{{--
+@section("htmlheader_title", "Events Edit : ".$event->$view_col)
+  --}}
 @section("main-content")
 
 @if (count($errors) > 0)
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
 @endif
 
 <style>
@@ -77,13 +78,13 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-md-12">   
-                    {!! Form::open(['route' => 'admin.editblockAudio']) !!}
+                    {!! Form::open(['route' => 'admin.eventeditblockAudio']) !!}
                     <div class="form-group">
-                        {{ Form::hidden('story_id', $story->id ) }}
+                        {{ Form::hidden('event_id', $event->id ) }}
                         {{ Form::hidden('block_id', $block->id ) }}
 
                         {{ csrf_field() }}
-                        {{ Form::hidden('story_id', $story->id) }}
+                        {{ Form::hidden('event_id', $event->id) }}
 
                         @la_showInput($block_module, 'audio',optional($block)->audio,null,null,['class' => 'form-control'])    
 
@@ -109,13 +110,13 @@
                      <div class="row">
             <div class="col-md-12">
                   
-                    {!! Form::open(['route' => 'admin.editblock']) !!}
+                    {!! Form::open(['route' => 'admin.eventeditblock']) !!}
                     <div class="form-group">
-                        {{ Form::hidden('story_id', $story->id ) }}
+                        {{ Form::hidden('event_id', $event->id ) }}
                         {{ Form::hidden('block_id', $block->id ) }}
 
                         {{ csrf_field() }}
-                        {{ Form::hidden('story_id', $story->id) }}
+                        {{ Form::hidden('event_id', $event->id) }}
 
                         {{ Form::label('block_types') }}
 
@@ -154,8 +155,6 @@
             
 @endif
                     
-                    
-                    
                 @foreach($translations as $translation)
                   
  <div class="box">
@@ -166,13 +165,13 @@
                      <div class="row">
             <div class="col-md-12">
                  
-                    {!! Form::open(['route' => 'admin.editblock']) !!}
+                    {!! Form::open(['route' => 'admin.eventeditblock']) !!}
                     <div class="form-group">
-                        {{ Form::hidden('story_id', $story->id ) }}
+                        {{ Form::hidden('event_id', $event->id ) }}
                         {{ Form::hidden('block_id', $block->id ) }}
 
                         {{ csrf_field() }}
-                        {{ Form::hidden('story_id', $story->id) }}
+                        {{ Form::hidden('event_id', $event->id) }}
 
                         {{ Form::label('block_types') }}
 
@@ -205,7 +204,7 @@
                     {!! Form::close() !!}
                     <br>
                     <br>
-                    <a href="{{ route('admin.deleteBlock',[$story->id,$block->id]) }}" onclick="return confirm('Are you sure t delete this block ?')" class="btn btn-danger text-right"  >Delete</a>
+                    <a href="{{ route('admin.eventdeleteBlock',[$event->id,$block->id]) }}" onclick="return confirm('Are you sure t delete this block ?')" class="btn btn-danger text-right"  >Delete</a>
                      <hr>
              </div>
          </div>
@@ -229,7 +228,7 @@
 
         //        $('.block_types_fields').change(function(event) {
         //
-        //            var storyid = '{{ $story->id }}';
+        //            var storyid = '{{ $event->id }}';
         //            var url = '{{ route('admin.createbyid') }}';
         //            window.location.href = url+'/'+storyid+'/'+event.target.value;
         //        });
