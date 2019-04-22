@@ -19,7 +19,24 @@ class WorkDeveloperController extends Controller
 {
     public function work()
     {
-        $this->AsssetIdies();
+
+//        // open an image file
+//        $img = Image::make(public_path('ss.png') );
+//
+//        // resize image instance
+////        $img->resize(520, null);
+//        $img->resize(500, null, function ($constraint) {
+//            $constraint->aspectRatio();
+//        });
+//
+//        // and insert a watermark for example
+//        $img->insert( public_path('watermark.png'),'center' );
+//        
+//        $img->save(public_path('some.jpg'));
+//
+//         dd( $img->basename );
+//         dd( $img->dirname );
+//        $this->AsssetIdies();
         dd('DONE');
 //        $filename = 'ss.png';
 //        $file_date_folder = public_path($filename);

@@ -238,4 +238,12 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
     Route::post(config('laraadmin.adminRoute') . '/event/block/editblockAudio', 'LA\EventsController@editblockAudio')->name('eventeditblockAudio');
     
     Route::post(config('laraadmin.adminRoute') . '/event/block/sort', 'LA\EventsController@blocksort')->name('eventblocksort');
+
+	/* ================== Photo_sizes ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/photo_sizes', 'LA\Photo_sizesController');
+	Route::get(config('laraadmin.adminRoute') . '/photo_size_dt_ajax', 'LA\Photo_sizesController@dtajax');
+
+	/* ================== Shippings ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/shippings', 'LA\ShippingsController');
+	Route::get(config('laraadmin.adminRoute') . '/shipping_dt_ajax', 'LA\ShippingsController@dtajax');
 });
