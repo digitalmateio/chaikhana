@@ -84,8 +84,8 @@ $( document ).ready(function() {
 
   var latitude =  $('[name=latitude]').val();
   var longitude = $('[name=longitude]').val();
-console.log(latitude);
-console.log(longitude);
+
+    
       var map = new google.maps.Map(document.getElementById('map_canvas'), {
           zoom: 8,
           // center: new google.maps.LatLng(latitude, longitude),

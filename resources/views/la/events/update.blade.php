@@ -119,7 +119,7 @@
         $translations = $block->translations ;
         @endphp
 
-        <h3 class="bg-info" style="padding:10px">
+        <h3 class="bg-success" style="padding:10px">
             <i class="fa fa-arrows-v"></i>
             Block title : {{ $block->title_en }}
             <span style="display:inline-block;float:right;">
@@ -131,7 +131,8 @@
                     @endphp
                 @endif
             @endforeach
-             
+            
+              <a href="{{ route('admin.createEventTranslation',[$event->id,$block->id]) }}" class="btn btn-info text-right"  >Add New Translation</a>
               <a href="{{ route('eventeditblock',[$event->id,$block->id]) }}" class="btn btn-warning text-right"  >Edit</a>
               <a href="{{ route('admin.eventdeleteBlock',[$event->id,$block->id]) }}" onclick="return confirm('Are you sure t delete this block ?')" class="btn btn-danger text-right"  >Delete</a>
            </span>

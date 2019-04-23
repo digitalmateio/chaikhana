@@ -69,6 +69,46 @@ class BlocksController extends Controller
 	 */
     public function create()
     {}
+    
+     public function createBlockTranslation($storyid=null,$block_id=null)
+    {  
+
+
+        $story = Story::find($storyid);
+        $block_types = Block_type::all();
+        $block = Block::find($block_id);
+        $block_type = Block_type::find($block->asset_type_id);
+       
+        $block_module = Module::get('Blocks');
+        $Translate_module = Module::get('Translations');
+        $translate_fields = [];
+        $language = \App\Language::all();
+        $sitelangs = [];
+
+        foreach($language as $langs)
+        {
+            $sitelangs[$langs->locale] = $langs->name;
+        }
+
+        $translate_fields  = json_decode( $block_type->translate_fields );
+
+        foreach($block_types as $blocktype)
+        {
+            $block_types_array[$blocktype->id] = $blocktype->type;
+        }
+
+        return view('la.blocks.createtranslation',[
+            'sitelangs'    => $sitelangs,
+            'block_type' => $block_type,
+            'block_types' => $block_types,
+            'block_types_array' => $block_types_array,
+            'block_module' => $block_module,
+            'Translate_module' => $Translate_module,
+            'translate_fields' => $translate_fields,
+            'story' => $story,
+            'block' => $block,
+        ]);
+    }	
 
     public function createBlock($storyid=null,$block_type_id=null)
     {  
@@ -78,7 +118,6 @@ class BlocksController extends Controller
         $block_types = Block_type::all();
         $block_type = Block_type::find($block_type_id);
        
-
         $block_module = Module::get('Blocks');
         $Translate_module = Module::get('Translations');
         $translate_fields = [];

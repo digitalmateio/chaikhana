@@ -23,7 +23,16 @@
         </ul>
     </div>
 @endif
+<style media="screen">
+#map-label {
+  margin-right: 16px;
+}
+  #map_canvas {
+      width: 540px;
+      height: 300px;
+  }
 
+</style>
 <div class="box box-success">
 	<!--<div class="box-header"></div>-->
 	<div class="box-body">
@@ -67,6 +76,7 @@
 					@la_input($module, 'latitude')
 					@la_input($module, 'longitude')
 					--}}
+					 <div id='map_canvas'></div>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -103,6 +113,78 @@ $(function () {
 		@endif
 	});
 	$("#freelancer_city-add-form").validate({
+		
+	});
+});
+
+</script>
+<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
+<script src="{{ asset('la-assets/plugins/datatables/datatables.min.js') }}"></script>
+<script>
+          var map = new google.maps.Map(document.getElementById('map_canvas'), {
+          zoom: 8,
+          center: new google.maps.LatLng(35.137879, -82.836914),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      var myMarker = new google.maps.Marker({
+          position: new google.maps.LatLng(41.926, 44.028),
+          // position: new google.maps.LatLng(47.651968, 9.478485),
+          draggable: true
+      });
+
+ google.maps.event.addListener(map, 'click', function(e) {
+     myMarker.setPosition(e.latLng);
+//            document.getElementById('latitude').value =  e.latLng.lat().toFixed(8);
+//          document.getElementById('longitude').value =  e.latLng.lng().toFixed(8);
+         $('[name=latitude]').val( e.latLng.lat().toFixed(8) );
+          $('[name=longitude]').val( e.latLng.lng().toFixed(8) );
+
+  });
+
+
+// try to cklick on map
+// google.maps.event.addListener(myMarker, 'dblclick', function(event) {
+//   alert('ckliked');
+//         myMarker.setPosition(event.latLng);
+//         console.log('daeklicka');
+//         console.log(event.latLng);
+// // chaemata
+//          document.getElementById('latitude').value =  event.latLng.lat().toFixed(8);
+//           document.getElementById('longitude').value =  event.latLng.lng().toFixed(8);
+// });
+
+
+      google.maps.event.addListener(myMarker, 'dragend', function (evt) {
+          $('[name=latitude]').val(evt.latLng.lat().toFixed(8));
+          $('[name=longitude]').val(evt.latLng.lng().toFixed(8));
+//        document.getElementById('latitude').value  =  evt.latLng.lat().toFixed(8);
+//        document.getElementById('longitude').value =  evt.latLng.lng().toFixed(8);
+      });
+
+      // google.maps.event.addListener(myMarker, 'dragstart', function (evt) {
+      //     console.log('draging = '+evt.latLng.lat().toFixed(8));
+      //     // document.getElementById('current').innerHTML = '<p>Currently dragging marker...</p>';
+      // });
+
+      map.setCenter(myMarker.position);
+      myMarker.setMap(map);
+    
+$(function () {
+	$("#example1").DataTable({
+		processing: true,
+        serverSide: true,
+        ajax: "{{ url(config('laraadmin.adminRoute') . '/photo_shop_dt_ajax') }}",
+		language: {
+			lengthMenu: "_MENU_",
+			search: "_INPUT_",
+			searchPlaceholder: "Search"
+		},
+		@if($show_actions)
+		columnDefs: [ { orderable: false, targets: [-1] }],
+		@endif
+	});
+	$("#photo_shop-add-form").validate({
 		
 	});
 });

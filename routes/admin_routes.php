@@ -92,8 +92,6 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	Route::resource(config('laraadmin.adminRoute') . '/shopping_countries', 'LA\Shopping_countriesController');
 	Route::get(config('laraadmin.adminRoute') . '/shopping_country_dt_ajax', 'LA\Shopping_countriesController@dtajax');
 
-	Route::resource(config('laraadmin.adminRoute') . '/print_types', 'LA\Print_typesController');
-	Route::get(config('laraadmin.adminRoute') . '/print_type_dt_ajax', 'LA\Print_typesController@dtajax');
 
 	Route::resource(config('laraadmin.adminRoute') . '/shop_tags', 'LA\Shop_tagsController');
 	Route::get(config('laraadmin.adminRoute') . '/shop_tag_dt_ajax', 'LA\Shop_tagsController@dtajax');
@@ -119,6 +117,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 
     
 	Route::get(config('laraadmin.adminRoute') . '/block/createBlock/{storyid}/{blockid}', 'LA\BlocksController@createBlock')->name('createblock');
+    
+    Route::get(config('laraadmin.adminRoute') . '/block/create/translation/{storyid}/{block_id}', 'LA\BlocksController@createBlockTranslation')->name('createBlockTranslation');
     
 	Route::get(config('laraadmin.adminRoute') . '/block/createBlock', 'LA\BlocksController@createBlock')->name('createbyid');
     
@@ -238,6 +238,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
     Route::post(config('laraadmin.adminRoute') . '/event/block/editblockAudio', 'LA\EventsController@editblockAudio')->name('eventeditblockAudio');
     
     Route::post(config('laraadmin.adminRoute') . '/event/block/sort', 'LA\EventsController@blocksort')->name('eventblocksort');
+    
+    Route::get(config('laraadmin.adminRoute') . '/block/event/translation/{storyid}/{block_id}', 'LA\EventsController@createEventTranslation')->name('createEventTranslation');
 
 	/* ================== Photo_sizes ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/photo_sizes', 'LA\Photo_sizesController');
