@@ -37,7 +37,10 @@ class WorkDeveloperController extends Controller
 //         dd( $img->basename );
 //         dd( $img->dirname );
 //        $this->AsssetIdies();
-        dd('DONE');
+//      
+        
+//        dd('DONE');
+        
 //        $filename = 'ss.png';
 //        $file_date_folder = public_path($filename);
 //         $file_date_folder = str_replace('\\', '/', public_path($filename));
@@ -104,7 +107,7 @@ class WorkDeveloperController extends Controller
         //        return;
 //        $folders['images']      = $this->scanDir(public_path('chaikhanafiles/images'));
 //        $folders['infographic'] = $this->scanDir(public_path('chaikhanafiles/infographic'));
-//        $folders['slideshow']   = $this->scanDir(public_path('chaikhanafiles/slideshow'));
+        $folders['slideshow']   = $this->scanDir(public_path('chaikhanafiles/slideshow'));
 //        $folders['thumbnail']   = $this->scanDir(public_path('chaikhanafiles/thumbnail'));
 //        $folders['video']       = $this->scanDir(public_path('chaikhanafiles/video'));
 //        $folders['audio']       = $this->scanDir(public_path('chaikhanafiles/audio'));
@@ -130,13 +133,20 @@ class WorkDeveloperController extends Controller
         { 
             $story_id = '';
             $asset_id = '';
-
-            $firectory = $this->scanDir( $folder );
-
+            
+//            dd(is_dir( $folder));
+//            dd( $folder );
+//            dd( gettype($folder) );
+            
+            if(gettype($folder) != 'array')
+            { 
+                $firectory = $this->scanDir( $folder );
+            }else{
+                $firectory = $folder;
+            }
             
              switch($key){
-                      case 'thumbnail' :
-                    
+                      case 'thumbnail' :              
                             foreach($firectory as $StoryFolder)
                             {
                                   $story_id = $StoryFolder;
@@ -158,7 +168,6 @@ class WorkDeveloperController extends Controller
                         continue;
                         break;
                     case 'authors' :
-                    
                             foreach($firectory as $StoryFolder)
                             {
                                $path = $folders[$key].DIRECTORY_SEPARATOR.$StoryFolder;
@@ -168,7 +177,6 @@ class WorkDeveloperController extends Controller
                         continue;
                         break;
                     case 'users' : 
-                      
                             foreach($firectory as $StoryFolder)
                             {
 
@@ -180,7 +188,6 @@ class WorkDeveloperController extends Controller
                      continue;
                      break;
                     case 'audio' : 
-                      
                             foreach($firectory as $StoryFolder)
                             {
                                  $story_id = (int) $StoryFolder;
@@ -196,17 +203,54 @@ class WorkDeveloperController extends Controller
                                     $asset_id = substr($file, 0,strpos($file,"__") ); 
                                     $upload->upload_files($file,$story_id,$asset_id,$path);
                                  }
+                            }
+                        continue;
+                        break;  
+                    case 'slideshow' : 
+                           foreach($firectory as $StoryFolder)
+                           {
+//                                    dd(is_dir(public_path('chaikhanafiles/slideshow/'.$StoryFolder)));
+//                                    dd($firectory);
+//                                    dd($StoryFolder);
+//                               $paat = public_path('chaikhanafiles/slideshow/'.$StoryFolder.DIRECTORY_SEPARATOR.'original');
+                               
+//                                dd(is_dir( $paat ));
+//                               dd(public_path('chaikhanafiles/slideshow/'.$StoryFolder.DIRECTORY_SEPARATOR.'original'));
+//                                dd($folders['slideshow']);
+//                                dd($key);
+//                                dd($folders[$key]);
+//                                dd($StoryFolder);
+                               
+                               $story_id = $StoryFolder;
+                               $path = public_path('chaikhanafiles/slideshow/'.$StoryFolder.DIRECTORY_SEPARATOR.'original');
+//                                  $path = $folders[$key].DIRECTORY_SEPARATOR.$StoryFolder.DIRECTORY_SEPARATOR.'original';
+//                               dd($path);
+                                  $subDirs = $this->scanDir($path );
+                                    if(!$subDirs)
+                                    {
+                                        continue;
+                                    }
+
+                                 foreach($subDirs as $onefile)
+                                 {
+                                     $asset_id = substr($onefile, 0,strpos($onefile,"__") ); 
+//                                     dd($onefile);
+                                     $upload->upload_files($onefile,$story_id,$asset_id,$path);
+                                 }
 
                             }
                         continue;
-                        break;                     
+                         break; 
                     default: 
                         break;
                 }
-          
+          continue;
             foreach($firectory as $StoryFolder)
             {
-
+                    dd(is_dir($firectory));
+                    dd($firectory);
+                    dd($StoryFolder);
+                
                   $story_id = $StoryFolder;
                   $path = $folders[$key].DIRECTORY_SEPARATOR.$StoryFolder.DIRECTORY_SEPARATOR.'original';
                   $subDirs = $this->scanDir($path );
@@ -225,7 +269,7 @@ class WorkDeveloperController extends Controller
 
         }
         
-        dd($folders);
+//        dd($folders);
         
 //        try{
 //
@@ -400,6 +444,8 @@ class WorkDeveloperController extends Controller
 
     public function scanDir($dir)
     { 
+        \Log::info(json_encode($dir));
+        
         if(!is_dir($dir))
         {
             \Log::info( '***********************'  );

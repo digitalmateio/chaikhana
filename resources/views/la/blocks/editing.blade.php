@@ -184,7 +184,9 @@
                     </div>
                     @foreach($translate_fields as $key => $field)
 
-                        @php
+                        @php    
+                           
+                                                
                         if($field == 'image' || $field == 'file' || $field == 'audio')
                         { 
                            
@@ -192,10 +194,12 @@
                             $value = optional($upload)->id; 
                                                      
                         }else{
-                             $value = $translation->{$field};
+                            $value = $translation->{$field};
                         }
                         @endphp
-
+    
+                    
+                       
                         @la_showInput($Translate_module, $field,$value,null,null,['class' => 'form-control'])    
                          
                     @endforeach

@@ -55,6 +55,31 @@ class Translation extends Model
         return Upload::find($value);
     }
     
+    public function getImage()
+    {
+        return Upload::find($this->image);
+    }
+    
+    
+    
+//    public function getImagesAttribute($value)
+//    { 
+//        return $value;
+////        if($value == '[]')
+////        {
+////            return [];
+////            return new Upload();
+////        }       
+//////        
+////        return Upload::whereIn('id',json_decode($value) )->get();
+//    }
+    
+    public function getImages()
+    {
+//         return $this->images;
+         return Upload::whereIn('id',json_decode($this->images) )->get();
+    }
+    
     function getVideoAttribute($value)
     {
         return optional(Upload::find($value))->url;

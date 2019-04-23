@@ -34,20 +34,20 @@ class Sections_types extends Model
 
     public static function ShowBlocks($translations,$block,$fields)
     {
-        
-//        $module = Module::get('Blocks');
-//        $moduleTranslate = Module::get('Translations');
-        
-//        $LAFormMaker = new LAFormMaker();
-//        
-//        return $LAFormMaker->showInput($moduleTranslate,'text');
-//        return $LAFormMaker->showInput($module,'title_en');
-//        
-//        dd($LAFormMaker->showInput($module,'title_en'));
-        
-        
+
+        //        $module = Module::get('Blocks');
+        //        $moduleTranslate = Module::get('Translations');
+
+        //        $LAFormMaker = new LAFormMaker();
+        //        
+        //        return $LAFormMaker->showInput($moduleTranslate,'text');
+        //        return $LAFormMaker->showInput($module,'title_en');
+        //        
+        //        dd($LAFormMaker->showInput($module,'title_en'));
+
+
         switch( $block->asset_type_id ){
-            
+
             case 13 : 
                 return \App\Sections_types::showYoutubeEmbed($translations,$fields,$block);
                 break;
@@ -75,19 +75,19 @@ class Sections_types extends Model
         }  
 
     }
-    
+
     public static function showSlideShow($translations,$fields,$block)
     {
         $content = '';
         $content .= '<ul class="tabs" >';
-        
+
         foreach($translations as $translate)
         {
             $content .=  '<li data-id="'.$translate->id  .'" data-block="'. $block->id .'"><a href="#'. $translate->id .'">'. $translate->locale .'</a></li>';
         }
         $content .= '</ul>';
         $content .= '<div class="tab_container">';
-        
+
         foreach($translations as $translate)
         {
             $content .= '<div id="'. $translate->id .'" class="tab_content" data-block="'. $block->id .'" data-id="'.$translate->id  .'">';
@@ -97,18 +97,61 @@ class Sections_types extends Model
                 <table class="table table-bordered"><tr>';
 
             $content .=  "<th>lang</th>";
+
+            //            dump($fields);
+            //            continue;
+
             foreach($fields as $field)
             {
+                //                 if($field == 'images')
+                //                {  
+                //                    $iamges = $translate->{$field};
+                ////                     dump($iamges);
+                //                }
+
                 $content .=  "<th>$field</th>";
 
             }
-            $content .= "<th>image</th>";
+            //            $content .= "<th>image</th>";
             $content .= '</tr><tr>';
 
             $content .=  "<td>".$translate->locale."</td>";
 
             foreach($fields as $field)
             {
+                switch($field)
+                {
+                    case 'audio' :  
+                        $audio = $translate->{$field};
+                        if(!is_null( $audio ))
+                        {
+                            $content .=  "<td>";
+                            $content .= '<audio controls>
+                              <source src="'.$audio->url.'" type="audio/'.$audio->extension.'">
+                            </audio>';
+                            $content .= "</td>";  
+                        }else{
+                            $content .=  "<td></td>";
+                        }
+                        break;
+
+                    case 'images' : 
+
+                        $iamges = $translate->getImages();
+                        $content .=  "<td>"; 
+
+                        foreach($iamges as $image)
+                        {
+                            $content .= '<img style="margin:5px;" src="'.$image->thumbnails['300x300'].'"/>';
+                        }
+
+                        $content .= "</td>";
+
+                        break;
+                    default :  $content .=  "<td>".$translate->{$field}."</td>"; 
+                        break;
+                }
+                /*
                 if($field == 'audio')
                 {  
                     $audio = $translate->{$field};
@@ -120,15 +163,16 @@ class Sections_types extends Model
                         </audio>';
                         $content .= "</td>";  
                     }
-                   
+
                 }else{
                     $content .=  "<td>".$translate->{$field}."</td>"; 
                 }
-                                
+                */
+
             }
 
 
-            $content .=  "<td><img src='".optional($image)->url."' width=200></td>";
+            //            $content .=  "<td><img src='".optional($image)->url."' width=200></td>";
 
             $content .= '</tr></table></div>';
             $content .= '</div>';
@@ -136,36 +180,36 @@ class Sections_types extends Model
         $content .= '</div>';
         return $content;
     }
-    
+
     public static function showVideo($translations,$fields,$block)
     {
         $content = '';
         $content .= '<ul class="tabs" >';
-        
+
         foreach($translations as $translate)
         {
             $content .=  '<li data-id="'.$translate->id  .'" data-block="'. $block->id .'"><a href="#'. $translate->id .'">'. $translate->locale .'</a></li>';
         }
         $content .= '</ul>';
         $content .= '<div class="tab_container">';
-        
+
         foreach($translations as $translate)
         {
 
             $content .= '<div id="'. $translate->id .'" class="tab_content" data-block="'. $block->id .'" data-id="'.$translate->id  .'">';
-            
+
             $content .= '<div class="table-responsive">
                 <table class="table table-bordered"><tr>';
             $content .=  "<th>lang</th>";
-            
+
             foreach($fields as $field)
             {
                 $content .=  "<th>$field</th>";
             }
             $content .= '</tr><tr>';
-            
+
             $content .=  "<td>".$translate->locale."</td>";
-            
+
             foreach($fields as $field)
             {
 
@@ -175,10 +219,10 @@ class Sections_types extends Model
                 }else{
                     $content .=  "<td>".$translate->{$field}."</td>";
                 }
-                
-                
+
+
             }
-           
+
             $content .= '</tr></table></div>';
             $content .= '</div>';
         }
@@ -188,21 +232,80 @@ class Sections_types extends Model
 
     public static function showImages($translations,$fields,$block)
     {
-
+        $bylocale = $translations->groupBy('locale');
+         
         $content = '';
         $content .= '<ul class="tabs" >';
         
+        $number = rand(1, 100);
+
+        $i = $number;
+        foreach($bylocale as $key => $item)
+        {
+            $content .= '<li data-id="'. $i .'" data-block="'.  $block->id .'"><a href="#'. $i .'">'. $key .'</a></li>';
+            $i++;
+        }
+       
+//        $content .= $multiplied;
+        
+        $content .= '</ul>';
+        $content .= '<div class="tab_container">';
+        $i = $number;
+        
+        foreach($bylocale as $key => $translates)
+        {
+            $content .= '<div id="'.$i.'" class="tab_content" data-block="'.  $block->id .'" data-id="'.$i .'">';
+          
+            foreach($translates as $translate)
+            {
+//                $image = $translate->getImage();
+                $image = $translate->image;
+                $content .= '<div class="table-responsive">
+                <table class="table table-bordered"><tr>';
+
+                $content .=  "<th>lang</th>";
+                foreach($fields as $field)
+                {
+                    $content .=  "<th>$field</th>";
+
+                }
+                $content .= "<th>image</th>";
+                $content .= '</tr><tr>';
+
+                $content .=  "<td>".$translate->locale."</td>";
+
+                foreach($fields as $field)
+                {
+                    $content .=  "<td>".$translate->{$field}."</td>";                 
+                }
+
+
+                $content .=  "<td><img src='".optional($image)->url."' width=200></td>";
+
+                $content .= '</tr></table></div>';
+            }
+            $content .= '</div>';
+            $i++;
+        }
+        
+        $content .= '</div>';
+        
+        return $content;
+       
+            /*
+        $content = '';
+        $content .= '<ul class="tabs" >';
         foreach($translations as $translate)
         {
             $content .=  '<li data-id="'.$translate->id  .'" data-block="'. $block->id .'"><a href="#'. $translate->id .'">'. $translate->locale .'</a></li>';
         }
         $content .= '</ul>';
         $content .= '<div class="tab_container">';
-        
+
         foreach($translations as $translate)
         {
             $content .= '<div id="'. $translate->id .'" class="tab_content" data-block="'. $block->id .'" data-id="'.$translate->id  .'">';
-            
+
             $image = $translate->image;
 
             $content .= '<div class="table-responsive">
@@ -230,9 +333,56 @@ class Sections_types extends Model
             $content .= '</tr></table></div>';
             $content .= '</div>';
         }
+
         $content .= '</div>';
+        */
+        /*
+
+        $content = '';
+        $content .= '<ul class="tabs" >';
+        foreach($translations as $translate)
+        {
+            $content .=  '<li data-id="'.$translate->id  .'" data-block="'. $block->id .'"><a href="#'. $translate->id .'">'. $translate->locale .'</a></li>';
+        }
+        $content .= '</ul>';
+        $content .= '<div class="tab_container">';
+
+        foreach($translations as $translate)
+        {
+            $content .= '<div id="'. $translate->id .'" class="tab_content" data-block="'. $block->id .'" data-id="'.$translate->id  .'">';
+
+            $image = $translate->image;
+
+            $content .= '<div class="table-responsive">
+                <table class="table table-bordered"><tr>';
+
+            $content .=  "<th>lang</th>";
+            foreach($fields as $field)
+            {
+                $content .=  "<th>$field</th>";
+
+            }
+            $content .= "<th>image</th>";
+            $content .= '</tr><tr>';
+
+            $content .=  "<td>".$translate->locale."</td>";
+
+            foreach($fields as $field)
+            {
+                $content .=  "<td>".$translate->{$field}."</td>";                 
+            }
+
+
+            $content .=  "<td><img src='".optional($image)->url."' width=200></td>";
+
+            $content .= '</tr></table></div>';
+            $content .= '</div>';
+        }
+
+        $content .= '</div>';
+      */
         return $content;
-/*
+        /*
         //        return;
         $content = '<ul class="tabs" >';
         foreach($translations as $translate)
@@ -255,8 +405,8 @@ class Sections_types extends Model
         $tba_container .= '</div>';
         return $content .= $tba_container ;
 */
-     
-       
+
+
 
     }
 
@@ -264,19 +414,19 @@ class Sections_types extends Model
     {
         $content = '';
         $content .= '<ul class="tabs" >';
-        
+
         foreach($translations as $translate)
         {
             $content .=  '<li data-id="'.$translate->id  .'" data-block="'. $block->id .'"><a href="#'. $translate->id .'">'. $translate->locale .'</a></li>';
         }
         $content .= '</ul>';
         $content .= '<div class="tab_container">';
-        
+
         foreach($translations as $translate)
         {
 
             $content .= '<div id="'. $translate->id .'" class="tab_content" data-block="'. $block->id .'" data-id="'.$translate->id  .'">';
-            
+
             $content .= '<div class="table-responsive">
                 <table class="table table-bordered"><tr>';
 
@@ -302,14 +452,14 @@ class Sections_types extends Model
     {
         $content = '';
         $content .= '<ul class="tabs" >';
-        
+
         foreach($translations as $translate)
         {
             $content .=  '<li data-id="'.$translate->id  .'" data-block="'. $block->id .'"><a href="#'. $translate->id .'">'. $translate->locale .'</a></li>';
         }
         $content .= '</ul>';
         $content .= '<div class="tab_container">';
-        
+
         foreach($translations as $translate)
         {
             $content .= '<div id="'. $translate->id .'" class="tab_content" data-block="'. $block->id .'" data-id="'.$translate->id  .'">';
@@ -336,7 +486,7 @@ class Sections_types extends Model
             $content .= '</tr></table></div>';
             $content .= '</div>';            
         }
-        
+
         $content .= '</div>';
         return $content;
     }
@@ -345,20 +495,20 @@ class Sections_types extends Model
     {
 
         $content = '';
-        
+
         $content .= '<ul class="tabs" >';
-        
+
         foreach($translations as $translate)
         {
             $content .=  '<li data-id="'.$translate->id  .'" data-block="'. $block->id .'"><a href="#'. $translate->id .'">'. $translate->locale .'</a></li>';
         }
         $content .= '</ul>';
         $content .= '<div class="tab_container">';
-                
+
         foreach($translations as $translate)
         {
             $content .= '<div id="'. $translate->id .'" class="tab_content" data-block="'. $block->id .'" data-id="'.$translate->id  .'">';
-                  
+
             $content .= '<div class="table-responsive">
                 <table class="table table-bordered"><tr>';
 
@@ -375,7 +525,7 @@ class Sections_types extends Model
             $content .= '</tr></table></div>';
             $content .= '</div>';
         }
-        
+
         $content .= '</div>';
         return $content;
 
@@ -387,18 +537,18 @@ class Sections_types extends Model
         $table = '';
         $content = '';
         $content .= '<ul class="tabs" >';
-        
+
         foreach($translations as $translate)
         {
             $content .=  '<li data-id="'.$translate->id  .'" data-block="'. $block->id .'"><a href="#'. $translate->id .'">'. $translate->locale .'</a></li>';
         }
         $content .= '</ul>';
         $content .= '<div class="tab_container">';
-        
+
         foreach($translations as $translate)
         {
             $content .= '<div id="'. $translate->id .'" class="tab_content" data-block="'. $block->id .'" data-id="'.$translate->id  .'">';
-            
+
             $embed = '<iframe width="500" height="300" src="https://www.youtube.com/embed/'. $translate->code .'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
 
             $table = '<div class="table-responsive">
@@ -415,8 +565,8 @@ class Sections_types extends Model
 
                 </table>
              </div>';
-         $content .= $table;
-         $content .= '</div>';
+            $content .= $table;
+            $content .= '</div>';
         }
         $content .= '</div>';
         return $content;
@@ -488,7 +638,7 @@ class Sections_types extends Model
             </div>';
 
         return $content;
-        
+
          $content = '<div class="table-responsive">
                 <table class="table table-bordered"><tr>';
 
