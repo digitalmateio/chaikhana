@@ -23,6 +23,8 @@
 						<h4>General Info</h4>
 					</div>
 					<div class="panel-body">
+						@la_display($module, 'cover_image')
+						@la_display($module, 'thumbnail_image')
 						@la_display($module, 'name_en')
 						@la_display($module, 'name_ka')
 						@la_display($module, 'name_hy')

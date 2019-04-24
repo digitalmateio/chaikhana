@@ -21,7 +21,7 @@ use App\User;
 
 class UsersController extends Controller
 {
-	public $show_action = false;
+	public $show_action = true;
 	public $view_col = 'name';
 	public $listing_cols = ['id', 'email', 'type'];
 	
@@ -84,6 +84,109 @@ class UsersController extends Controller
 		}
 	}
 	
+		/**
+	 * Store a newly created users in database.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store(Request $request)
+	{
+		if(Module::hasAccess("Users", "create")) {
+		
+			$rules = Module::validateRules("Users", $request);
+			
+			$validator = Validator::make($request->all(), $rules);
+			
+			if ($validator->fails()) {
+				return redirect()->back()->withErrors($validator)->withInput();
+			}
+			
+			$insert_id = Module::insert("Users", $request);
+			
+			return redirect()->route(config('laraadmin.adminRoute') . '.users.index');
+			
+		} else {
+			return redirect(config('laraadmin.adminRoute')."/");
+		}
+	}
+
+	/**
+	 * Show the form for editing the specified user.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit($id)
+	{
+		if(Module::hasAccess("Users", "edit")) {			
+			$user = User::find($id);
+			if(isset($user->id)) {	
+				$module = Module::get('Users');
+				
+				$module->row = $user;
+				
+				return view('la.users.edit', [
+					'module' => $module,
+					'view_col' => $this->view_col,
+				])->with('user', $user);
+			} else {
+				return view('errors.404', [
+					'record_id' => $id,
+					'record_name' => ucfirst("user"),
+				]);
+			}
+		} else {
+			return redirect(config('laraadmin.adminRoute')."/");
+		}
+	}
+
+	/**
+	 * Update the specified user in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request, $id)
+	{
+		if(Module::hasAccess("Users", "edit")) {
+			
+			$rules = Module::validateRules("Users", $request, true);
+			
+			$validator = Validator::make($request->all(), $rules);
+			
+			if ($validator->fails()) {
+				return redirect()->back()->withErrors($validator)->withInput();;
+			}
+			
+			$insert_id = Module::updateRow("Users", $request, $id);
+			
+			return redirect()->route(config('laraadmin.adminRoute') . '.users.index');
+			
+		} else {
+			return redirect(config('laraadmin.adminRoute')."/");
+		}
+	}
+
+	/**
+	 * Remove the specified users from storage.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy($id)
+	{
+		if(Module::hasAccess("Users", "delete")) {
+			User::find($id)->delete();
+			
+			// Redirecting to index() method
+			return redirect()->route(config('laraadmin.adminRoute') . '.users.index');
+		} else {
+			return redirect(config('laraadmin.adminRoute')."/");
+		}
+	}
+
 	/**
 	 * Datatable Ajax fetch
 	 *
@@ -110,9 +213,12 @@ class UsersController extends Controller
 				//    $data->data[$i][$j];
 				// }
 			}
-			
+
+			\Log::info('LOG:'.json_encode($this->show_action));
+
 			if($this->show_action) {
 				$output = '';
+
 				if(Module::hasAccess("Users", "edit")) {
 					$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/users/'.$data->data[$i][0].'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
 				}

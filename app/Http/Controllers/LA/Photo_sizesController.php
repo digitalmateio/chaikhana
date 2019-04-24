@@ -23,7 +23,7 @@ class Photo_sizesController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'title';
-	public $listing_cols = ['id', 'title', 'price'];
+	public $listing_cols = ['id', 'title'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns

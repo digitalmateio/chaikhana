@@ -19,6 +19,7 @@ use Dwij\Laraadmin\Models\ModuleFields;
 
 use App\Models\Story;
 use App\Block;
+use App\Translation;
 use App\Block_type;
 
 class StoriesController extends Controller
@@ -136,54 +137,7 @@ class StoriesController extends Controller
 	 */
 	public function edit($id)
 	{
-        /*
-        if(Module::hasAccess("Stories", "edit")) {	
-            
-			$story = Story::find($id);
-            
-			if(isset($story->id)) 
-            {	
-			
-                $module = Module::get('Stories');
-    			$module->row = $story;
-
-//                $blocks = Block::where('story_id',$story->id)->first();
-                $blocks = Block::where('story_id',$story->id)->get();
-                $block_types = Block_type::all();
-                
-//                dd( Block_type::all() );
-                
-//                foreach($blocks as $block)
-//                {
-////                    dump( $block->asset_type_id );
-//                }
-                
-//                dd( $blocks->translations );
-//                dd( $blocks );
-//			      dd(  $module->row  );
-//                
-                
-				return view('la.stories.update', [
-					'block_types' => $block_types,
-					'blocks'       => $blocks,
-					'module'       => $module,
-					'view_col'     => $this->view_col,
-				])->with('story', $story);
-                
-                
-                
-                
-                
-			} else {
-				return view('errors.404', [
-					'record_id' => $id,
-					'record_name' => ucfirst("story"),
-				]);
-			}
-		} else {
-			return redirect(config('laraadmin.adminRoute')."/");
-		}
-        */
+        
         
 		if(Module::hasAccess("Stories", "edit")) {			
 			$story = Story::find($id);
@@ -245,6 +199,15 @@ class StoriesController extends Controller
 	public function destroy($id)
 	{
 		if(Module::hasAccess("Stories", "delete")) {
+			
+			$blocks = Block::where('story_id',$id)->get();
+
+			foreach($blocks as $block)
+			{
+				Translation::where('block_id',$block->id)->where('story_id',$id)->delete();
+			}
+			
+			Block::where('story_id',$id)->delete();
 			Story::find($id)->delete();
 			
 			// Redirecting to index() method
@@ -252,6 +215,7 @@ class StoriesController extends Controller
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
+
 	}
 	
 	/**

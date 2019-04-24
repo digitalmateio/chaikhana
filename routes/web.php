@@ -46,8 +46,10 @@ Route::group(array('prefix' => $locale), function()
       Route::get('/vacancie/{id}', 'VacancieController@index');
 
       Route::get('/shop', 'ShopController@index');
+      Route::get('/shop/buy', 'ShopController@buy')->name('shopBuy');
       Route::get('/shop/{id}', 'ShopController@show');
-
+   
+    
       Route::get('/authors', 'AuthorsController@index');
       Route::get('/author/{id}', 'AuthorsController@show');
       Route::post('/authors', 'AuthorsController@loadDataAjax');
@@ -58,6 +60,18 @@ Route::group(array('prefix' => $locale), function()
       Route::get('/tag/{id}', 'TagsController@tag');
     
       Route::get('/story/{id}', 'StoryController@story')->name('story');
+    
+      Route::get('/login', '\App\Http\Controllers\LoginController@showLoginForm')->name('userLogin');
+      Route::post('/login', '\App\Http\Controllers\LoginController@login')->name('userLogin');
+      Route::get('/logout', '\App\Http\Controllers\LoginController@logout')->name('userLoout');
+      Route::get('/registration', '\App\Http\Controllers\RegisterController@showRegistrationForm')->name('userRegistr');
+      Route::post('/registration', '\App\Http\Controllers\RegisterController@register')->name('userRegistration');
+
+      Route::get('account', function(){
+          dd('account');
+      })->name('account');
+
+    
 });
 
 

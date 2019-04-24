@@ -40,7 +40,7 @@ class LoginController extends Controller
     }
 
     public function showLoginForm()
-    {
+    { 
 		$roleCount = Role::count();
 		if($roleCount != 0) {
 			$userCount = User::count();

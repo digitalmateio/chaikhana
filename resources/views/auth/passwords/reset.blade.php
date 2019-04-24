@@ -8,10 +8,11 @@
 
     <body class="login-page">
     <div class="login-box">
+{{--
         <div class="login-logo">
             <a href="{{ url('/home') }}"><b>{{ LAConfigs::getByKey('sitename_part1') }} </b>{{ LAConfigs::getByKey('sitename_part2') }}</a>
         </div><!-- /.login-logo -->
-
+--}}
         @if (session('status'))
             <div class="alert alert-success">
                 {{ session('status') }}
@@ -60,7 +61,7 @@
                 </div>
             </form>
 
-            <a href="{{ url('/login') }}">Log in</a><br>
+            <a href="{{ route('userLogin') }}">Log in</a><br>
             <!--<a href="{{ url('/register') }}" class="text-center">Register a new membership</a>-->
 
         </div><!-- /.login-box-body -->

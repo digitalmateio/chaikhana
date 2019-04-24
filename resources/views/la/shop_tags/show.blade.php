@@ -25,7 +25,7 @@
 					<div class="panel-body">
 						@la_display($module, 'title_en')
 						@la_display($module, 'title_ka')
-						@la_display($module, 'title_ny')
+						@la_display($module, 'title_hy')
 						@la_display($module, 'title_az')
 						@la_display($module, 'title_ru')
 					</div>

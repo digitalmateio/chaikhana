@@ -23,7 +23,8 @@ class VacanciesController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'title';
-	public $listing_cols = ['id', 'title_en', 'title_ka', 'title_ny', 'title_az', 'title_ru', 'mainduties_en', 'mainduties_ka', 'mainduties_ny', 'mainduties_az', 'mainduties_ru', 'experiencedesired_en', 'experiencedesired_ka', 'experiencedesired_ny', 'experiencedesired_az', 'experiencedesired_ru', 'requirements_en', 'requirements_ka', 'requirements_ny', 'requirements_az', 'requirements_ru', 'deadline'];
+	public $listing_cols = ['id', 'title_en', 'deadline'];
+	// public $listing_cols = ['id', 'title_en', 'title_ka', 'title_ny', 'title_az', 'title_ru', 'mainduties_en', 'mainduties_ka', 'mainduties_ny', 'mainduties_az', 'mainduties_ru', 'experiencedesired_en', 'experiencedesired_ka', 'experiencedesired_ny', 'experiencedesired_az', 'experiencedesired_ru', 'requirements_en', 'requirements_ka', 'requirements_ny', 'requirements_az', 'requirements_ru', 'deadline'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns

@@ -12,7 +12,7 @@ use App\Page_content;
 use App\Photo_shop;
 use App\Shop_tag;
 use App;
-
+use Auth;
 
 
 /**
@@ -66,6 +66,15 @@ class ShopController extends Controller
         // dd($photoShop);
 
         return view('readShop');
+    }
+    
+    public function buy()
+    {
+        if(!$user = Auth::user())
+        {
+//            return back();
+        }
+        
     }
 
 }

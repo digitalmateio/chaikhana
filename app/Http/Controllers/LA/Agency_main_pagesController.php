@@ -23,7 +23,8 @@ class Agency_main_pagesController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'title_en';
-	public $listing_cols = ['id', 'title_en', 'title_ka', 'title_hy', 'title_az', 'title_ru', 'description_en', 'description_ka', 'description_hy', 'description_az', 'description_ru', 'left_image', 'right_image', 'bottom_image', 'position'];
+	public $listing_cols = ['id', 'title_en', 'left_image', 'right_image', 'bottom_image', 'position'];
+	// public $listing_cols = ['id', 'title_en', 'title_ka', 'title_hy', 'title_az', 'title_ru', 'description_en', 'description_ka', 'description_hy', 'description_az', 'description_ru', 'left_image', 'right_image', 'bottom_image', 'position'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns

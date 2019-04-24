@@ -484,6 +484,16 @@ class EventsController extends Controller
     public function destroy($id)
     {
         if(Module::hasAccess("Events", "delete")) {
+           
+
+            $blocks = Block::where('event_id',$id)->get();
+
+            foreach($blocks as $block)
+            {
+                Translation::where('block_id',$block->id)->where('event_id',$id)->delete();
+            }
+            
+            Block::where('event_id',$id)->delete();
             Event::find($id)->delete();
 
             // Redirecting to index() method

@@ -170,23 +170,6 @@ $(function () {
       map.setCenter(myMarker.position);
       myMarker.setMap(map);
     
-$(function () {
-	$("#example1").DataTable({
-		processing: true,
-        serverSide: true,
-        ajax: "{{ url(config('laraadmin.adminRoute') . '/photo_shop_dt_ajax') }}",
-		language: {
-			lengthMenu: "_MENU_",
-			search: "_INPUT_",
-			searchPlaceholder: "Search"
-		},
-		@if($show_actions)
-		columnDefs: [ { orderable: false, targets: [-1] }],
-		@endif
-	});
-	$("#photo_shop-add-form").validate({
-		
-	});
-});
+
 </script>
 @endpush

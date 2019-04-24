@@ -1345,7 +1345,8 @@ class LAFormMaker
 							$upload_src = (current($upload->thumbnails));
 						else
 							$upload_src = (current($upload->thumbnails)); // FILE ICON HERE :TODO
-						$value = '<a class="preview" target="_blank" href="'.$upload_src.'"><img src="'.url("files/".$upload->hash.DIRECTORY_SEPARATOR.$upload->name."?s=150").'"></a>';
+						$value = '<a class="preview" target="_blank" href="'.$upload_src.'"><img src="'.$upload_src.'"></a>';
+						// $value = '<a class="preview" target="_blank" href="'.$upload_src.'"><img src="'.url("files/".$upload->hash.DIRECTORY_SEPARATOR.$upload->name."?s=150").'"></a>';
 					} else {
 						$value = 'Uplaoded image not found.';
 					}

@@ -24,6 +24,7 @@
 					</div>
 					<div class="panel-body">
 						@la_display($module, 'image')
+						@la_display($module, 'url')
 					</div>
 				</div>
 			</div>
