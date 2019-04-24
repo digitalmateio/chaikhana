@@ -33,44 +33,55 @@
 			padding-bottom: 10%;
 			background-repeat: no-repeat;
 		}
-		.coverimg {
-			margin-top: -5%;
-		}
+
 	</style>
-	<div class="container-fluid story-page backgr" style="background: url({{ $pageHeader->image[0] }});">
+	<div class="container-fluid story-page backgr shop-page-head-cover" style="background: url({{ $pageHeader->image[0] }});">
 	<br>
 		<div class="row">
-			<div class="col-md-12">
-				<div class="centered">
-
+			<div class="col-md-10 mx-auto mt-5">
+				<div class="centered shop-page-head-info">
 					<h1>{{ $pageHeader->TextTrans('title') }}</h1>
-					<p>{{ $pageHeader->TextTrans('description') }}</p>
+					<div class="row"> 
+						<div class="col-md-6 mx-auto mt-5 mb-5">
+							<p>{{ $pageHeader->TextTrans('description') }}</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="container story-3 text-center shop coverimg">
 		<br>
-		<div class="row stories-filter uppercase nomarg">
+		<div class="row uppercase nomarg">
 			<div class="col-md-6 text-left col-8">
 				<h1 class="shop-header stories-header">photos</h1>
 			</div>
 				<div class="col-md-2 text-right editions-tags shop-tags destop-filter col-4">
-						<p>
-						  <a class="collapsed" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
-						   tags   <img src="{{ asset('assets/img/left-arrow (1).png') }}" class="filter-arrow">
-						  </a>
-						</p>
-						<div class="collapse shop-tags" id="collapseExample2" style="">
-						  <div class="card card-body ">
-						   MOUNTAINS   VIDEO   TEENS
-						  </div>
-						</div>
+					<p>
+					  <a class="collapsed" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
+					   tags   <img src="{{ asset('assets/img/left-arrow (1).png') }}" class="filter-arrow">
+					  </a>
+					</p>
+					<div class="collapse shop-tags" id="collapseExample2" style="">
+					  <div class="card card-body ">
+					   	
+						<ul class="list-inline">
+							@foreach($AllTags as $tag)
+								<li class="list-inline-item">
+									<a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/shop/tag/{{ $tag->id }}">
+										{{ $tag->TextTrans('title') }}
+									</a>
+								</li>
+							@endforeach
+						</ul>
+
+					  </div>
+					</div>
 				</div>
 			<div class="col-md-4 text-left shop-search not-diplay">
 
 				<div class="input-group">
-					<input type="text" class="form-control searchphotos" placeholder="Search photos here...">
+					<input type="text" class="form-control searchphotos" id="search" placeholder="Search photos here...">
 					<div class="input-group-append">
 						<button class="btn btn-secondary shopsearch" type="button">
 							<i class="fa fa-search"></i>
@@ -82,43 +93,43 @@
 		</div>
 		<br>
 
-		<div class="row nomarg shop-row">
+		<div class="row nomarg shop-row shop-all-list">
 
 
 
 			@foreach($shops as $shop)
 
-			<div class="col-md-4 ">
-				<div class="border-inside text-left">
-					<a href="shop/{{ $shop->id }}">
-						<img src="{{ $shop->image['300x300'] }}" class="img-fluid">
-					</a>
-					<div class="col-md-12">
-						<h2>{{ str_limit($shop->TextTrans('title'), 20) }}</h2>
-					</div>
-					<div class="row stories-block">
-						<div class="col-md-12">
-							{{ str_limit($shop->TextTrans('description'), 40) }}
+				<div class="col-md-4" {{ $shops->last()->id==$shop->id ? 'id='.$shop->id.'':'' }}>
+					<div class="text-left">
+						<div class="all-shop-one-image">
+							<a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/shop/{{ $shop->id }}">
+								<img src="{{ $shop->image['300x300'] }}" class="img-fluid">
+							</a>
+						</div>
+						<div class="all-shop-title-info">
+							<h2>{{ str_limit($shop->TextTrans('title'), 50) }}</h2>
+							<p>{{ str_limit(strip_tags($shop->TextTrans('description')), 70) }}</p>
 						</div>
 					</div>
 				</div>
-			</div>
 
 			@endforeach
 
 		</div>
-		<br>
-		<br>
-		<br>
+
 		<div class="row">
-			<div class="col-md-12 text-center">
-				<a href="">
-					<img src="img/loadmore.png" class="loadmore">
-					<p class="loadmore-text">Load more</p>
-				</a>
-			</div>
+
+            <div id="remove-row" class="col-md-12 mb-5">
+                <button id="btn-more" data-id="{{ $shops->last()->id }}" class="load-more-button nounderline btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    <img src="http://localhost/chaikhanaNew/assets/img/loadmore.png" class="loadmore">
+                    <p class="loadmore-text">Load more</p>
+                </button>
+            </div>
+
 		</div>
 	</div>
+
+
 
 	<!-- Map Area Start -->
 	<div class="google-map-area">
@@ -128,38 +139,36 @@
 		</div>
 	</div>
 	<div class="container story-3 text-center shop ">
-		<div class="row stories-filter uppercase ">
+		<div class="row stories-filter uppercase mt-5">
 			<div class="col-md-12 text-center col-8">
 				<h1 class="shop-header stories-header">now # {{ $singleTag->TextTrans('title') }}</h1>
 			</div>
-			
-	
 		</div>
-		<div class="row nomarg shop-row">
+		<div class="row nomarg shop-row mb-5">
 
 
 			@foreach($tagShop as $forTags)
-			<div class="col-md-4 ">
-				<div class="border-inside text-left">
-					<a href="shop/{{ $shop->id }}">
-						<img src="{{ $shop->image['300x300'] }}" class="img-fluid">
-					</a>
-					<div class="col-md-12">
-						<h2>{{ str_limit($shop->TextTrans('title'), 20) }}</h2>
-					</div>
-					<div class="row stories-block">
-						<div class="col-md-12">
-							{{ str_limit($shop->TextTrans('description'), 40) }}
+
+				<div class="col-md-4">
+					<div class="text-left">
+						<div class="all-shop-one-image">
+							<a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/shop/{{ $forTags->id }}">
+								<img src="{{ $forTags->image['300x300'] }}" class="img-fluid">
+							</a>
+						</div>
+						<div class="all-shop-title-info">
+							<h2>{{ str_limit($forTags->TextTrans('title'), 50) }}</h2>
+							<p>{{ str_limit(strip_tags($forTags->TextTrans('description')), 70) }}</p>
 						</div>
 					</div>
 				</div>
-			</div>
+
 			@endforeach
 
 
 		</div>
 	</div>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMlLa3XrAmtemtf97Z2YpXwPLlimRK7Pk"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 	<script>
 
 		/* navbars asworebs */
@@ -331,12 +340,12 @@
 			var loc1 = new google.maps.Marker({
 				position: new google.maps.LatLng(41.716096, 44.774754),
 				map: map,
-				icon: "1.png"
+				icon: "{{ asset('assets/img/1.png') }}"
 			});
 			var myInfoWindow1 = new google.maps.InfoWindow({
 				content:'<div>'+
 							'<div class="text-left agency-mpdal-body modalre">'+
-								'<img src="img/story6.png" class="img-fluid">'+
+								'<img src="{{ asset('assets/img/story6.png') }}" class="img-fluid">'+
 								'<div class="row modal-row">'+
 									'<div class="col-sm-6"><button type="button" class="btn shop-button">STORY</button></div>'+
 									'<div class="col-sm-6"><button type="button" class="btn shop-button"> BUY </button></div>'+
@@ -357,12 +366,12 @@
 			var loc2 = new google.maps.Marker({
 				position: new google.maps.LatLng(41.64619985104113, 41.640790700912476),
 				map: map,
-				icon: "1.png"
+				icon: "{{ asset('assets/img/1.png') }}"
 			});
 			var myInfoWindow2 = new google.maps.InfoWindow({
 				content:'<div>'+
 							'<div class="text-left agency-mpdal-body modalre">'+
-								'<img src="img/story6.png" class="img-fluid">'+
+								'<img src="{{ asset('assets/img/story6.png') }}" class="img-fluid">'+
 								'<div class="row modal-row">'+
 									'<div class="col-sm-6"><button type="button" class="btn shop-button">STORY</button></div>'+
 									'<div class="col-sm-6"><button type="button" class="btn shop-button"> BUY </button></div>'+
@@ -402,5 +411,68 @@
 	</div>
 	<!-- Map Area End -->
 
+
+
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+	   $(document).on('click','#btn-more',function(){
+	    $("#btn-more").html("<img src='http://demo.itsolutionstuff.com/plugin/loader.gif' style='width: 50px !important'> Loading....");
+	      	$.ajax({
+	          url : '{{ URL::to('/').'/'.App::getLocale('locale').'/shop' }}',
+	          method : "POST",
+	          data : {
+	            id: $('.shop-all-list .col-md-4').last().attr('id'),
+	            _token : $('meta[name="csrf-token"]').attr('content')
+	          },
+	          dataType : "text",
+	          success : function (data)
+	          {
+	              if(data != '') 
+	              {
+	                  $('#remove-row').remove();
+	                  $('.shop-all-list').append(data);
+	              }
+	              else
+	              {
+	                  $('#btn-more').html("No Data");
+	              }
+	          }
+	      });
+	   });  
+	});
+
+	$(document).ready(function(){
+	  $('#search').keyup(function(e){
+
+	      $(".contributor-row").html('<div id="remove-row" class="col-md-12 mt-5 mb-5"><img src="http://demo.itsolutionstuff.com/plugin/loader.gif" style="width: 50px !important"> Loading....</div>');
+
+	      $.ajax({
+	          url : '{{ URL::to('/').'/'.App::getLocale('locale').'/searchshop' }}',
+	          method : "POST",
+	          data : {
+	            search: $(this).val(),
+	            _token : $('meta[name="csrf-token"]').attr('content')
+	          },
+	          dataType : "text",
+	          success : function (data)
+	          {
+	              if(data != '') 
+	              {
+	                  $('#remove-row').remove();
+	                  $('.shop-all-list .col-md-4').remove();
+	                  $('.shop-all-list').append(data);
+	              }
+	              else
+	              {
+	                  $('#btn-more').html("No Data");
+	              }
+	          }
+	      });
+	   });  
+	});
+
+
+</script>
 
 @endsection

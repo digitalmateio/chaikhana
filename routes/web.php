@@ -39,27 +39,51 @@ Route::get("/", function () use ($locale){
 
 Route::group(array('prefix' => $locale), function()
 {
+      // Home & Subscribe
       Route::get('/', 'HomeController@index')->name('homepage');
       Route::post('/subscribe', 'SubscribeController@request')->name('subscribe');
 
+      // About
       Route::get('/about', 'AboutController@index');
       Route::get('/vacancie/{id}', 'VacancieController@index');
 
+      // Shop
       Route::get('/shop', 'ShopController@index');
       Route::get('/shop/buy', 'ShopController@buy')->name('shopBuy');
       Route::get('/shop/{id}', 'ShopController@show');
+      Route::post('/shop/price', 'ShopController@imagePrice')->name('getImagePrice');
    
-    
+      // Authors
       Route::get('/authors', 'AuthorsController@index');
       Route::get('/author/{id}', 'AuthorsController@show');
       Route::post('/authors', 'AuthorsController@loadDataAjax');
+      Route::post('/searchauthors', 'AuthorsController@searchAtaAjax');
 
+      // Agency
       Route::get('/agency', 'AgencyController@index');
+      Route::post('/agencyType', 'AgencyController@DataAjax');
+      Route::get('/agencyTypeFull/{id}', 'AgencyController@DataAjaxFullInfo');
 
+      // Tags
       Route::get('/tags', 'TagsController@index');
       Route::get('/tag/{id}', 'TagsController@tag');
     
+      // Editions
+      Route::get('/editions', 'EditionsController@index');
+      Route::get('/edition', function(){
+        return abort(404);
+      });
+      Route::get('/edition/{id}', 'EditionsController@edition');
+      Route::post('/edition', 'EditionsController@loadDataAjax');
+
+
+      // Story
       Route::get('/story/{id}', 'StoryController@story')->name('story');
+      Route::get('/story', 'StoryController@index')->name('story');
+      Route::post('/story', 'StoryController@loadDataAjax');
+      Route::get('/story/sort/{string}', 'StoryController@sort')->name('sort');
+      Route::get('/story/type/{id}', 'StoryController@type')->name('type');
+
     
       Route::get('/login', '\App\Http\Controllers\LoginController@showLoginForm')->name('userLogin');
       Route::post('/login', '\App\Http\Controllers\LoginController@login')->name('userLogin');
@@ -72,6 +96,10 @@ Route::group(array('prefix' => $locale), function()
       })->name('account');
 
     
+});
+
+Route::get("/story", function () use ($locale){
+  return view('story');
 });
 
 

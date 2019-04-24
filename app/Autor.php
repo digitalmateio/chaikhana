@@ -8,7 +8,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Upload;
+use App\Models\Upload;
+
 class Autor extends Model
 {
     use SoftDeletes;

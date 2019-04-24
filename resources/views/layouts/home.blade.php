@@ -16,6 +16,7 @@
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ asset('assets/css/reset.css') }}">
   <!-- jQuery library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -31,6 +32,7 @@
   <link rel="stylesheet" href="http://kenwheeler.github.io/slick/slick/slick-theme.css">
   <link rel="stylesheet" href="http://kenwheeler.github.io/slick/slick/slick.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ asset('assets/css/map.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
   <!-- <link rel="stylesheet" href="assets/css/animate.css"> -->
   <script src="{{ asset('assets/js/chanjeLanguage.js') }}"></script>
@@ -39,10 +41,11 @@
 </head>
 <body>
   
+
 <nav class="navbar navbar-light light-blue lighten-4 fixed-top">
     <!-- Navbar brand -->
 
-    <a class="navbar-brand" href="http://chaikhana.digitalmate.io">
+    <a class="navbar-brand" href="{{ URL::to('/').'/'.App::getLocale('locale') }}">
       <img src="{{ asset('assets/img/nav-logo.png') }}" class="nav-logo">
       <span class="logo-text">CHAI KHANA</span>
     </a>
@@ -83,13 +86,13 @@
               <a class="nav-link" href="#">EXPLORE <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="topics.php">EDITIONS</a>
+              <a class="nav-link" href="{{ URL::to('/').'/'.App::getLocale('locale') }}/editions">EDITIONS</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="">STAFF PICKS</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about-page.php">CHAI KHANA</a>
+              <a class="nav-link" href="{{ URL::to('/').'/'.App::getLocale('locale') }}/about">CHAI KHANA</a>
             </li>
           </ul>
         </div>
@@ -99,13 +102,13 @@
               <a class="nav-link" href="#">COMMUNITY <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="shop1.php">COMMUNITY SHOP</a>
+              <a class="nav-link" href="{{ URL::to('/').'/'.App::getLocale('locale') }}/shop">COMMUNITY SHOP</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="agency2.php">COMMUNITY AGENCY</a>
+              <a class="nav-link" href="{{ URL::to('/').'/'.App::getLocale('locale') }}/agency">COMMUNITY AGENCY</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="contributors.php">CHAI KHANA AUTHORS</a>
+              <a class="nav-link" href="{{ URL::to('/').'/'.App::getLocale('locale') }}/authors">CHAI KHANA AUTHORS</a>
             </li>
           </ul>
         </div>
@@ -129,9 +132,9 @@
             </div>
             <div class="col-md-4">
               <img src="{{ asset('assets/img/TheChildrenofAzerbaijan.jpg') }}" class="hand">
-              <br>
-              <br>
-              <a class="nav-link" href="story1.php"><p class="text-right  headtext">See All Stories</p></a>
+              <a class="nav-link" href="{{ URL::to('/').'/'.App::getLocale('locale') }}/story">
+                <p class="text-right  headtext">See All Stories</p>
+              </a>
             </div>
           </div>
           <br>
@@ -177,39 +180,29 @@
       <div class="row">
         <p class="fullw">
           LAST 10 EDITIONS
-          <span class="pull-right hand">EXPLORE MORE</span>
+          <a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/editions">
+            <span class="pull-right hand">EXPLORE MORE</span>
+          </a>
         </p>
       </div>
       <div class="row navimg">
-        <div class="col-md-2">
-          <img src="{{ asset('assets/img/IDENTITY.png') }}" class="hand">
-          <div class="bottom-right">Identity</div>
-        </div>
-        <div class="col-md-2">
-          <img src="{{ asset('assets/img/Journeys.png') }}" class="hand">
-          <div class="bottom-right">Identity</div>
-        </div>
-        <div class="col-md-2">
-          <img src="{{ asset('assets/img/MEMORY.png') }}" class="hand">
-          <div class="bottom-right">Identity</div>
-        </div>
-        <div class="col-md-2">
-          <img src="{{ asset('assets/img/Millenials.png') }}" class="hand">
-          <div class="bottom-right">Identity</div>
-        </div>
-        <div class="col-md-2">
-          <img src="{{ asset('assets/img/Peacebuilders.png') }}" class="hand">
-          <div class="bottom-right">Identity</div>
-        </div>
-        <div class="col-md-2">
-          <img src="{{ asset('assets/img/Religious-Beliefs.png') }}" class="hand">
-          <div class="bottom-right">Identity</div>
-        </div>
+
+        @foreach(getMenuEditions() as $edition)
+          <div class="col-md-2">
+            <a href="{{ URL::to('/').'/'.App::getLocale('locale').'/edition/'.$edition->id }}" class="menu-editions-image">
+              <img src="{{ $edition->thumbnail_image['200x200'] }}" class="hand">
+              <h2>{{ str_limit($edition->TextTrans('name'), 10) }}</h2>
+              <p>{{ $edition->TextTrans('edition') }}</p>
+              <span class="menu-edition-shadow"><!-- --></span>
+            </a>
+          </div>
+        @endforeach
+
       </div>
-      <br>
-      
-      <br>
-      <button class="button btn storis">ALL STORIES</button>
+
+      <a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/story" class="mb-3">
+        <button class="button btn storis">ALL STORIES</button>
+      </a>
     </div>
 
     <div class="collapse navbar-collapse" id="chaikhanaid">

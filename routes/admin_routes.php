@@ -248,4 +248,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Shippings ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/shippings', 'LA\ShippingsController');
 	Route::get(config('laraadmin.adminRoute') . '/shipping_dt_ajax', 'LA\ShippingsController@dtajax');
+
+	/* ================== Resource_requests ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/resource_requests', 'LA\Resource_requestsController');
+	Route::get(config('laraadmin.adminRoute') . '/resource_request_dt_ajax', 'LA\Resource_requestsController@dtajax');
 });

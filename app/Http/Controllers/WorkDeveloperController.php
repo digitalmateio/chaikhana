@@ -107,7 +107,7 @@ class WorkDeveloperController extends Controller
         //        return;
 //        $folders['images']      = $this->scanDir(public_path('chaikhanafiles/images'));
 //        $folders['infographic'] = $this->scanDir(public_path('chaikhanafiles/infographic'));
-        $folders['slideshow']   = $this->scanDir(public_path('chaikhanafiles/slideshow'));
+        // $folders['slideshow']   = $this->scanDir(public_path('chaikhanafiles/slideshow'));
 //        $folders['thumbnail']   = $this->scanDir(public_path('chaikhanafiles/thumbnail'));
 //        $folders['video']       = $this->scanDir(public_path('chaikhanafiles/video'));
 //        $folders['audio']       = $this->scanDir(public_path('chaikhanafiles/audio'));

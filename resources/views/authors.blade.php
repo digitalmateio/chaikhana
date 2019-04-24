@@ -20,7 +20,7 @@
                                    
                         <!--end of col-->
                         <div class="col">
-                            <input class="form-control form-control-lg form-control-borderless contributor-search" type="search" >
+                            <input class="form-control form-control-lg form-control-borderless contributor-search" id="search" type="search" >
                         </div>
                         <!--end of col-->
                         
@@ -38,16 +38,20 @@
 
                 @foreach($author as $auth)
 
-                  <div class="col-md-4">
+                  <div class="col-md-4 authors-list-one" {{ $author->last()->id==$auth->id ? 'id='.$auth->id.'':'' }}>
                       <div class="row">
-                          <div class="col-md-10">
+                          <div class="col-md-8 authors-list-img">
                               <a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/author/{{ $auth->id }}">
-                                   <img src="{{ asset('assets/img/Chinara Majidova.jpg') }}" class="hand contributor-img"> 
+                                   <!-- <img src="" class="hand contributor-img"> -->
+                                   <div class="author-one-image" style="background: url('{{ $auth->image['275x190'] }}');">
+                                     <!-- Author image -->
+                                     <span class="author-one-image-gradient"><!-- --></span>
+                                   </div>
                               </a>                        
                           </div>
-                          <div class="col-md-2">
+                          <div class="col-md-4">
                               <div class="name-right ">
-                                  <h1 class="contributor-font-50" >
+                                  <h1 class="contributor-font-50 one-author-name">
                                   	<a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/author/{{ $auth->id }}">
                                       {{ $auth->TextTrans('name') }}
                                     </a>
@@ -55,15 +59,16 @@
                                </div>
                           </div>
                       </div>
+                      <input type="hidden" value="{{ $auth->id }}" class="idForLastRequest">
                   </div>
 
                 @endforeach
 
                 <div id="remove-row" class="col-md-12">
-                  <p class="mt-5 mb-5" id="btn-more">
-                    <img src="http://demo.itsolutionstuff.com/plugin/loader.gif" style="width: 50px !important">
-                    Loading More post
-                  </p>
+                    <button id="btn-more" data-id="{{ $author->last()->id }}" class="load-more-button nounderline btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        <img src="http://localhost/chaikhanaNew/assets/img/loadmore.png" class="loadmore">
+                        <p class="loadmore-text">Load more</p>
+                    </button>
                 </div>
 
 
@@ -74,27 +79,56 @@
 
         </div>
         <!-- Footer -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-<script type="text/javascript">
+        <script type="text/javascript">
 
-  var id = 14;
-  $(window).scroll(function() {
-      if($(window).scrollTop() + $(window).height() >= $(document).height() - 720) {
-          id++;
-          loadMoreData(id);
-      }
-  });
+        $(document).ready(function(){
+           $(document).on('click','#btn-more',function(){
+            $("#btn-more").html("<img src='http://demo.itsolutionstuff.com/plugin/loader.gif' style='width: 50px !important'> Loading....");
+              
+              var LastID = $('.contributor-row .authors-list-one').last().attr('id');
+              console.log(LastID);
 
-  function loadMoreData(id){
+              $.ajax({
+                  url : '{{ URL::to('/').'/'.App::getLocale('locale').'/authors' }}',
+                  method : "POST",
+                  data : {
+                    id: LastID,
+                    _token : $('meta[name="csrf-token"]').attr('content')
+                  },
+                  dataType : "text",
+                  success : function (data)
+                  {
 
-    $("#btn-more").html("<img src='http://demo.itsolutionstuff.com/plugin/loader.gif' style='width: 50px !important'> Loading....");
+                      if(data != '') 
+                      {
+                          $('#remove-row').remove();
+                          $('.contributor-row').append(data);
+                      }
+                      else
+                      {
+                          $('#btn-more').html("No Data");
+                      }
+                  }
+              });
+           });  
+        });
+
+
+
+$(document).ready(function(){
+  $('#search').keyup(function(e){
+
+      console.log($(this).val());
+
+      $(".contributor-row").html('<div id="remove-row" class="col-md-12"><img src="http://demo.itsolutionstuff.com/plugin/loader.gif" style="width: 50px !important"> Loading....</div>');
 
       $.ajax({
-          url : '{{ URL::to('/').'/'.App::getLocale('locale').'/authors' }}',
+          url : '{{ URL::to('/').'/'.App::getLocale('locale').'/searchauthors' }}',
           method : "POST",
           data : {
-            id: id,
+            search: $(this).val(),
             _token : $('meta[name="csrf-token"]').attr('content')
           },
           dataType : "text",
@@ -103,6 +137,7 @@
               if(data != '') 
               {
                   $('#remove-row').remove();
+                  $('.contributor-row .col-md-4').remove();
                   $('.contributor-row').append(data);
               }
               else
@@ -111,13 +146,8 @@
               }
           }
       });
-  }
-
-
-
-
-
-
+   });  
+});
 
 
 </script>

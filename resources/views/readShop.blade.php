@@ -74,19 +74,26 @@
 
 	<!-- Second Container -->
 
+	@php
+
+	// dd($photo);
+
+	@endphp
 	<!-- Third Container (Grid) -->
 	<div class="container-fluid story-3 text-center single-theme shop-single">
 		<div class="row">
 			<div class="col-md-6">
-				<img src="img/story8.png" id="prev">
+				<img src="{{ $photo->image[0] }}" id="prev">
 			</div>
 			<div class="col-md-6">
 				<div class="row shop-single-right text-left">
 					<div class="col-md-12">
-						<h4>PASTA DELICIOUS TORTELLINI</h4>
-						<p class="grey-text">$45</p>
-						<p class="grey-text">Spaghettini pasta pastina delicious lasagna linguini sauce, basil spaghettini spaghettini penne sauce tripoline pastina. Cheesy macaroni sorprese sauce tomatoes al dente spaghetti, basil capellini angel hair cheesy fiorentine ditalini delicious. Sauce angel hair angel hair delicious al dente angel hair angel hair.</p>
-						<a href="#" class="green-text">visit story</a>
+						<h4>{{ $photo->TextTrans('title') }}</h4>
+						<p class="grey-text price" data-photo-id="{{ $photo->id }}" data-price="{{ $photo->price }}">{{ $photo->price }}</p>
+						<p class="grey-text">{!! $photo->TextTrans('description') !!}</p>
+						<a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/story/{{ $photo->story_id }}" class="green-text">
+							visit story
+						</a>
 						<hr>
 					</div>
 					<div class="col-md-12">
@@ -99,49 +106,154 @@
 					<div class="col-md-9">
 						<br>
 						<p class="grey-text">SIZE</p>
-						<label class="ptype paper shop-check" for="a1" id="aa1" onclick="$('.paper').css('background', 'white'); this.style.background = '#015C13';">A1</label>
-						<input type="radio" name="page" id="a1" value="a1" class="pradio">
+					
+						@foreach($Photo_sizes as $size)
+							<label class="ptype paper shop-check size" data-id="{{ $size->id }}" for="a1" id="aa1">{{ $size->title }}</label>
+							<input type="radio" name="size" id="{{ $size->id }}" value="a1" class="pradio"  @if($loop->first) checked="checked"  @endif>
+						@endforeach
 
-						<label class="ptype paper shop-check" for="a2" id="aa2" onclick="$('.paper').css('background', 'white'); this.style.background = '#015C13';">A2</label>
-						<input type="radio" name="page" id="a2" value="a2" class="pradio">
-
-						<label class="ptype paper shop-check" for="a3" id="aa3" onclick="$('.paper').css('background', 'white'); this.style.background = '#015C13';">A3</label>
-						<input type="radio" name="page" id="a3" value="a3" class="pradio">
-
-						<label class="ptype paper shop-check" for="a4" id="aa4" onclick="$('.paper').css('background', 'white'); this.style.background = '#015C13';">A4</label>
-						<input type="radio" name="page" id="a4" value="a4" class="pradio">
-
-						<br>
-
-						<label class="ptype paper shop-check" for="a5" id="aa5" onclick="$('.paper').css('background', 'white'); this.style.background = '#015C13';">A5</label>
-						<input type="radio" name="page" id="a5" value="a5" class="pradio">
-
-						<label class="ptype paper shop-check" for="a6" id="aa6" onclick="$('.paper').css('background', 'white'); this.style.background = '#015C13';">A6</label>
-						<input type="radio" name="page" id="a6" value="a6" class="pradio">
-
-						<label class="ptype paper shop-check" for="a7" id="aa7" onclick="$('.paper').css('background', 'white'); this.style.background = '#015C13';">A7</label>
-						<input type="radio" name="page" id="a7" value="a7" class="pradio">
 					</div>
 					<div class="col-md-3">
 						<br>
 						<div class="hand" onclick="gonext()">
-							NEXT PHOTO
-							<img src="img/shop-next.png" id="nextid">
+							@if(empty($next))
+								<a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/shop/{{ $next[0]->image['128x128'] }}">
+									NEXT PHOTO
+									<img src="{{ $next[0]->image['128x128'] }}" id="nextid">
+								</a>
+							@endif
 						</div>
 					</div>
 					<div class="col-md-12">
 						<br>
 						<p class="grey-text">QUANTITY</p>
-						<input type="number" value="2" class="quant shop-check">
+						<input type="number" value="1" class="quant shop-check quantity">
 					</div>
 					<div class="col-md-12">
 						<br>
 						<p class="grey-text">SHIPPING</p>
-						<select class="ships grey-text shop-check">
-							<option >GEORGIA</option>
-							<option>LOC 2</option>
-							<option>LOC 3</option>
+						<select class="ships grey-text shop-check shipping-country">
+							@foreach($Shopping_countrys as $country)
+								<option   @if($loop->first) selected @endif value="{{ $country->id }}">{{ $country->TextTrans('title') }}</option>
+							@endforeach
 						</select>
+
+					<script>
+
+					    $('.size').click(function(e){
+					    	// getPrice();
+					    	// return;
+							var imageSize = $(this).attr('data-id');
+							var country = $('.shipping-country').val();
+							var quantity = $('.quantity').val();
+							var fotoid = $('.price').attr('data-photo-id');
+
+							$.ajaxSetup({
+									headers: {
+									  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+									}
+								});
+
+						        $.ajax({
+						           type:"POST",
+						           url:"{{ route('getImagePrice') }}",
+						           data : { 
+						           	fotoid : fotoid ,
+						           	size   : imageSize ,
+						           	country:country,
+						           	quantity:quantity,
+						           },
+						           success : function(data){
+						              $('.price').text(data.price);
+						           },
+
+						            error : function(data){
+						                if(typeof data === 'object'){
+						                }
+						            },
+						       beforeSend : function(data){},
+						         complete : function(data){
+						         }
+						      });
+
+						});
+
+					    $('.shipping-country').change(function(e) {
+					    	
+						    var imageSize = $('.size').attr('data-id');
+							var country   =  e.target.value;
+							var quantity  = $('.quantity').val();
+							var fotoid    = $('.price').attr('data-photo-id');
+
+								$.ajaxSetup({
+									headers: {
+									  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+									}
+								});
+
+						        $.ajax({
+						           type:"POST",
+						           url:"{{ route('getImagePrice') }}",
+						           data : { 
+						           	fotoid : fotoid ,
+						           	size : imageSize ,
+						           	country:country,
+						           	quantity:quantity,
+						           },
+						           success : function(data){
+						              $('.price').text(data.price);
+						           },
+
+						            error : function(data){
+						                if(typeof data === 'object'){
+						                }
+						            },
+						       beforeSend : function(data){},
+						         complete : function(data){
+						         }
+						      });
+
+						}); 
+
+						$('.quantity').change(function(e) {
+					
+							var imageSize = $('.size').attr('data-id');
+							var country   = $('.shipping-country').val();
+							var quantity  = e.target.value;
+							var fotoid    = $('.price').attr('data-photo-id');
+
+								$.ajaxSetup({
+									headers: {
+									  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+									}
+								});
+
+						        $.ajax({
+						           type:"POST",
+						           url:"{{ route('getImagePrice') }}",
+						           data : { 
+						           	fotoid : fotoid ,
+						           	size : imageSize ,
+						           	country:country,
+						           	quantity:quantity,
+						           },
+						           success : function(data){
+						              $('.price').text(data.price);
+						           },
+
+						            error : function(data){
+						                if(typeof data === 'object'){
+						                }
+						            },
+						       beforeSend : function(data){},
+						         complete : function(data){
+						         }
+						      });
+						});
+
+						
+					</script>
+
 					</div>
 					<div class="col-md-12">
 						<br>
@@ -189,201 +301,25 @@
 			<div class="col-md-12">
 				<h5 class="text-left">PHOTO LOCATION</h5>
 			</div>
+
 			<div class="col-md-12">
-					<div class="google-map-area">
-			<!--  Map Section -->
-			<div id="contacts" class="map-area">
-				<div id="googleMap" style="width:100%;height:420px;"></div>
-				<!-- <div class="map-content">
-					<div class="map-right">
-						<ul class="breadcrumb">
-							<li class="breadcrumb-item">JOURNALIST</li>
-							<li class="breadcrumb-item">PHOTOGRAPHER</li>
-							<li class="breadcrumb-item">VIDEOGRAPHER</li>
-						</ul>
-					</div>
-				</div> -->
+
+				{{-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script> --}}
+				{{-- <div id="map_div" style="height: 600px;"></div> --}}
+
+
+
 			</div>
-		</div>
-			</div>
+
 		</div>
 		
-		<!-- Map Area Start -->
-	
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMlLa3XrAmtemtf97Z2YpXwPLlimRK7Pk"></script>
-		<script>
-			function init() {
-				var mapOptions = {
-					zoom: 7,
-					minZoom: 3,
-					maxZoom: 18,
-					scrollwheel: false,
-					scaleControl: true,
-					backgroundColor: "#2B2B2B",
-					center: new google.maps.LatLng(41.9098312, 43.2330323),
-					styles: [{
-						"featureType": "all",
-						"elementType": "labels.text.fill",
-						"stylers": [{
-							"saturation": 36
-						}, {
-							"color": "#000000"
-						}, {
-							"lightness": 40
-						}]
-					}, {
-						"featureType": "all",
-						"elementType": "labels.text.stroke",
-						"stylers": [{
-							"visibility": "on"
-						}, {
-							"color": "#000000"
-						}, {
-							"lightness": 16
-						}]
-					}, {
-						"featureType": "all",
-						"elementType": "labels.icon",
-						"stylers": [{
-							"visibility": "off"
-						}]
-					}, {
-						"featureType": "administrative",
-						"elementType": "geometry.fill",
-						"stylers": [{
-							"color": "#000000"
-						}, {
-							"lightness": 20
-						}]
-					}, {
-						"featureType": "administrative",
-						"elementType": "geometry.stroke",
-						"stylers": [{
-							"color": "#000000"
-						}, {
-							"lightness": 17
-						}, {
-							"weight": 1.2
-						}]
-					}, {
-						"featureType": "landscape",
-						"elementType": "geometry",
-						"stylers": [{
-							"color": "#000000"
-						}, {
-							"lightness": 20
-						}]
-					}, {
-						"featureType": "poi",
-						"elementType": "geometry",
-						"stylers": [{
-							"color": "#000000"
-						}, {
-							"lightness": 21
-						}]
-					}, {
-						"featureType": "road.highway",
-						"elementType": "geometry.fill",
-						"stylers": [{
-							"color": "#000000"
-						}, {
-							"lightness": 17
-						}]
-					}, {
-						"featureType": "road.highway",
-						"elementType": "geometry.stroke",
-						"stylers": [{
-							"color": "#000000"
-						}, {
-							"lightness": 29
-						}, {
-							"weight": 0.2
-						}]
-					}, {
-						"featureType": "road.arterial",
-						"elementType": "geometry",
-						"stylers": [{
-							"color": "#000000"
-						}, {
-							"lightness": 18
-						}]
-					}, {
-						"featureType": "road.local",
-						"elementType": "geometry",
-						"stylers": [{
-							"color": "#000000"
-						}, {
-							"lightness": 16
-						}]
-					}, {
-						"featureType": "transit",
-						"elementType": "geometry",
-						"stylers": [{
-							"color": "#000000"
-						}, {
-							"lightness": 19
-						}]
-					}, {
-						"featureType": "water",
-						"elementType": "geometry",
-						"stylers": [{
-							"color": "#000000"
-						}, {
-							"lightness": 17
-						}]
-					}]
-				};
-				var mapElement = document.getElementById("googleMap");
-				var map = new google.maps.Map(mapElement, mapOptions);
-				var strictBounds = new google.maps.LatLngBounds(
-					new google.maps.LatLng(-73, -52),
-					new google.maps.LatLng(81.25, 54)
-				);
-				google.maps.event.addListener(map, "dragend", function() {
-					if (strictBounds.contains(map.getCenter())) return;
 
-					var c = map.getCenter(),
-						x = c.lng(),
-						y = c.lat(),
-						maxX = strictBounds.getNorthEast().lng(),
-						maxY = strictBounds.getNorthEast().lat(),
-						minX = strictBounds.getSouthWest().lng(),
-						minY = strictBounds.getSouthWest().lat();
 
-					if (x < minX) x = minX;
-					if (x > maxX) x = maxX;
-					if (y < minY) y = minY;
-					if (y > maxY) y = maxY;
 
-					map.setCenter(new google.maps.LatLng(y, x));
-				});
-				google.maps.event.addListener(map, "zoom_changed", function() {
-					if (map.getZoom() <= 3) {
-						$("[title='Zoom out']")[0].style.opacity = 0.5;
-						$("[title='Zoom out']")[0].style.cursor = "default";
-					} else if (map.getZoom() >= 18) {
-						$("[title='Zoom in']")[0].style.opacity = 0.5;
-						$("[title='Zoom in']")[0].style.cursor = "default";
-					} else {
-						$("[title='Zoom out']")[0].style.opacity = 1;
-						$("[title='Zoom out']")[0].style.cursor = "pointer";
-						$("[title='Zoom in']")[0].style.opacity = 1;
-						$("[title='Zoom in']")[0].style.cursor = "pointer";
-					}
-				});
-				var loc1 = new google.maps.Marker({
-					position: new google.maps.LatLng(41.716096, 44.774754),
-					map: map,
-					icon: "circle3.png"
-				});
-				loc1.addListener("click", function() {
-					$("#mModal").modal({
-						show: true
-					});
-				});
-			}
-			google.maps.event.addDomListener(window, "load", init);
-		</script>
+
+
+					
+
 		<!-- Modal -->
 		<div class="modal fade" id="mModal" role="dialog">
 			<div class="modal-dialog">
@@ -636,25 +572,13 @@
 		<br>
 		<br>
 		<br>
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<a href="">
-					<img src="img/loadmore.png" class="loadmore">
-					<p class="loadmore-text">Load more</p>
-				</a>
-			</div>
-		</div>
+
 	</div>
 
 
-<script>
-	function gonext() {
-		var newp = $("#nextid")[0].src;
-		var oldp = $("#prev")[0].src;
-		$("#nextid")[0].src = oldp;
-		$("#prev")[0].src = newp;
-	}
-</script>
+
+
+
 
 
 @endsection
