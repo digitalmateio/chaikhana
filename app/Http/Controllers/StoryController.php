@@ -85,6 +85,7 @@ class StoryController extends Controller
 
     public function story(int $id = null)
     { 
+      
         $story = Story::where('is_public',1)->findOrFail($id);
 
         $impressions_count = $story->impressions_count;

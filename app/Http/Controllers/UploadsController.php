@@ -76,7 +76,8 @@ class UploadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function upload_files($particulat_file,$story_id,$asset_id = null,$path,$is_avatar = false,$is_thumbnail = false) {
+    public function upload_files($particulat_file,$story_id,$asset_id = null,$path,$is_avatar = false,$is_thumbnail = false) 
+    {
 
         $savePath = public_path(Config::get('file_config.file_master_directory_name'));
         

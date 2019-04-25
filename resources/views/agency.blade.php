@@ -15,6 +15,15 @@
 
 		<div class="row first-row-agency">
 
+			@if(session()->has('alert'))
+				<div class="col-md-12">
+					<div class="alert alert-success" role="alert">
+					  {{ session()->get('alert') }}
+					</div>
+				</div>
+			@endif
+
+
 			<div class="col-md-11 mx-auto">
 				<div class="row">
 					
@@ -44,7 +53,6 @@
 
 	</div>
 
-
     <div id="map_wrapper_div">
     	<div class="col-md-11 mx-auto">
 
@@ -56,13 +64,57 @@
 			  </ul>
 			</div>
 
-			<div class="modal-block">
+		<form action="{{ route('inserData') }}" method="POST">
+			
+			{{ csrf_field() }}
+			<div class="modal-block modal-block-inser-data">
     			<!-- Freelancer Info --> 
     		</div>
+    		<div class="modal-block modal-block-hire-freelancer">
+
+				<div class="map-modal-block">
+                    <h2>Hire</h2>
+                    <button type="button" onclick="closeHireFreelancer()"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="map-modal">
+                    <h4 class="type">duration</h4>
+                    <ul class="list-inline hire-agency-duration">
+                        <li class="list-inline-item active">
+                        	<input type="text" name="date_from" class="form-control" id="datepickerFrom" autocomplete="off">
+                    	</li>  
+                    	<li class="to-line-agency-line">TO</li>                      
+                    	<li class="list-inline-item active">
+                        	<input type="text" name="date_to" class="form-control" id="datepickerTo" autocomplete="off">
+                    	</li>
+                    </ul>
+                    <h4 class="language">Your E-mail</h4>
+      				<input type="text" class="form-control email-input" name="email" autocomplete="off" placeholder="ex: chrisbrownofficial@gmail.com">
+
+                    <h4 class="language">Budget Range</h4>
+
+                    <ul class="list-inline hire-agency-duration hire-budget">
+                        <li class="list-inline-item">
+                        	<input type="text" class="form-control budget-input from" autocomplete="off" name="budget_from" placeholder="Ex: 144$">
+                    	</li>  
+                    	<li class="to-line-agency-line">TO</li>                   
+                    	<li class="list-inline-item">
+                        	<input type="text" class="form-control budget-input to" autocomplete="off" name="budget_to" placeholder="Ex: 500$">
+                    	</li>
+                    </ul>
+
+                    <h4 class="skills">TELL US MORE ABOUT YOUR REQUEST</h4>
+                    <textarea class="form-control budget-input to" name="textarea" placeholder="Add your comment here..."></textarea>
+                    <small id="passwordHelpBlock" class="form-text text-muted mb-5">
+					  We wil connect you to your media professional in 24hrs
+					</small>
+                    <input type="submit" name="sendBtn" value="SEND" class="hire-freelancer">   
+                </div>
+    		</div>
+
+    	</form>
+
 
     	</div>
-
-
 
         <div id="map_tuts"></div>
 
@@ -72,158 +124,7 @@
 
 
 	<div class="container-fluid text-center single-theme agency">
-		<!-- Modal -->
-		<div class="modal" id="myModal" role="dialog">
-			<div class="modal-dialog pull-right agency-modal-dialog">
 
-				<!-- Modal content-->
-				<div class="modal-content">
-					<div class="modal-header agency-modal-header ">
-						<h4 class="modal-title font-50 uppercase">Tbilisi</h4>
-						<button type="button" class="close agency-modal-close" data-dismiss="modal">&times;</button>
-
-					</div>
-					<div class="modal-body text-left agency-mpdal-body">
-						<p class="freelancer-type text-22 uppercase">TYPE OF FREELANCER.</p>
-						<div class="row modal-row">
-							<div class="col-md-12 agency-locationbtn-modal">
-
-								<button class="button btn text-14 uppercase">Journalist</button>
-								<button class="button btn text-14 uppercase">Photographer</button>
-								<button class="button btn text-14 uppercase">Videographer</button>
-							</div>
-							<div class="col-md-12">
-								<p class="text-28">Languages</p>
-								<label class="checkcontainer text-18">French
-									<input type="checkbox" checked="checked">
-									<span class="checkmark"></span>
-								</label>
-								<label class="checkcontainer text-18">English
-									<input type="checkbox" checked="">
-									<span class="checkmark"></span>
-								</label>
-								<label class="checkcontainer text-18">Georgian
-									<input type="checkbox" checked="">
-									<span class="checkmark"></span>
-								</label>
-							</div>
-						</div>
-						<div class="row modal-row">
-							<div class="col-md-12">
-								<p class="text-28">Skills</p>
-								<label class="checkcontainer text-18">Creativity
-									<input type="checkbox" checked="checked">
-									<span class="checkmark"></span>
-								</label>
-								<label class="checkcontainer text-18">Imagination
-									<input type="checkbox" checked="">
-									<span class="checkmark"></span>
-								</label>
-								<label class="checkcontainer text-18">Editing
-									<input type="checkbox" checked="">
-									<span class="checkmark"></span>
-								</label>
-							</div>
-						</div>
-						<div class="row modal-row">
-							<div class="col-md-12">
-								<p class="text-28">Equipment</p>
-								<span class="text-18">Camera,</span> <span class="text-18">Lens,</span> <span>Flash,</span><span class="text-18">Drone,</span>
-							</div>
-							<button type="button" class="btn hire-freelancer text-18 uppercase"  onclick="$('#myModal2').modal({show: true});">Hire Freelancer</button>
-						</div>
-
-					</div>
-				</div>
-
-			</div>
-		</div>
-
-		<div class="modal " id="myModal2" role="dialog">
-			<div class="modal-dialog agency-modal-dialog">
-
-				<!-- Modal content-->
-				<div class="modal-content">
-					<div class="modal-header agency-modal-header ">
-						<h4 class="modal-title ">HIRE</h4>
-						<button type="button" class="close agency-modal-close" data-dismiss="modal">&times;</button>
-					</div>
-					<div class="modal-body text-left agency-mpdal-body">
-						<p class="text-18 duration">DURATION</p>
-						<div class="row modal-row">
-							<div class="col-md-12 agency-locationbtn-modal text-18">
-								<input type="text" name="sd" placeholder="Start Date" class="
-								hirebg">
-								TO
-								<input type="text" name="ed" placeholder="End Date" class="hirebg">
-							</div>
-							<div class="col-md-12">
-								<p class="text-22">YOUR E-MAIL</p>
-								<input type="email" name="email" class="form-control text-18 hirebg" placeholder="ex: chrisbrownofficial@gmail.com">
-							</div>
-						</div>
-						<div class="row modal-row">
-							<div class="col-md-12">
-								<p class="text-22">BUDGET RANGE</p>
-								<input type="text" name="bfrom" placeholder="Ex: 100$" class="text-18 hirebg">
-								TO
-								<input type="text" name="bto" placeholder="Ex: 250$" class="text-18 hirebg">
-							</div>
-						</div>
-						<div class="row modal-row">
-							<div class="col-md-12">
-								<p class="text-22">TELL US MORE ON YOUR REQUEST</p>
-								<textarea class="form-control text-18 hirebg" placeholder="Add your comment here..."></textarea>
-								<p class="text-16">We will connect you to your media professional in 24hrs</p>
-							</div>
-							<button type="button" class="btn hire-freelancer text-22" onclick="$('#myModal3').modal({show: true}); $('.overlay1').eq(0).toggle();">SEND</button>
-						</div>
-
-					</div>
-				</div>
-
-			</div>
-		</div>
-<div class="overlay1" onclick="$('.overlay1').eq(0).toggle()"></div>
-
-		<div class="modal " id="myModal3" role="dialog">
-			<div class="modal-dialog agency-modal-dialog">
-
-				<!-- Modal content-->
-				<div class="modal-content">
-					<div class="modal-header agency-modal-header ">
-						<h4 class="modal-title">JOIN US</h4>
-						<button type="button" class="close agency-modal-close" data-dismiss="modal">&times;</button>
-
-					</div>
-					<div class="modal-body text-left agency-mpdal-body">
-						
-						<div class="row modal-row">
-							<div class="col-md-12 agency-locationbtn-modal text-18">
-								<input type="text" name="sd" placeholder="Email" class="
-								hirebg">
-								
-								<input type="text" name="ed" placeholder="Phone Number" class="hirebg">
-							</div>
-							<div class="col-md-12 agency-locationbtn-modal text-18">
-								<input type="text" name="sd" placeholder="Location" class="
-								hirebg">
-								
-								<input type="text" name="ed" placeholder="Location" class="hirebg">
-							</div>
-							<div class="col-md-12 agency-locationbtn-modal text-18">
-								<textarea class="form-control text-18 hirebg" placeholder="Add your comment here..."></textarea>
-							</div>
-						</div>
-						<div class="row modal-row">
-							<button type="button" class="btn hire-freelancer">SEND</button>
-						</div>
-
-					</div>
-				</div>
-
-			</div>
-		</div>
 		<!-- Map Area End -->
 
 		<div class="row agency-join join-row">
@@ -232,15 +133,57 @@
 				<p class="font-24">{{ $topHeadAboutBottom->TextTrans('description') }}</p>
 			</div>
 			<div class="join-btn mx-auto">
-				<button class="agency-join-btn text-22">Start Here</button>
+				<button type="button" class="btn btn-primary agency-join-btn text-22" data-toggle="modal" data-target="#exampleModal">Start Here</button>
 			</div>
 		</div>
 	</div>
 
 
+<!-- Modal -->
+<div class="modal fade join-us-modal bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body join-us-modal-body">
+      	<h3 class="mb-5">Join Us</h3>
+        <form action="{{ route('indertFr') }}" method="post">
+        	
+        	{{ csrf_field() }}
+			<div class="row mb-4">
+			    <div class="col">
+			      <input type="text" class="form-control" name="name" placeholder="Name" autocomplete="off">
+			    </div>
+			    <div class="col">
+			      <input type="text" class="form-control" name="email" placeholder="Email" autocomplete="off">
+			    </div>
+			</div>			
+			<div class="row mb-4">
+			    <div class="col">
+			      <input type="text" class="form-control" name="address" placeholder="Address" autocomplete="off">
+			    </div>
+			    <div class="col">
+			      <input type="text" class="form-control" name="subject" placeholder="Subject" autocomplete="off">
+			    </div>
+			</div>
+			<div class="row mb-4">
+				<div class="col">
+				    <textarea class="form-control" name="textarea" placeholder="Tell us more ex: your location, skills, experience"></textarea>
+			  	</div>
+			</div>
 
+			<input type="submit" name="send_btn" value="send">
 
-<script src="https://maps.googleapis.com/maps/api/js?v=3"></script>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{-- <script src="https://maps.googleapis.com/maps/api/js?v=3"></script> --}}
 <script>
 
 jQuery(function($) {
@@ -285,13 +228,15 @@ function setMarkers(locations) {
 				    	type_id: this.typeID,
 				    	_token : $('meta[name="csrf-token"]').attr('content')
 				  	},
-				  	dataType : "json",
+				  	dataType : "text",
 				  	success : function (data)
 				  	{
 						if(data != ''){
-							console.log(data);
+							// console.log(data);
+							$('.modal-block-inser-data').show();
+							$(".modal-block-inser-data").html(data);
 				      	}else{
-				      		console.log(data);
+				      		// console.log(data);
 				      	}
 				  	}
 				});
@@ -350,7 +295,7 @@ $(".agency-type-filter-list li").on('click', function() {
 				// var CityArr = JSON.parse(data);
 				
 
-				console.log(data);
+				// console.log(data);
 				beaches = [];
 
 				for (var i = 0; i < data.length; i++) {
@@ -377,8 +322,22 @@ $(".agency-type-filter-list li").on('click', function() {
 
 });
 
+$('#datepickerFrom').datepicker({
+    uiLibrary: 'bootstrap4'
+});
+$('#datepickerTo').datepicker({
+    uiLibrary: 'bootstrap4'
+});
 
+function closeHireFreelancer(){
+	$('.modal-block').hide();
+}
 
+function hireFunction(){
+	// alert(1);
+	$('.modal-block').hide();
+	$('.modal-block-hire-freelancer').show();
+}
 
 // =================================
 

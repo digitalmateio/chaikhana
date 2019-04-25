@@ -77,7 +77,9 @@
                 <h4 class="modal-title" id="myModalLabel">Modal title</h4>
             </div>
 
-            {!! Form::open(['route' => 'admin.addblock']) !!}
+            {!! Form::open(['route' => 'admin.addBlockTranslation']) !!}
+
+            
 
             <div class="modal-body">
 
@@ -146,11 +148,12 @@
     <div class="box-body">
         <div class="row">
             <div class="col-md-12">
-                {!! Form::open(['route' => 'admin.addblock']) !!}
+                {!! Form::open(['route' => 'admin.addBlockTranslation']) !!}
                 <div class="form-group">
                     
                     {{ csrf_field() }}
                     {{ Form::hidden('story_id', $story->id) }}
+                    {{ Form::hidden('block_id',$block->id) }}
                     
                     {{ Form::label('block_types') }}
                     

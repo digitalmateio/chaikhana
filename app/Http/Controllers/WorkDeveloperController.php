@@ -121,14 +121,23 @@ class WorkDeveloperController extends Controller
 //        $folders['infographic'] = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'infographic');
 //        $folders['slideshow']   = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'slideshow');
 //        $folders['thumbnail']   = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'thumbnail');
-//        $folders['video']       = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'video');      
-//        $folders['logos']       = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'logos');
+       // $folders['video']       = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'video');      
+       $folders['logos']       = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'logos');
 //        $folders['users']       = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'users'.DIRECTORY_SEPARATOR.'original');
 //        $folders['authors']       = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'authors'.DIRECTORY_SEPARATOR.'original');
 //           $folders['audio'] = public_path('chaikhanafiles'.DIRECTORY_SEPARATOR.'audio');
-        
-      
-        
+/*        
+thumbnail
+authors
+users
+audio
+slideshow
+
+video
+logos
+images
+infographic
+*/      
         foreach($folders as $key => $folder)
         { 
             $story_id = '';
@@ -206,25 +215,32 @@ class WorkDeveloperController extends Controller
                             }
                         continue;
                         break;  
-                    case 'slideshow' : 
-                           foreach($firectory as $StoryFolder)
-                           {
-//                                    dd(is_dir(public_path('chaikhanafiles/slideshow/'.$StoryFolder)));
-//                                    dd($firectory);
-//                                    dd($StoryFolder);
-//                               $paat = public_path('chaikhanafiles/slideshow/'.$StoryFolder.DIRECTORY_SEPARATOR.'original');
-                               
-//                                dd(is_dir( $paat ));
-//                               dd(public_path('chaikhanafiles/slideshow/'.$StoryFolder.DIRECTORY_SEPARATOR.'original'));
-//                                dd($folders['slideshow']);
-//                                dd($key);
-//                                dd($folders[$key]);
-//                                dd($StoryFolder);
-                               
+                    case 'logos' : 
+                               foreach($firectory as $StoryFolder)
+                                {
+                                      $story_id = $StoryFolder;
+                                      $path = $folders[$key].DIRECTORY_SEPARATOR.$StoryFolder.DIRECTORY_SEPARATOR.'original';
+                                      $subDirs = $this->scanDir( $path );
+                                        if(!$subDirs)
+                                        {
+                                            continue;
+                                        }
+                                     foreach($subDirs as $onefile)
+                                     {
+                                         $asset_id = substr($onefile, 0,strpos($onefile,"__") ); 
+                                         $upload->upload_files($onefile,$story_id,$asset_id,$path);
+                                     }
+                                    
+                                }
+                        continue;
+                        break;  
+                    case 'infographic' : 
+                            foreach($firectory as $StoryFolder)
+                            {
+
                                $story_id = $StoryFolder;
                                $path = public_path('chaikhanafiles/slideshow/'.$StoryFolder.DIRECTORY_SEPARATOR.'original');
-//                                  $path = $folders[$key].DIRECTORY_SEPARATOR.$StoryFolder.DIRECTORY_SEPARATOR.'original';
-//                               dd($path);
+
                                   $subDirs = $this->scanDir($path );
                                     if(!$subDirs)
                                     {
@@ -234,7 +250,51 @@ class WorkDeveloperController extends Controller
                                  foreach($subDirs as $onefile)
                                  {
                                      $asset_id = substr($onefile, 0,strpos($onefile,"__") ); 
-//                                     dd($onefile);
+                                     $upload->upload_files($onefile,$story_id,$asset_id,$path);
+                                 }
+
+                            }
+                         continue;
+                            break; 
+                    case 'images' : 
+                            foreach($firectory as $StoryFolder)
+                            {
+
+                               $story_id = $StoryFolder;
+                               $path = public_path('chaikhanafiles/slideshow/'.$StoryFolder.DIRECTORY_SEPARATOR.'original');
+
+                                  $subDirs = $this->scanDir($path );
+                                    if(!$subDirs)
+                                    {
+                                        continue;
+                                    }
+
+                                 foreach($subDirs as $onefile)
+                                 {
+                                     $asset_id = substr($onefile, 0,strpos($onefile,"__") ); 
+                                     $upload->upload_files($onefile,$story_id,$asset_id,$path);
+                                 }
+
+                            }
+
+                       continue;
+                          break; 
+                    case 'slideshow' : 
+                           foreach($firectory as $StoryFolder)
+                           {
+
+                               $story_id = $StoryFolder;
+                               $path = public_path('chaikhanafiles/slideshow/'.$StoryFolder.DIRECTORY_SEPARATOR.'original');
+
+                                  $subDirs = $this->scanDir($path );
+                                    if(!$subDirs)
+                                    {
+                                        continue;
+                                    }
+
+                                 foreach($subDirs as $onefile)
+                                 {
+                                     $asset_id = substr($onefile, 0,strpos($onefile,"__") ); 
                                      $upload->upload_files($onefile,$story_id,$asset_id,$path);
                                  }
 
@@ -244,44 +304,28 @@ class WorkDeveloperController extends Controller
                     default: 
                         break;
                 }
-          continue;
+         /*
             foreach($firectory as $StoryFolder)
             {
-                    dd(is_dir($firectory));
-                    dd($firectory);
-                    dd($StoryFolder);
-                
                   $story_id = $StoryFolder;
                   $path = $folders[$key].DIRECTORY_SEPARATOR.$StoryFolder.DIRECTORY_SEPARATOR.'original';
-                  $subDirs = $this->scanDir($path );
+                  $subDirs = $this->scanDir( $path );
                     if(!$subDirs)
                     {
                         continue;
                     }
-
+                    dump( $subDirs);
                  foreach($subDirs as $onefile)
                  {
                      $asset_id = substr($onefile, 0,strpos($onefile,"__") ); 
-                     $upload->upload_files($onefile,$story_id,$asset_id,$path);
-                 }
-                
+                       dump( $asset_id );
+                     // $upload->upload_files($onefile,$story_id,$asset_id,$path);
+                 }   
             }
-
+                */
         }
         
-//        dd($folders);
-        
-//        try{
-//
-////            $this->AssetSaves($folders);
-////            $this->scanAndSaveAssets($folders);
-//
-//        }catch(Exception $e){
-//
-//            dump( 'Caught exception: ', $e->getMessage() );
-//            \Log::info( 'Exception class :  ' .  $e->getMessage() );
-//
-//        }
+
 
         dd('asets saved ');
 
@@ -453,12 +497,12 @@ class WorkDeveloperController extends Controller
             return false;
         }
         //        $folders = Storage::disk('public')->directories('chaikhanafiles');
-//                 dump(   $dir  );
+        //                 dump(   $dir  );
         try{
             
             if( file_exists($dir) )
             {
-//                   \Log::info( '************** DIRS  ****** :  ' . $dir );
+               //                   \Log::info( '************** DIRS  ****** :  ' . $dir );
                    $files = scandir( $dir );
             }else{
                 \Log::info( '***********************'  );
@@ -474,25 +518,25 @@ class WorkDeveloperController extends Controller
              dump($e);
         }
        
-//        $files = scandir($dir,SCANDIR_SORT_DESCENDING );
-//        $files = scandir(public_path($dir),SCANDIR_SORT_DESCENDING );
-//        array_pop ($files);
-//        array_pop ($files);
+            //        $files = scandir($dir,SCANDIR_SORT_DESCENDING );
+            //        $files = scandir(public_path($dir),SCANDIR_SORT_DESCENDING );
+            //        array_pop ($files);
+            //        array_pop ($files);
          unset($files[array_search('.', $files)]);
          unset($files[array_search('..', $files)]);
-        dump($dir);
+        // dump($dir);
         return $files;
     }
 
     public function AssetSaves($folders)
     {
-//d           dd($folders);
+        //d           dd($folders   );
         $path = '';
         foreach($folders  as $key => $subFolder)
         {  
             
-//            dump($subFolder);
-//            continue;
+        //            dump($subFolder);
+        //            continue;
             
             foreach($subFolder as $folder)
             {
@@ -507,11 +551,11 @@ class WorkDeveloperController extends Controller
                     $path = 'chaikhanafiles'. DIRECTORY_SEPARATOR .$key. DIRECTORY_SEPARATOR .$folder;
                         break;
                 }
-dump($path); continue;
+                dump($path); continue;
                 $story_id = $folder;
                
                 $fileB = $this->scanDir( $path );
-dump($fileB );
+                dump($fileB );
                continue;
                 foreach($fileB as $audio)
                 { 

@@ -50,6 +50,7 @@ Route::group(array('prefix' => $locale), function()
       // Shop
       Route::get('/shop', 'ShopController@index');
       Route::get('/shop/buy', 'ShopController@buy')->name('shopBuy');
+      Route::post('/shop/buy', 'ShopController@buyNow')->name('buyNow');
       Route::get('/shop/{id}', 'ShopController@show');
       Route::post('/shop/price', 'ShopController@imagePrice')->name('getImagePrice');
    
@@ -94,8 +95,6 @@ Route::group(array('prefix' => $locale), function()
       Route::get('account', function(){
           dd('account');
       })->name('account');
-
-    
 });
 
 Route::get("/story", function () use ($locale){

@@ -109,9 +109,39 @@ class EventsController extends Controller
             'Translate_module' => $Translate_module,
             'translate_fields' => $translate_fields,
             'event' => $event,
+            'block' => $block,
         ]);
 
     }	
+
+      public function AddEventBlockTranslation(Request $request)
+    {
+        // dd( Block::find($request->block_id) );
+        // \Log::info( json_encode( $request->all() ) );
+        // dd($request->all());
+        // $block = Block::find($request->block_id);
+
+        $block_type = Block_type::find((int)$request->block_type);
+      
+        $translate_fields  = json_decode( $block_type->translate_fields );
+        $fields = [];
+        
+        foreach($translate_fields as $trans_field)
+        {
+            $fields[$trans_field] = $request->{$trans_field};
+        }
+       
+        $fields['block_id'] = (int)$request->block_id;
+        $fields['event_id'] = (int)$request->event_id;
+        $fields['locale'] = $request->Language;
+
+        $trans = Translation::create($fields);
+      
+
+        return redirect()->route('showEventBlocks',$request->event_id);
+
+    }
+
 
     public function createBlock($event_id=null,$block_type_id=null)
     {  

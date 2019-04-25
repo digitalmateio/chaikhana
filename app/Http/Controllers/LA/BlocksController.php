@@ -70,7 +70,7 @@ class BlocksController extends Controller
     public function create()
     {}
     
-     public function createBlockTranslation($storyid=null,$block_id=null)
+     public function createBlockTranslation( $storyid = null, $block_id = null)
     {  
 
 
@@ -109,6 +109,30 @@ class BlocksController extends Controller
             'block' => $block,
         ]);
     }	
+
+    public function AddBlockTranslation(Request $request)
+    {
+     
+        $block_type = Block_type::find((int)$request->block_type);
+      
+        $translate_fields  = json_decode( $block_type->translate_fields );
+        $fields = [];
+        
+        foreach($translate_fields as $trans_field)
+        {
+            $fields[$trans_field] = $request->{$trans_field};
+        }
+       
+        $fields['block_id'] = (int)$request->block_id;
+        $fields['story_id'] = (int)$request->story_id;
+        $fields['locale'] = $request->Language;
+
+        $trans = Translation::create($fields);
+        
+        return redirect()->route('blockShow',$request->story_id);
+
+    }
+
 
     public function createBlock($storyid=null,$block_type_id=null)
     {  

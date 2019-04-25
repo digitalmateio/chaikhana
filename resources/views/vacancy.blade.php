@@ -8,7 +8,7 @@
 	<div class="row offer-main-header">
 		<div class="col-md-1 ">
 			<a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/about">
-				<i class="fa fa-long-arrow-left circlogo timep hand"></i>
+				<i class="fas fa-arrow-left"></i>
 			</a>
 		</div>
 		<div class="col-md-11 ">

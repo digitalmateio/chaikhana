@@ -119,8 +119,10 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	Route::get(config('laraadmin.adminRoute') . '/block/createBlock/{storyid}/{blockid}', 'LA\BlocksController@createBlock')->name('createblock');
     
     Route::get(config('laraadmin.adminRoute') . '/block/create/translation/{storyid}/{block_id}', 'LA\BlocksController@createBlockTranslation')->name('createBlockTranslation');
-    
+    Route::post(config('laraadmin.adminRoute') . '/block/create/translation', 'LA\BlocksController@AddBlockTranslation')->name('addBlockTranslation');
+
 	Route::get(config('laraadmin.adminRoute') . '/block/createBlock', 'LA\BlocksController@createBlock')->name('createbyid');
+	
     
     Route::post(config('laraadmin.adminRoute') . '/block/addblock', 'LA\BlocksController@addblock')->name('addblock');
     
@@ -240,6 +242,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
     Route::post(config('laraadmin.adminRoute') . '/event/block/sort', 'LA\EventsController@blocksort')->name('eventblocksort');
     
     Route::get(config('laraadmin.adminRoute') . '/block/event/translation/{storyid}/{block_id}', 'LA\EventsController@createEventTranslation')->name('createEventTranslation');
+    Route::post(config('laraadmin.adminRoute') . '/block/event/create/translation', 'LA\EventsController@AddEventBlockTranslation')->name('AddEventBlockTranslation');
+
 
 	/* ================== Photo_sizes ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/photo_sizes', 'LA\Photo_sizesController');
@@ -252,4 +256,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Resource_requests ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/resource_requests', 'LA\Resource_requestsController');
 	Route::get(config('laraadmin.adminRoute') . '/resource_request_dt_ajax', 'LA\Resource_requestsController@dtajax');
+
+	/* ================== Photo_shop_orders ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/photo_shop_orders', 'LA\Photo_shop_ordersController');
+	Route::get(config('laraadmin.adminRoute') . '/photo_shop_order_dt_ajax', 'LA\Photo_shop_ordersController@dtajax');
 });

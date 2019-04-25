@@ -3,16 +3,19 @@
 
 @section('content')
 
+ {{-- 
+dd( $story->cover[0] )
 
-{{-- {{ dd($story->cover) }} --}}
-{{-- {{ $story->thumbnail[0] }}
+$story->cover 
+{{ $story->thumbnail[0] }}
 {{ $story->thumbnail_preview }}
 {{ $story->cover }}
 
 
 {!! $story->TextTrans('title') !!}
 {!! $story->TextTrans('about') !!}
-{!! $story->TextTrans('media_author') !!} --}}
+{!! $story->TextTrans('media_author') !!} 
+--}}
 
 
 @php
@@ -21,7 +24,8 @@
     $tags = $story->tags;
     $authors = $story->authors;
     $blocks = $story->blocks;
-    
+
+
     if(!empty($story->block_sort_oder))
     {
         $order = json_decode($story->block_sort_oder);
@@ -51,6 +55,8 @@
     
     @php 
         $translations = $block->translations ;
+       // dump( $block->asset_type_id );
+       // continue;
     @endphp
     
      @switch( $block->asset_type_id )
@@ -64,7 +70,7 @@
         @case(5)
             @include('blocks.video', ['translations ' => $translations, 'block' => $block, 'fields' => $fields ])
         @break        
-        @case(6)
+        @case(6) @php  dump( $translations ) @endphp
             @include('blocks.slideshow', ['translations ' => $translations, 'block' => $block, 'fields' => $fields ])
         @break        
         @case(7)
@@ -106,7 +112,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="single-story-head-info">
-						<img src="https://www.chai-khana.org/system/places/images/787/fullscreen/21309__0m4a4666e-sh1.jpg?1553175046" class="story-slider-3">
+						<img src="{{ optional($story)->cover[0] ?? ''}}" class="story-slider-3">
 						<span class="shadow-story-head-image"><!-- --></span>
 					</div>
 				</div>
@@ -125,10 +131,10 @@
 				</div>
 
 				<div class="col-md-10 col-10 text-left mx-auto mt-4">
-					<h1 class="story2-header font-50 single-story-head-title">A Georgian girl from Iran</h1>
+					<h1 class="story2-header font-50 single-story-head-title">{!! $story->TextTrans('title') !!}</h1>
 				</div>
 				<div class="col-md-10 text-left col-10 mx-auto">
-					<p class="story2-main-text text-30 single-story-head-text">Negar Khodaivandy, 21, loves the scarf she wears around her neck. It is the same scarf she uses as chador in Iran. One scarf bridges two very worlds, carried by a girl who was born of two very different cultures. Khodaivandy is one of dozens of young Iranians who are moving to Georgia. More accurately, they are moving back to Georgia, their ancestral homeland. Khodaivandy is a member of Georgia's one of the largest diasporas – the group of thousands of ethnic Georgians who were exiled to Persia 400 years ago. Starting from the early 17th century, ethnic Georgians in Iran were forced to settle in the town of Fereydunshahr. Georgians converted to Shia Islam but maintained Georgian traditions, including the language, although over the past four centuries it has taken on some local traits, including a very specific accent. Today there is no exact information on the number of ethnic Georgians residing in Iran, however, most of the sources estimate there are around 60, 000. Many still identify themselves as Georgian, and an increasing number of them are returning home in search of better opportunities and more personal freedom. That is particularly true for young Georgian-Iranians, who consider moving to Georgia – especially capital Tbilisi – to attend university.
+					<p class="story2-main-text text-30 single-story-head-text">{!! $story->TextTrans('about') !!}
 					</p>
 				</div>
 				<div class="col-md-1 story2-main-text  fixed-div-right col-1">
@@ -148,48 +154,7 @@
 		</div>
 
 
-		<div class="container-full parallax-slider single-story-paralax-slider">
-
-			<div id="demo" class="carousel slide" data-ride="carousel" data-interval="false">
-				<div class="carousel-inner photo-with-music" id="storyslider">
-					<div class="carousel-item active first-element">
-						<img src="{{ asset('assets/img/hiking-fb-cover.jpg') }}" alt="Los Angeles" width="1100" height="500">
-					</div>
-					<div class="carousel-item">
-						<img src="{{ asset('assets/img/hiking-fb-cover.jpg') }}" alt="Chicago" width="1100" height="500">
-					</div>
-					<div class="carousel-item ">
-						<img src="{{ asset('assets/img/hiking-fb-cover.jpg') }}" alt="New York" width="1100" height="500">
-					</div>
-					<div class="carousel-item ">
-						<img src="{{ asset('assets/img/hiking-fb-cover.jpg') }}" alt="New York" width="1100" height="500">
-					</div>
-					<div class="carousel-item last-element">
-						<img src="{{ asset('assets/img/hiking-fb-cover.jpg') }}" alt="New York" width="1100" height="500">
-					</div>
-				</div>
-				<button class="circ textovr dollar ">$</button>
-				<span class="textovr ">See buying options</span>
-
-				<span class="soff ">Sound Off</span>
-				<button class="circ textr" onclick="playmusic()"><i class="fa fa-volume-up"></i></button>
-
-				<audio id="storyAudio">
-				  <source src="assets/music.mp3" type="audio/mpeg">
-				  Your browser does not support the audio element.
-				</audio>
-
-			</div>
-		</div><!-- parallax-slider end -->
-<style>
-	#storyslider img {
-		width: 100vw !important;
-	}
-	.carousel-caption {
-		left: 24%;
-		right: auto;
-	}
-</style>
+		
 
 		<div class="container-fluid story-3 text-center single-theme padding-top-reset">
 			<br>
@@ -391,6 +356,12 @@
 								    {{ $author->TextTrans('name') }}
 								@endforeach
 							</h1>
+							@if(!empty($story->TextTrans('media_author')))
+								<p class="grey-text text-30 single-story-author">MEDIA AUTHOR</p>
+								<h1 class="font-80 single-story-title">
+									{!! $story->TextTrans('media_author') !!}
+								</h1>
+							@endif
 							<button class="button btn btn-success work single-story-work-button">Work with freelancer</button>
 							<br>
 							<br>

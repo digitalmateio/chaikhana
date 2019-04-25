@@ -53,6 +53,9 @@
 
             </div>
 
+
+
+
             <div class="col-md-12">
 
                     <div class="row">
@@ -95,7 +98,7 @@
                                 <ul class="list-inline story-tags-filter">
                                     @foreach($tags as $tag)
                                         <li class="list-inline-item">
-                                            <a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/story/tag/{{ $tag->id }}">
+                                            <a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/tag/{{ $tag->id }}">
                                                 {{ $tag->TextTrans('title') }}
                                             </a>
                                         </li>

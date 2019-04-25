@@ -16,6 +16,7 @@ use App\Photo_size;
 use App\Photo_shop;
 use App\Shopping_country;
 use App\Models\Shipping;
+use App\Models\Photo_shop_order;
 
 
 /**
@@ -58,7 +59,6 @@ class ShopController extends Controller
             'AllTags' => $ShopTagsAll
         ]);
     }
-
 
     public function tag(int $id = null)
     {
@@ -183,36 +183,100 @@ class ShopController extends Controller
         } // End empty filter
     }
 
-    public function imagePrice(Request $request)
-    {
-        
-        \Log::info( json_encode(  $request->all() ));
 
-        $Photo_shop = Photo_shop::find( $request->fotoid );
-        $Shipping = Shipping::where('size',$request->size)->where('country',$request->country)->first();
+    public function buyNow(Request $request)
+    {
+
+        $Shipping = null;
+        $size = null;
+        $contry = null;
+        $quantity = null;
+        $sizeTitle = null;
+        $Shopping_country = null;
+
+        if ($request->has('size') && $request->has('country')) 
+        {
+            $size = $request->size;
+            $sizeTitle = optional(Photo_size::find( $size ))->title;
+            $contry = $request->country;
+            $Shipping = Shipping::where('size',$size)->where('country', $contry )->first();
+            $Shopping_country = optional(Shopping_country::find($contry))->title_en;
+        }
+
+        $Photo_shop = Photo_shop::findOrFail( $request->fotoid );
+        
+        if($request->quantity <= 0 )
+        {
+            $quantity = abs($request->quantity) + 1;
+        }else{
+            $quantity = abs($request->quantity);
+        }
 
         if(is_null($Shipping))
         {
             $originalPrice = $Photo_shop->price;
-            $quantity = $request->quantity;
             $shippingPrice = 0;
 
         }else{
 
             $originalPrice = $Photo_shop->price;
-            $quantity = $request->quantity;
+            $shippingPrice = $Shipping->price;
+        }
+
+
+        $finalPrice =  ($originalPrice + $shippingPrice) * $quantity;
+        $finalPrice = sprintf("%.2f",  $finalPrice);
+      
+        Photo_shop_order::create([
+             'photo'             => optional($Photo_shop)->id,
+             'size'              => $sizeTitle,
+             'quantity'          => $quantity,
+             'shipping_country'  => $Shopping_country,
+             'email'             => $request->email,
+             'address'           => $request->address,
+        ]);
+
+        dd('Here will be TBC Payment page');
+
+    }
+
+    public function imagePrice(Request $request)
+    {
+        $Shipping = null;
+
+        if ($request->has('size') && $request->has('country')) 
+        {
+            $size = $request->size;
+            $contry = $request->country;
+            $Shipping = Shipping::where('size',$size)->where('country', $contry )->first();
+        }
+
+        $Photo_shop = Photo_shop::findOrFail( $request->fotoid );
+        $quantity = null;
+
+        if($request->quantity <= 0 )
+        {
+            $quantity = abs($request->quantity) + 1;
+        }else{
+            $quantity = abs($request->quantity);
+        }
+
+        if(is_null($Shipping))
+        {
+            $originalPrice = $Photo_shop->price;
+            // $quantity = abs($request->quantity);
+            $shippingPrice = 0;
+
+        }else{
+
+            $originalPrice = $Photo_shop->price;
+            // $quantity = abs($request->quantity);
             $shippingPrice = $Shipping->price;
         }
 
 
          $finalPrice =  ($originalPrice + $shippingPrice) * $quantity ;
          $finalPrice = sprintf("%.2f",  $finalPrice);
-         \Log::info( json_encode( '$originalPrice : '.$originalPrice ));
-         \Log::info( json_encode( '$shippingPrice : '.$shippingPrice ));
-         \Log::info( json_encode( '$quantity : '.$quantity ));
-        // $finalPrice = floatval( ($originalPrice + $Shipping->price) * $quantity );
-
-        \Log::info( json_encode( $finalPrice ));
 
         return response()->json([
             'price' => $finalPrice

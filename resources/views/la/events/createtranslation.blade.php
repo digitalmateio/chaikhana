@@ -80,11 +80,12 @@
                     {!! Form::open(['route' => 'admin.eventAddblockAudio']) !!}
                     <div class="form-group">
                         {{ Form::hidden('block_type', 6 ) }}
-                        {{-- Form::hidden('block_id', $block->id ) --}}
+                         
 
                         {{ csrf_field() }}
                         {{ Form::hidden('event_id', $event->id) }}
-
+                        {{ Form::hidden('block_id',$block->id) }}
+                        
                         @la_showInput($block_module, 'audio',0,null,null,['class' => 'form-control'])    
 
                     <br>
@@ -104,11 +105,12 @@
     <div class="box-body">
         <div class="row">
             <div class="col-md-12">
-                {!! Form::open(['route' => 'admin.eventaddblock']) !!}
+                {!! Form::open(['route' => 'admin.AddEventBlockTranslation']) !!}
                 <div class="form-group">
                     
                     {{ csrf_field() }}
                     {{ Form::hidden('event_id', $event->id) }}
+                    {{ Form::hidden('block_id',$block->id) }}
                     
                     {{ Form::label('block_types') }}
                     

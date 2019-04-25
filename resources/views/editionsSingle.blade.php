@@ -16,7 +16,112 @@
     <!-- Third Container (Grid) -->
     <div class="container-fluid story-3 text-center single-theme single-theme-page">
       
-        
+        <div class="row stories-filter uppercase">
+
+           <div class="col-md-4 text-left">
+                <h1 class="stories-header font-58">STORIES</h1>
+            </div>
+
+            <div class="col-md-8">
+
+                <div class="row sort-by-filter justify-content-end">
+                    <div class="col-auto mr-3">
+                        <h3 class="sort-by-head mb-2 mt-3">SORT BY</h3>
+                        <ul class="list-inline story-sort">
+                          <li class="list-inline-item">
+                            <a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/story/sort/resent">
+                                resent
+                            </a>
+                          </li>                          
+                          <li class="list-inline-item">
+                            <a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/story/sort/views">
+                                viewvs
+                            </a>
+                          </li>                          
+                          <li class="list-inline-item">
+                            <a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/story/sort/likes">
+                                likes
+                            </a>
+                          </li>
+
+                        </ul>
+                    </div>                    
+                    <div class="col-auto">
+                        <h3 class="story-type-head mb-2 mt-3">TYPES</h3>
+                        <ul class="list-inline story-types">
+                            @foreach($types as $type)
+                                <li class="list-inline-item">
+                                    <a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/story/type/{{ $type->id }}">
+                                        {{ $type->TextTrans('name') }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-12">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="list-inline float-right story-edition-tags-filter">
+                                <li class="list-inline-item">
+                                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#editions" aria-expanded="false" aria-controls="editions">
+                                        editions <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </li>                        
+                                <li class="list-inline-item">
+                                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#tags" aria-expanded="false" aria-controls="tags">
+                                        tags <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </li>
+                            </ul>                       
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="collapse multi-collapse" id="editions">
+                              <div class="card card-body float-right">
+
+                                <ul class="list-inline story-edition-filter">
+                                    @foreach($editions as $edition)
+                                        <li class="list-inline-item">
+                                            <a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/edition/{{ $edition->id }}">
+                                                {{ $edition->TextTrans('name') }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                              
+                              </div>
+                            </div>
+
+                            <div class="collapse multi-collapse" id="tags">
+                              <div class="card card-body float-right">
+                                <ul class="list-inline story-tags-filter">
+                                    @foreach($tagsAll as $tag)
+                                        <li class="list-inline-item">
+                                            <a href="{{ URL::to('/').'/'.App::getLocale('locale') }}/tag/{{ $tag->id }}">
+                                                {{ $tag->TextTrans('title') }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+            
+
+
+        </div>
+
+
         <div class="row">
             <div class="col-md-12">
                 <img src="{{ $OneEdition->cover_image[0] }}">
