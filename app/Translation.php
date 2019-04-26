@@ -95,4 +95,21 @@ class Translation extends Model
     {
          return $this->belongsTo('App\Block','block_id');
     }
+
+    public function getTopImageAttribute($value)
+    {
+         return Upload::find($value)->url;
+    }
+
+     public function getRightImageAttribute($value)
+    {
+             return Upload::find($value)->url;
+    }
+
+     public function getLeftImageAttribute($value)
+    {
+             return Upload::find($value)->url;
+    }    
+
+
 }

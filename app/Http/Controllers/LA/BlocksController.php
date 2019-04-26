@@ -410,7 +410,7 @@ class BlocksController extends Controller
             
             $translat = Translation::where('block_id',$request->block_id)
               ->where('story_id', $request->story_id)
-              ->where('locale', $request->Language)
+              ->where('id', $request->translation_id)
               ->update($fields);
         }
     

@@ -92,6 +92,10 @@ Route::group(array('prefix' => $locale), function()
       Route::get('/registration', '\App\Http\Controllers\RegisterController@showRegistrationForm')->name('userRegistr');
       Route::post('/registration', '\App\Http\Controllers\RegisterController@register')->name('userRegistration');
 
+      Route::get('/event/{id}', 'EventController@show')->name('event');
+      
+
+
       Route::get('account', function(){
           dd('account');
       })->name('account');

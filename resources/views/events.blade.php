@@ -6,15 +6,15 @@
 
 @php
 
-    $edition = $story->edition;
-    $tags = $story->tags;
-    $authors = $story->authors;
-    $blocks = $story->blocks;
+    $edition = $event->edition;
+    $tags = $event->tags;
+    $authors = $event->authors;
+    $blocks = $event->blocks;
 
 
-    if(!empty($story->block_sort_oder))
+    if(!empty($event->block_sort_oder))
     {
-        $order = json_decode($story->block_sort_oder);
+        $order = json_decode($event->block_sort_oder);
         $blocksSorted = $blocks->sortBy(function($model) use ($order){
             return array_search($model->getKey(), $order);
         });
@@ -35,7 +35,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="single-story-head-info">
-						<img src="{{ optional($story)->cover[0] ?? ''}}" class="story-slider-3">
+						<img src="{{ optional($event)->cover[0] ?? ''}}" class="story-slider-3">
 						<span class="shadow-story-head-image"><!-- --></span>
 					</div>
 				</div>
@@ -54,10 +54,10 @@
 				</div>
 
 				<div class="col-md-10 col-10 text-left mx-auto mt-4">
-					<h1 class="story2-header font-50 single-story-head-title">{!! $story->TextTrans('title') !!}</h1>
+					<h1 class="story2-header font-50 single-story-head-title">{!! $event->TextTrans('title') !!}</h1>
 				</div>
 				<div class="col-md-10 text-left col-10 mx-auto">
-					<p class="story2-main-text text-30 single-story-head-text">{!! $story->TextTrans('about') !!}
+					<p class="story2-main-text text-30 single-story-head-text">{!! $event->TextTrans('about') !!}
 					</p>
 				</div>
 				<div class="col-md-1 story2-main-text  fixed-div-right col-1">
@@ -141,7 +141,7 @@
 			<div class="row">
 				<div class="col-md-10 mx-auto mt-5">
 					<div class="adban text-center single-story-banner">
-						{!! $story->ad_banner !!}
+						{!! $event->ad_banner !!}
 					</div>
 				</div>
 			</div>
@@ -158,44 +158,11 @@
 					<div class="row">
 						
 						<div class="col-md-7 col-11">
-							<p class="grey-text text-30 single-story-author">AUTHOR</p>
-							<h1 class="font-80 single-story-title">
-								@foreach($authors as $author)
-								    {{ $author->TextTrans('name') }}
-								@endforeach
-							</h1>
-							@if(!empty($story->TextTrans('media_author')))
-								<p class="grey-text text-30 single-story-author">MEDIA AUTHOR</p>
-								<h1 class="font-80 single-story-title">
-									{!! $story->TextTrans('media_author') !!}
-								</h1>
-							@endif
-							<a href="{{ $story->link }} class="button btn btn-success work single-story-work-button">Work with freelancer</a>
-
-							<br>
-							<br>
+							
 							<p class="grey-text text-30 single-story-comments">COMMENTS</p>
 							<p class="text-30 single-story-levae-comments">Leave your comment</p>
 						</div>
-						<div class="col-md-4 col-11">
-							<p class="grey-text text-30 single-story-edition">EDITION</p>
-							<h1 class="font-80 single-story-edition-title">
-								{{ $edition->TextTrans('name')  }}
-							</h1>
-							<p class="grey-text text-30 single-story-tags-title">TAGS</p>
-							<p class="text-20 single-story-tags-txt">
-								@foreach($tags as $tag)
-								    {{ $tag->TextTrans('title') }}
-								@endforeach
-							</p>
-							<br>
-							<span class=" grey-text text-30 single-story-date">DATE</span>
-							<span class="pull-right grey-text text-30 single-story-view">VIEWS</span>
-							<br>
-							<span class=" text-30 single-story-date-txt">{{ date("j F, Y", strtotime($story->created_at)) }}</span>
-							<span class="pull-right text-30 single-story-view-txt">{{ $story->impressions_count }}</span>
-						</div>
-
+					
 					</div>
 				</div>
 

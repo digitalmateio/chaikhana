@@ -78,6 +78,119 @@ class Sections_types extends Model
 
     public static function showSlideShow($translations,$fields,$block)
     {
+         $bylocale = $translations->groupBy('locale');
+         
+        $content = '';
+        $content .= '<ul class="tabs" >';
+        
+        $number = rand(1, 100);
+
+        $i = $number;
+        foreach($bylocale as $key => $item)
+        {
+            $content .= '<li data-id="'. $i .'" data-block="'.  $block->id .'"><a href="#'. $i .'">'. $key .'</a></li>';
+            $i++;
+        }
+       
+
+        
+        $content .= '</ul>';
+        $content .= '<div class="tab_container">';
+        $i = $number;
+        
+        foreach($bylocale as $key => $translates)
+        {
+            $content .= '<div id="'.$i.'" class="tab_content" data-block="'.  $block->id .'" data-id="'.$i .'">';
+          
+            foreach($translates as $translate)
+            {
+                $image = $translate->image;
+                $content .= '<div class="table-responsive">
+                <table class="table table-bordered"><tr>';
+
+                $content .=  "<th>lang</th>";
+                foreach($fields as $field)
+                {
+                    // $content .=  "<td>".$translate->{$field}."</td>";  
+                     $content .=  "<th>$field</th>";               
+                }
+                   $content .= '</tr><tr>';
+                $content .=  "<td>".$translate->locale."</td>";
+
+                foreach($fields as $field)
+                {
+                      // $content .=  "<th>$field</th>";
+
+                     switch($field)
+                    {
+                        case 'audio' :  
+                            $audio = $translate->{$field};
+                            if(!is_null( $audio ))
+                            {
+                                $content .=  "<td>";
+                                $content .= '<audio controls>
+                                  <source src="'.$audio->url.'" type="audio/'.$audio->extension.'">
+                                </audio>';
+                                $content .= "</td>";  
+                            }else{
+                                $content .=  "<td></td>";
+                            }
+                            break;
+                        case 'image' : 
+
+                            $image = $translate->image;
+                            // $image = $translate->getImage();
+                            // dd(  $translate );
+                             $thumbnails = optional($image)->thumbnails;
+                             //$image->thumbnails['300x300']
+                            // dd(  );
+                            // dd(  $image->url );
+                            // dd(   $thumbnails['300x300']   );
+                            $content .=  "<td>"; 
+                            
+                                $content .= '<img style="margin:5px;" src="'. $thumbnails['300x300']  .'"/>';
+                    
+                            $content .= "</td>";
+
+
+                            break;
+                        case 'images' : 
+
+                            $images = $translate->getImages();
+
+                            $content .=  "<td>"; 
+
+                            foreach($images as $image)
+                            {
+                                $content .= '<img style="margin:5px;" src="'.$image->thumbnails['300x300'].'"/>';
+                            }
+
+                            $content .= "</td>";
+
+                            break;
+                        default :  $content .=  "<td>".$translate->{$field}."</td>"; 
+                            break;
+                    }
+
+                }
+                // $content .= "<th>image</th>";
+                // $content .= '</tr><tr>';
+
+               
+
+                // $content .=  "<td><img src='".optional($image)->url."' width=200></td>";
+
+                $content .= '</tr></table></div>';
+            }
+            $content .= '</div>';
+            $i++;
+        }
+        
+        $content .= '</div>';
+        
+        return $content;
+       
+        /* mushoa versia
         $content = '';
         $content .= '<ul class="tabs" >';
 
@@ -151,34 +264,16 @@ class Sections_types extends Model
                     default :  $content .=  "<td>".$translate->{$field}."</td>"; 
                         break;
                 }
-                /*
-                if($field == 'audio')
-                {  
-                    $audio = $translate->{$field};
-                    if(!is_null( $audio ))
-                    {
-                        $content .=  "<td>";
-                        $content .= '<audio controls>
-                          <source src="'.$audio->url.'" type="audio/'.$audio->extension.'">
-                        </audio>';
-                        $content .= "</td>";  
-                    }
-
-                }else{
-                    $content .=  "<td>".$translate->{$field}."</td>"; 
-                }
-                */
-
+              
+             
             }
-
-
-            //            $content .=  "<td><img src='".optional($image)->url."' width=200></td>";
 
             $content .= '</tr></table></div>';
             $content .= '</div>';
         }
         $content .= '</div>';
         return $content;
+        */
     }
 
     public static function showVideo($translations,$fields,$block)
@@ -246,7 +341,7 @@ class Sections_types extends Model
             $i++;
         }
        
-//        $content .= $multiplied;
+
         
         $content .= '</ul>';
         $content .= '<div class="tab_container">';
@@ -258,7 +353,6 @@ class Sections_types extends Model
           
             foreach($translates as $translate)
             {
-//                $image = $translate->getImage();
                 $image = $translate->image;
                 $content .= '<div class="table-responsive">
                 <table class="table table-bordered"><tr>';
@@ -381,7 +475,7 @@ class Sections_types extends Model
 
         $content .= '</div>';
       */
-        return $content;
+        // return $content;
         /*
         //        return;
         $content = '<ul class="tabs" >';

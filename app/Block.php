@@ -8,6 +8,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Translation;
 
 class Block extends Model
 {
@@ -22,6 +23,11 @@ class Block extends Model
 	protected $guarded = [];
 
 	protected $dates = ['deleted_at'];
+
+    public function getTranslationBylang()
+    {
+        return Translation::where('locale',\App::getLocale())->where('block_id',$this->id)->first();
+    }
     
     public function translations()
     {

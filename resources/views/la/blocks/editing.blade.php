@@ -170,6 +170,7 @@
                     <div class="form-group">
                         {{ Form::hidden('story_id', $story->id ) }}
                         {{ Form::hidden('block_id', $block->id ) }}
+                        {{ Form::hidden('translation_id', $translation->id) }}
 
                         {{ csrf_field() }}
                         {{ Form::hidden('story_id', $story->id) }}

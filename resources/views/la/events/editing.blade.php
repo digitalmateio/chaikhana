@@ -82,9 +82,10 @@
                     <div class="form-group">
                         {{ Form::hidden('event_id', $event->id ) }}
                         {{ Form::hidden('block_id', $block->id ) }}
+                        {{ Form::hidden('event_id', $event->id) }}
 
                         {{ csrf_field() }}
-                        {{ Form::hidden('event_id', $event->id) }}
+                      
 
                         @la_showInput($block_module, 'audio',optional($block)->audio,null,null,['class' => 'form-control'])    
 
@@ -169,7 +170,7 @@
                     <div class="form-group">
                         {{ Form::hidden('event_id', $event->id ) }}
                         {{ Form::hidden('block_id', $block->id ) }}
-
+                        {{ Form::hidden('translation_id', $translation->id) }}
                         {{ csrf_field() }}
                         {{ Form::hidden('event_id', $event->id) }}
 
